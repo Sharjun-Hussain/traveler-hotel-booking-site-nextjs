@@ -19,15 +19,15 @@ export default function SearchBar() {
   const [searchType, setSearchType] = useState("hotels");
 
   return (
-    <Card className="w-full max-w-4xl bg-background/95 backdrop-blur-sm border-none shadow-lg">
-      <CardContent className="p-3 sm:p-6">
+    <Card className="w-full max-w-4xl bg-background/95 backdrop-blur-sm border-none p-0  shadow-lg">
+      <CardContent className="p-3 sm:p-6 rounded-lg">
         {/* Search Type Tabs */}
         <Tabs
           defaultValue="hotels"
           onValueChange={setSearchType}
           className="w-full"
         >
-          <TabsList className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-1 overflow-x-auto mb-4 sm:mb-6">
+          <TabsList className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-1 overflow-x-auto mb-4 lg:m-0 sm:mb-6">
             <TabsTrigger
               value="hotels"
               className="text-xs sm:text-sm whitespace-nowrap"
@@ -61,10 +61,10 @@ export default function SearchBar() {
           </TabsList>
 
           {/* Search Forms */}
-          <TabsContent value="hotels" className="mt-0">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4">
-              <div className="sm:col-span-2  lg:col-span-1">
-                <div>
+          <TabsContent value="hotels" className="mt-0 ">
+            <div className="grid grid-cols-1  sm:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4">
+              <div className="sm:col-span-2   lg:col-span-1">
+                <div className="">
                   <Label className="text-xs sm:text-sm mb-1 block">
                     Destination/Hotel
                   </Label>

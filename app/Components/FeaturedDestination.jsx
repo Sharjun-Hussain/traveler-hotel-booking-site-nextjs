@@ -12,7 +12,7 @@ export default function FeaturedDestinations() {
       name: "Sigiriya",
       description: "Ancient rock fortress with frescoes",
       image: sigiriya,
-      link: "/destinations/sigiriya",
+      link: "/hotels-and-apartments/12",
     },
     {
       id: 2,

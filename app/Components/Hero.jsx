@@ -8,7 +8,7 @@ export default function HeroSection() {
   const { theme } = useTheme();
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
+    <div className="relative h-screen w-full ">
       {/* Video Background */}
       <div className="absolute inset-0 overflow-hidden">
         <video
