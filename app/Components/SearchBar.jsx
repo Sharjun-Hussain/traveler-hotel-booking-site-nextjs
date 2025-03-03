@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import ModernDatepicker from "./DatePicker";
+import CustomGuestSelector from "./PassengerPicker";
 
 export default function SearchBar() {
   const [searchType, setSearchType] = useState("hotels");
@@ -35,7 +36,7 @@ export default function SearchBar() {
               Hotels & Apartments
             </TabsTrigger>
             <TabsTrigger
-              value="flights"
+              value="homestay"
               className="text-xs sm:text-sm whitespace-nowrap"
             >
               Homestays
@@ -106,100 +107,61 @@ export default function SearchBar() {
               <div className="sm:col-span-2">
                 <ModernDatepicker />
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                {/* Guests Section */}
+
+              <div className="sm:col-span-2">
+                <CustomGuestSelector />
+              </div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="homestay" className="mt-0">
+            <div className="grid grid-cols-1  sm:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4">
+              <div className="sm:col-span-2   lg:col-span-1">
+                <div className="">
+                  <Label className="text-xs sm:text-sm mb-1 block">
+                    Destination/Hotel
+                  </Label>
+                  <Input
+                    type="text"
+                    placeholder="Where are you going?"
+                    className="text-sm"
+                  />
+                </div>
+              </div>
+              <div className="sm:col-span-2  lg:col-span-1">
                 <div>
                   <Label className="text-xs sm:text-sm mb-1 block">
-                    Guests
+                    Travellor Type
                   </Label>
                   <Select defaultValue="1a0c">
                     <SelectTrigger className="text-sm">
                       <SelectValue placeholder="Select guests" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="1a0c">1 Adult, 0 Children</SelectItem>
-                      <SelectItem value="2a0c">2 Adults, 0 Children</SelectItem>
-                      <SelectItem value="2a1c">2 Adults, 1 Child</SelectItem>
-                      <SelectItem value="2a2c">2 Adults, 2 Children</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                {/* Rooms Section */}
-                <div>
-                  <Label className="text-xs sm:text-sm mb-1 block">Rooms</Label>
-                  <Select defaultValue="1">
-                    <SelectTrigger className="text-sm">
-                      <SelectValue placeholder="Select rooms" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1">1 Room</SelectItem>
-                      <SelectItem value="2">2 Rooms</SelectItem>
-                      <SelectItem value="3">3 Rooms</SelectItem>
-                      <SelectItem value="4">4+ Rooms</SelectItem>
+                      <SelectItem value="1a0c">
+                        Budget Tourer/Backpacker
+                      </SelectItem>
+                      <SelectItem value="Business Traveler">
+                        Business Traveler
+                      </SelectItem>
+                      <SelectItem value="Couple">Couple</SelectItem>
+                      <SelectItem value="2a0c">Digital Nomad</SelectItem>
+                      <SelectItem value="2a0c">Family</SelectItem>
+                      <SelectItem value="2a0c">Group</SelectItem>
+                      <SelectItem value="2a0c">Honeymooners</SelectItem>
+                      <SelectItem value="2a0c">Researcher/Student</SelectItem>
+                      <SelectItem value="2a0c">Solo Female</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               </div>
-            </div>
-          </TabsContent>
 
-          <TabsContent value="flights" className="mt-0">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              <div>
-                <Label className="text-xs sm:text-sm mb-1 block">From</Label>
-                <Input
-                  type="text"
-                  placeholder="Departure city"
-                  className="text-sm"
-                />
+              <div className="sm:col-span-2">
+                <ModernDatepicker />
               </div>
-              <div>
-                <Label className="text-xs sm:text-sm mb-1 block">To</Label>
-                <Input
-                  type="text"
-                  placeholder="Arrival city"
-                  className="text-sm"
-                />
-              </div>
-              <div>
-                <Label className="text-xs sm:text-sm mb-1 block">
-                  Departure
-                </Label>
-                <Input type="date" className="text-sm" />
-              </div>
-              <div>
-                <Label className="text-xs sm:text-sm mb-1 block">Return</Label>
-                <Input type="date" className="text-sm" />
-              </div>
-              <div className="sm:col-span-1 lg:col-span-2">
-                <Label className="text-xs sm:text-sm mb-1 block">
-                  Passengers
-                </Label>
-                <Select defaultValue="1a0c">
-                  <SelectTrigger className="text-sm">
-                    <SelectValue placeholder="Select passengers" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1a0c">1 Adult, 0 Children</SelectItem>
-                    <SelectItem value="2a0c">2 Adults, 0 Children</SelectItem>
-                    <SelectItem value="2a1c">2 Adults, 1 Child</SelectItem>
-                    <SelectItem value="2a2c">2 Adults, 2 Children</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="sm:col-span-1 lg:col-span-2">
-                <Label className="text-xs sm:text-sm mb-1 block">Class</Label>
-                <Select defaultValue="economy">
-                  <SelectTrigger className="text-sm">
-                    <SelectValue placeholder="Select class" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="economy">Economy</SelectItem>
-                    <SelectItem value="business">Business</SelectItem>
-                    <SelectItem value="firstClass">First Class</SelectItem>
-                  </SelectContent>
-                </Select>
+
+              <div className="sm:col-span-2">
+                <CustomGuestSelector />
               </div>
             </div>
           </TabsContent>

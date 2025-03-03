@@ -7,10 +7,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
           {/* Company Info */}
           <div className="lg:col-span-2">
-            <h3 className="text-xl font-bold mb-4">Sri Lanka Travels</h3>
+            <h3 className="text-xl font-bold mb-4">Sri Lanka Vista</h3>
             <p className="mb-4">
               Your trusted partner for exploring the beauty of Sri Lanka. We
-              offer the best hotels, flights, activities, and tour packages.
+              offer the best hotels, apartments, travels, activities, and tour
+              packages.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-300 hover:text-white">
