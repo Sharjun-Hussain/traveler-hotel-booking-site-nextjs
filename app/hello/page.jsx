@@ -1,6 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Search, MapPin, Star, Filter, Calendar, Users } from "lucide-react";
+import Footer from "../Components/Footer";
 
 export default function HotelsListingPage() {
   const [filters, setFilters] = useState({
@@ -10,77 +11,100 @@ export default function HotelsListingPage() {
     propertyType: "all",
   });
 
+  const [lastscrollY, setlastscrollY] = useState(0);
+  const [isfixed, setisfixed] = useState(false);
+
+  useEffect(() => {
+    const handlescroll = () => {
+      const currentscrollY = window.scrollY;
+
+      if (currentscrollY > 50 && currentscrollY < lastscrollY) {
+        setisfixed(true);
+      } else {
+        setisfixed(false);
+      }
+      setlastscrollY(currentscrollY);
+    };
+
+    window.addEventListener("scroll", handlescroll);
+    return () => window.removeEventListener("scroll", handlescroll);
+  }, [lastscrollY]);
+
   // Sample data - in a real app this would come from your API
   const hotels = [
     {
       id: 1,
-      name: "Grand Plaza Hotel",
-      location: "Downtown, New York",
+      name: "Shangri-La Colombo",
+      location: "Galle Face, Colombo",
       rating: 4.8,
-      reviews: 243,
-      price: 199,
-      image: "/api/placeholder/600/400",
-      amenities: ["Free WiFi", "Pool", "Spa", "Gym"],
-      distance: "1.2 km from center",
+      reviews: 320,
+      price: 220,
+      image:
+        "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/17/18/22/f7/shangri-la-hotel-jakarta.jpg?w=700&h=-1&s=1",
+      amenities: ["Free WiFi", "Pool", "Spa", "Gym", "Seaside View"],
+      distance: "0.5 km from Galle Face Beach",
     },
     {
       id: 2,
-      name: "Ocean View Resort",
-      location: "Beachfront, Miami",
-      rating: 4.6,
-      reviews: 189,
-      price: 249,
-      image: "/api/placeholder/600/400",
-      amenities: ["Free WiFi", "Private Beach", "Restaurant", "Bar"],
-      distance: "0.5 km from beach",
+      name: "Cinnamon Grand Colombo",
+      location: "Colombo 03, Sri Lanka",
+      rating: 4.7,
+      reviews: 280,
+      price: 200,
+      image:
+        "https://ik.imgkit.net/3vlqs5axxjf/external/https://media.iceportal.com/50826/photos/8493018_XL.jpg?tr=w-1200%2Cfo-auto",
+      amenities: ["Free WiFi", "Swimming Pool", "Fine Dining", "Bar", "Spa"],
+      distance: "1 km from Colombo City Center",
     },
     {
       id: 3,
-      name: "Mountain Retreat Lodge",
-      location: "Alpine Hills, Colorado",
+      name: "Heritance Kandalama",
+      location: "Dambulla, Sri Lanka",
       rating: 4.9,
-      reviews: 312,
-      price: 179,
-      image: "/api/placeholder/600/400",
-      amenities: ["Free WiFi", "Fireplace", "Hiking Trails", "Restaurant"],
-      distance: "3.5 km from ski resort",
+      reviews: 400,
+      price: 180,
+      image:
+        "https://cf.bstatic.com/xdata/images/hotel/max1024x768/34687318.jpg?k=76cc5b29b46c9e95814271db622f8ce20030cc266d29818b451242f5c6e955c1&o=&hp=1",
+      amenities: [
+        "Infinity Pool",
+        "Jungle View",
+        "Free WiFi",
+        "Luxury Spa",
+        "Restaurant",
+      ],
+      distance: "5 km from Sigiriya Rock",
     },
     {
       id: 4,
-      name: "City Lights Inn",
-      location: "Central District, Chicago",
-      rating: 4.5,
-      reviews: 156,
-      price: 149,
-      image: "/api/placeholder/600/400",
-      amenities: ["Free WiFi", "Breakfast", "Parking", "Business Center"],
-      distance: "0.8 km from center",
+      name: "Jetwing Lighthouse",
+      location: "Galle, Sri Lanka",
+      rating: 4.6,
+      reviews: 270,
+      price: 190,
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd2e76GDOJ3bb0UZsJKp1CtvpjhJac04w2iQ&s",
+      amenities: [
+        "Beachfront",
+        "Free WiFi",
+        "Swimming Pool",
+        "Spa",
+        "Fine Dining",
+      ],
+      distance: "2 km from Galle Fort",
     },
   ];
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex justify-between items-center">
-          <h1 className="text-3xl font-bold text-indigo-600">Find Your Stay</h1>
-          <div className="flex space-x-4">
-            <button className="px-4 py-2 bg-white border border-gray-300 rounded-md text-gray-700 flex items-center gap-2">
-              <Users size={18} />
-              Sign In
-            </button>
-            <button className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">
-              My Bookings
-            </button>
-          </div>
-        </div>
-      </header>
-
       {/* Search Bar */}
-      <div className="bg-indigo-700 py-6">
+      <div
+        className={`transition-all duration-300 ease-in-out bg-indigo-700 py-6 ${
+          isfixed ? "fixed top-0 left-0 w-full shadow-md z-50" : "relative"
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-lg shadow p-4">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
               <div className="relative">
                 <MapPin
                   className="absolute left-3 top-3 text-gray-400"
@@ -89,6 +113,18 @@ export default function HotelsListingPage() {
                 <input
                   type="text"
                   placeholder="Destination"
+                  className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+
+              <div className="relative">
+                <Calendar
+                  className="absolute left-3 top-3 text-gray-400"
+                  size={18}
+                />
+                <input
+                  type="text"
+                  placeholder="Check-in & Check-out"
                   className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </div>
@@ -380,106 +416,6 @@ export default function HotelsListingPage() {
           </div>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-lg font-semibold mb-4">About Us</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a href="#" className="hover:text-indigo-300">
-                    Our Story
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-indigo-300">
-                    Careers
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-indigo-300">
-                    Press
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-indigo-300">
-                    Blog
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Support</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a href="#" className="hover:text-indigo-300">
-                    Help Center
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-indigo-300">
-                    Contact Us
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-indigo-300">
-                    Privacy Policy
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-indigo-300">
-                    Terms of Service
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4">For Businesses</h3>
-              <ul className="space-y-2">
-                <li>
-                  <a href="#" className="hover:text-indigo-300">
-                    Add Your Property
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-indigo-300">
-                    Partners
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-indigo-300">
-                    Advertising
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Download Our App</h3>
-              <div className="flex gap-4 mt-4">
-                <a href="#" className="block">
-                  <img
-                    src="/api/placeholder/120/40"
-                    alt="App Store"
-                    className="h-10"
-                  />
-                </a>
-                <a href="#" className="block">
-                  <img
-                    src="/api/placeholder/120/40"
-                    alt="Google Play"
-                    className="h-10"
-                  />
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
-            <p>© 2025 YourHotelBooking. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

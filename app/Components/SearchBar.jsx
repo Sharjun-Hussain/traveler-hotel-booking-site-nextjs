@@ -212,7 +212,7 @@ export default function SearchBar() {
                 </Label>
                 <Input
                   type="text"
-                  placeholder="Search Activities?"
+                  placeholder="Search by city or activity?"
                   className="text-sm"
                 />
               </div>

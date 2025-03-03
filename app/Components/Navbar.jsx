@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, Users, PenBoxIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
@@ -23,7 +23,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="text-2xl font-bold text-primary">
-              Sri Lanka Travels
+              Sri Lanka Vista
             </Link>
           </div>
 
@@ -106,11 +106,15 @@ export default function Navbar() {
             {/* Auth Links */}
             <Link href="/login">
               <Button variant="ghost" size="sm">
+                <Users size={16} />
                 Login
               </Button>
             </Link>
             <Link href="/register">
-              <Button size="sm">Sign Up</Button>
+              <Button size="sm">
+                <PenBoxIcon size={16} />
+                Sign Up
+              </Button>
             </Link>
           </div>
 
