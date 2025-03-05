@@ -11,6 +11,14 @@ const nextConfig = {
         protocol: "https",
         hostname: "iguanasurf.net",
       },
+      {
+        protocol: "https",
+        hostname: "www.srilankainstyle.com",
+      },
+      {
+        protocol: "https",
+        hostname: "dynamic-media-cdn.tripadvisor.com",
+      },
     ],
   },
 };

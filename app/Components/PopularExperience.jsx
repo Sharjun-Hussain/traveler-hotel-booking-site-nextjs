@@ -45,7 +45,7 @@ export default function PopularExperiences() {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">
           Popular Experiences
         </h2>
         <a href="/experiences" className="text-blue-600 hover:text-blue-800">
@@ -57,7 +57,7 @@ export default function PopularExperiences() {
         {experiences.map((experience) => (
           <div
             key={experience.id}
-            className="bg-white rounded-lg overflow-hidden shadow-md transition-transform duration-300 hover:shadow-xl hover:-translate-y-1"
+            className="bg-white dark:bg-zinc-600 rounded-lg overflow-hidden shadow-md transition-transform duration-300 hover:shadow-xl hover:-translate-y-1"
           >
             <div className="relative h-48 overflow-hidden">
               <Image
@@ -67,20 +67,20 @@ export default function PopularExperiences() {
                 alt={experience.name}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute bottom-0 left-0 bg-blue-600 text-white py-1 px-3 rounded-tr-lg">
+              <div className="absolute bottom-0 left-0 bg-blue-600 text-white  py-1 px-3 rounded-tr-lg">
                 From ${experience.price}
               </div>
             </div>
             <div className="p-4">
-              <h3 className="text-lg font-bold text-gray-800 mb-1">
+              <h3 className="text-lg font-bold text-gray-800 dark:text-zinc-200 mb-1">
                 {experience.name}
               </h3>
               <div className="flex items-center text-sm">
-                <div className="flex items-center text-yellow-400 mr-1">
+                <div className="flex items-center text-yellow-400  mr-1">
                   <span>★</span>
                 </div>
                 <span className="font-medium">{experience.rating}</span>
-                <span className="text-gray-500 ml-1">
+                <span className="text-gray-500 dark:text-zinc-300 ml-1">
                   ({experience.reviews} reviews)
                 </span>
               </div>

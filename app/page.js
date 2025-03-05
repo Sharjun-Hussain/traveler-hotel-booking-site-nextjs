@@ -29,15 +29,15 @@ export default function Home() {
           <SearchBar />
         </div> */}
 
-        <section className="container mx-auto px-4 py-16">
+        <section className=" bg-white dark:bg-zinc-900 mx-auto px-12 py-16">
           <FeaturedDestinations />
         </section>
 
-        <section className="container mx-auto px-4 py-16">
+        <section className="bg-white dark:bg-zinc-900 mx-auto px-12 py-16">
           <PopularExperiences />
         </section>
 
-        <section className="bg-blue-50 py-16">
+        <section className="bg-blue-50 dark:bg-zinc-900 py-16">
           <div className="container mx-auto px-4">
             <SpecialOffers />
           </div>

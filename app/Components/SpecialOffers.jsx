@@ -19,7 +19,7 @@ export default function SpecialOffers() {
 
   return (
     <div>
-      <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-8 text-center">
+      <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-8 text-center">
         Special Offers
       </h2>
 

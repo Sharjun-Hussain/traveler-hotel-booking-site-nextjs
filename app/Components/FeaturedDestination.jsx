@@ -12,7 +12,7 @@ export default function FeaturedDestinations() {
       name: "Sigiriya",
       description: "Ancient rock fortress with frescoes",
       image: sigiriya,
-      link: "/hotels-and-apartments/12",
+      link: "/hotels-and-apartments/colombo",
     },
     {
       id: 2,
@@ -38,9 +38,9 @@ export default function FeaturedDestinations() {
   ];
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
+    <div className="">
+      <div className="flex  justify-between items-center mb-8">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">
           Featured Destinations
         </h2>
         <a href="/destinations" className="text-blue-600 hover:text-blue-800">
@@ -52,7 +52,7 @@ export default function FeaturedDestinations() {
         {destinations.map((destination) => (
           <div
             key={destination.id}
-            className="bg-white rounded-lg overflow-hidden shadow-md transition-transform duration-300 hover:shadow-xl hover:-translate-y-1"
+            className="bg-white dark:bg-zinc-600  rounded-lg overflow-hidden shadow-md transition-transform duration-300 hover:shadow-xl hover:-translate-y-1"
           >
             <a href={destination.link}>
               <div className="h-48 overflow-hidden">
@@ -65,10 +65,12 @@ export default function FeaturedDestinations() {
                 />
               </div>
               <div className="p-4">
-                <h3 className="text-lg font-bold text-gray-800 mb-1">
+                <h3 className="text-lg font-bold text-gray-800 dark:text-zinc-200 mb-1">
                   {destination.name}
                 </h3>
-                <p className="text-gray-600">{destination.description}</p>
+                <p className="text-gray-600 dark:text-zinc-300">
+                  {destination.description}
+                </p>
               </div>
             </a>
           </div>

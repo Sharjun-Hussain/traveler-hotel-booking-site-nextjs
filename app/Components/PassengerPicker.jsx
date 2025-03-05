@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ChevronDown } from "lucide-react";
 
-const CustomGuestSelector = () => {
-  const [adults, setAdults] = useState(1);
+const CustomGuestSelector = ({ showlabel = false }) => {
+  const [adults, setAdults] = useState(2);
   const [children, setChildren] = useState(0);
   const [rooms, setRooms] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +34,9 @@ const CustomGuestSelector = () => {
 
   return (
     <div className="w-full max-w-sm">
-      <Label className="text-xs sm:text-sm mb-1 block">Guests</Label>
+      {showlabel && (
+        <Label className="text-xs sm:text-sm mb-1 block">Guests</Label>
+      )}
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <Button
