@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+
 // components/SpecialOffers.js
 export default function SpecialOffers() {
   const offers = [
@@ -46,9 +48,7 @@ export default function SpecialOffers() {
                 </h3>
                 <p className="text-gray-600 mb-4">{offer.description}</p>
               </div>
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 self-start">
-                View Offer
-              </button>
+              <Button>View Offer</Button>
             </div>
           </div>
         ))}

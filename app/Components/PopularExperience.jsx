@@ -67,7 +67,7 @@ export default function PopularExperiences() {
                 alt={experience.name}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute bottom-0 left-0 bg-blue-600 text-white  py-1 px-3 rounded-tr-lg">
+              <div className="absolute bottom-0 left-0 bg-[#017E7F] text-white  py-1 px-3 rounded-tr-lg">
                 From ${experience.price}
               </div>
             </div>
