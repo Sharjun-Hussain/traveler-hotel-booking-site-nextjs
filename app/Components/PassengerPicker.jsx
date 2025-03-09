@@ -8,8 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ChevronDown } from "lucide-react";
 
-const CustomGuestSelector = ({ showlabel = false }) => {
+const CustomGuestSelector = ({ showlabel = true, type = "hotel" }) => {
   const [adults, setAdults] = useState(2);
+  const [Infants, setInfants] = useState(0);
   const [children, setChildren] = useState(0);
   const [rooms, setRooms] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +28,13 @@ const CustomGuestSelector = ({ showlabel = false }) => {
     if (adults > 0) parts.push(`${adults} Adult${adults !== 1 ? "s" : ""}`);
     if (children > 0)
       parts.push(`${children} Child${children !== 1 ? "ren" : ""}`);
-    if (rooms > 0) parts.push(`${rooms} Room${rooms !== 1 ? "s" : ""}`);
+    if (type == "hotel") {
+      if (rooms > 0) parts.push(`${rooms} Room${rooms !== 1 ? "s" : ""}`);
+    }
+    if (type == "transport") {
+      if (Infants >= 0)
+        parts.push(`${Infants} Infant${Infants !== 1 ? "s" : ""}`);
+    }
 
     return parts.join(", ");
   };
@@ -41,7 +48,7 @@ const CustomGuestSelector = ({ showlabel = false }) => {
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className="w-full justify-between bg-transparent text-left font-normal text-sm border border-gray-200 h-10"
+            className="w-full justify-between bg-transparent text-left font-normal text-sm border  h-10"
           >
             <span className="truncate">{getSummaryText()}</span>
             <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -99,30 +106,59 @@ const CustomGuestSelector = ({ showlabel = false }) => {
               </div>
             </div>
 
-            {/* Rooms selector */}
-            <div className="flex items-center justify-between">
-              <Label className="font-medium">Rooms</Label>
-              <div className="flex items-center">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="h-8 w-8 rounded-full"
-                  onClick={() => decrement(setRooms, rooms, 1)}
-                  disabled={rooms <= 1}
-                >
-                  <span className="text-lg font-bold">-</span>
-                </Button>
-                <span className="w-10 text-center">{rooms}</span>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  className="h-8 w-8 rounded-full"
-                  onClick={() => increment(setRooms, rooms)}
-                >
-                  <span className="text-lg font-bold">+</span>
-                </Button>
+            {/* Rooms selector (only for hotels) */}
+            {type === "hotel" && (
+              <div className="flex items-center justify-between">
+                <Label className="font-medium">Rooms</Label>
+                <div className="flex items-center">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-8 w-8 rounded-full"
+                    onClick={() => decrement(setRooms, rooms, 1)}
+                    disabled={rooms <= 1}
+                  >
+                    <span className="text-lg font-bold">-</span>
+                  </Button>
+                  <span className="w-10 text-center">{rooms}</span>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-8 w-8 rounded-full"
+                    onClick={() => increment(setRooms, rooms)}
+                  >
+                    <span className="text-lg font-bold">+</span>
+                  </Button>
+                </div>
               </div>
-            </div>
+            )}
+
+            {/* Transport type (only for transport) */}
+            {type === "transport" && (
+              <div className="flex items-center justify-between">
+                <Label className="font-medium">Infants</Label>
+                <div className="flex items-center">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-8 w-8 rounded-full"
+                    onClick={() => decrement(setInfants, Infants, 0)}
+                    disabled={Infants <= 0}
+                  >
+                    <span className="text-lg font-bold">-</span>
+                  </Button>
+                  <span className="w-10 text-center">{Infants}</span>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    className="h-8 w-8 rounded-full"
+                    onClick={() => increment(setInfants, Infants)}
+                  >
+                    <span className="text-lg font-bold">+</span>
+                  </Button>
+                </div>
+              </div>
+            )}
 
             <Button className="w-full mt-2" onClick={() => setIsOpen(false)}>
               Apply

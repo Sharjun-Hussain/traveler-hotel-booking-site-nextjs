@@ -1,800 +1,660 @@
-// pages/hotels/[id].js
+// pages/transport/[id].js
 "use client";
-import { useState } from "react";
-import Head from "next/head";
-import Image from "next/image";
-import {
-  Calendar,
-  Clock,
-  MapPin,
-  Star,
-  Coffee,
-  Wifi,
-  Car,
-  ThumbsUp,
-  Activity,
-  Navigation,
-  DollarSign,
-  Users,
-} from "lucide-react";
 
-// This would be fetched from your API in a real implementation
-const hotelData = {
-  id: "hotel-456",
-  name: "Serene Bay Resort & Spa",
-  location: "Galle, Sri Lanka",
-  rating: 4.7,
-  reviewCount: 382,
-  price: 175,
-  description:
-    "Discover the perfect blend of luxury and nature at Serene Bay Resort & Spa, located along the breathtaking coast of Galle, Sri Lanka. Enjoy world-class hospitality, stunning oceanfront views, and a peaceful retreat with premium amenities.",
-  images: [
-    "/api/placeholder/800/500",
-    "/api/placeholder/800/500",
-    "/api/placeholder/800/500",
-    "/api/placeholder/800/500",
-    "/api/placeholder/800/500",
+import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Switch } from "@/components/ui/switch";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
+  Sun,
+  Moon,
+  ArrowLeft,
+  Car,
+  Bus,
+  Train,
+  MapPin,
+  Clock,
+  Calendar,
+  Star,
+  CheckCircle,
+  X,
+  Info,
+  Users,
+  Briefcase,
+  Wifi,
+  Coffee,
+  Warehouse,
+  CreditCard,
+  ShieldCheck,
+} from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+// Mock data for a single transport option in Sri Lanka
+const transportDetail = {
+  id: 1,
+  type: "Train",
+  name: "Ella Express",
+  provider: "Sri Lanka Railways",
+  rating: 4.8,
+  reviews: 245,
+  price: 18,
+  departureTime: "07:30",
+  arrivalTime: "12:45",
+  duration: "5h 15m",
+  departureLocation: "Colombo Fort Station",
+  arrivalLocation: "Ella Station",
+  distance: "273 km",
+  features: [
+    "Scenic Route",
+    "First Class Option",
+    "Dining Car",
+    "Reserved Seating",
+    "Air Conditioned",
   ],
   amenities: [
-    { name: "Free WiFi", icon: "Wifi" },
-    { name: "Infinity Pool", icon: "Swim" },
-    { name: "Spa & Ayurveda Center", icon: "Spa" },
-    { name: "Seafood Restaurant", icon: "Coffee" },
-    { name: "24/7 Room Service", icon: "Clock" },
-    { name: "Airport Shuttle", icon: "Car" },
-    { name: "Fitness Center", icon: "Activity" },
-    { name: "Conference Hall", icon: "Briefcase" },
+    { name: "Wi-Fi", available: true, icon: "Wifi" },
+    { name: "Food", available: true, icon: "Coffee" },
+    { name: "Large Luggage", available: true, icon: "Briefcase" },
+    { name: "Power Outlets", available: false, icon: "CreditCard" },
   ],
-  rooms: [
+  classes: [
     {
-      id: "deluxe-1",
-      name: "Deluxe Ocean View",
-      price: 175,
-      capacity: 2,
-      beds: "1 King Bed",
-      size: "42 m²",
+      name: "First Class",
+      price: 28,
+      available: 12,
       description:
-        "A spacious room with a private balcony offering panoramic ocean views and premium amenities.",
-      amenities: [
-        "Free WiFi",
-        "Air conditioning",
-        "Flat-screen TV",
-        "Mini bar",
-        "Tea/Coffee maker",
-      ],
-      image: "/api/placeholder/400/300",
+        "Private compartments with comfortable seating and panoramic views",
     },
     {
-      id: "suite-1",
-      name: "Presidential Suite",
-      price: 299,
-      capacity: 3,
-      beds: "1 King Bed + 1 Sofa Bed",
-      size: "70 m²",
-      description:
-        "A luxurious suite featuring a separate living area, jacuzzi, and stunning beachside views.",
-      amenities: [
-        "Free WiFi",
-        "Air conditioning",
-        "Flat-screen TV",
-        "Mini bar",
-        "Tea/Coffee maker",
-        "Jacuzzi",
-      ],
-      image: "/api/placeholder/400/300",
+      name: "Second Class",
+      price: 18,
+      available: 37,
+      description: "Reserved seating with good views and comfortable chairs",
     },
     {
-      id: "villa-1",
-      name: "Private Pool Villa",
-      price: 399,
-      capacity: 5,
-      beds: "2 King Beds",
-      size: "90 m²",
-      description:
-        "A secluded villa with a private infinity pool, personal butler service, and direct beach access.",
-      amenities: [
-        "Free WiFi",
-        "Air conditioning",
-        "Flat-screen TV",
-        "Mini bar",
-        "Tea/Coffee maker",
-        "Private pool",
-        "Kitchenette",
-      ],
-      image: "/api/placeholder/400/300",
+      name: "Third Class",
+      price: 10,
+      available: 86,
+      description: "Basic seating with no reservation required",
     },
   ],
-  reviews: [
+  schedule: [
+    { day: "Monday", departures: ["07:30", "09:45", "14:20"] },
+    { day: "Tuesday", departures: ["07:30", "14:20"] },
+    { day: "Wednesday", departures: ["07:30", "09:45", "14:20"] },
+    { day: "Thursday", departures: ["07:30", "14:20"] },
+    { day: "Friday", departures: ["07:30", "09:45", "14:20", "16:30"] },
+    { day: "Saturday", departures: ["07:30", "09:45", "11:15", "14:20"] },
+    { day: "Sunday", departures: ["09:45", "14:20"] },
+  ],
+  highlights: [
+    "Passes through tea plantations and mountainous terrain",
+    "Famous Nine Arch Bridge view",
+    "One of the most scenic train journeys in the world",
+    "Optional photo stops at key viewpoints (first class only)",
+  ],
+  description:
+    "The Ella Express is one of Sri Lanka's most iconic rail journeys, taking passengers from Colombo through the central highlands to the mountain village of Ella. This route is famous for its breathtaking scenery, including lush tea plantations, mountain passes, and the famous Nine Arch Bridge. The train offers different class options, with First Class providing air conditioning and panoramic windows for the best views.",
+  cancellationPolicy:
+    "Free cancellation up to 24 hours before departure. 50% refund for cancellations between 24 and 12 hours before departure. No refund for cancellations less than 12 hours before departure.",
+  pickupInstructions:
+    "Please arrive at Colombo Fort Station at least 30 minutes before departure. Tickets can be collected from the reservation counter with your booking reference and ID. First and Second Class passengers should proceed to Platform 3, while Third Class boards from Platform 4.",
+  route: [
     {
-      id: "rev-1",
-      user: "Ruwan Perera",
-      avatar: "/api/placeholder/50/50",
-      rating: 5,
-      date: "February 10, 2025",
-      comment:
-        "The best beach resort I have ever visited! The staff was friendly, the food was delicious, and the ocean view from our room was spectacular.",
+      station: "Colombo Fort",
+      arrivalTime: "",
+      departureTime: "07:30",
+      distance: "0 km",
     },
     {
-      id: "rev-2",
-      user: "Emily Watson",
-      avatar: "/api/placeholder/50/50",
-      rating: 4,
-      date: "January 22, 2025",
-      comment:
-        "Amazing experience! The spa treatments were relaxing, and the infinity pool was a highlight. Would have loved faster WiFi, but overall fantastic!",
+      station: "Kandy",
+      arrivalTime: "10:15",
+      departureTime: "10:25",
+      distance: "115 km",
     },
     {
-      id: "rev-3",
-      user: "Aravinda Fernando",
-      avatar: "/api/placeholder/50/50",
-      rating: 5,
-      date: "January 8, 2025",
-      comment:
-        "A perfect getaway! The seafood restaurant serves the best crab curry, and the sunset from the beachside lounge is unforgettable.",
+      station: "Nanu Oya",
+      arrivalTime: "11:40",
+      departureTime: "11:45",
+      distance: "209 km",
+    },
+    {
+      station: "Haputale",
+      arrivalTime: "12:15",
+      departureTime: "12:20",
+      distance: "243 km",
+    },
+    {
+      station: "Ella",
+      arrivalTime: "12:45",
+      departureTime: "",
+      distance: "273 km",
     },
   ],
-  activities: [
-    {
-      name: "Whale Watching Tour",
-      description:
-        "Witness the majestic blue whales and dolphins off the coast of Mirissa.",
-      price: 60,
-      image:
-        "https://iguanasurf.net/wp-content/uploads/2018/02/surf-camp-photo.jpg",
-    },
-    {
-      name: "Traditional Sri Lankan Cooking Class",
-      description: "Learn to cook authentic Sri Lankan cuisine with our chefs.",
-      price: 40,
-      image:
-        "https://www.srilankainstyle.com/storage/app/media/Experiences/Traditional%20Sri%20Lankan%20cooking%20class/traditional-sri-lankan-cooking-class-galle-slider-4.jpg",
-    },
-    {
-      name: "Galle Fort Heritage Walk",
-      description:
-        "Explore the UNESCO-listed Galle Fort with a guided walking tour.",
-      price: 20,
-      image:
-        "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/24/05/e0/galle-fort.jpg?w=1200&h=1200&s=1",
-    },
+  images: [
+    "/api/placeholder/800/400",
+    "/api/placeholder/800/400",
+    "/api/placeholder/800/400",
   ],
-  nearbyPlaces: [
-    {
-      name: "Galle Fort",
-      distance: "2 km",
-      description:
-        "A historic fort built by the Portuguese in the 16th century, offering stunning colonial architecture.",
-      image:
-        "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/24/05/e0/galle-fort.jpg?w=1200&h=1200&s=1",
-    },
-    {
-      name: "Unawatuna Beach",
-      distance: "5 km",
-      description:
-        "A popular golden sandy beach known for its turquoise waters and vibrant nightlife.",
-      image: "/api/placeholder/200/150",
-    },
-    {
-      name: "Sinharaja Rainforest",
-      distance: "30 km",
-      description:
-        "A UNESCO World Heritage Site, home to diverse wildlife and lush tropical forests.",
-      image: "/api/placeholder/200/150",
-    },
-  ],
-  policies: {
-    checkIn: "2:00 PM",
-    checkOut: "11:00 AM",
-    cancellation:
-      "Free cancellation up to 72 hours before check-in. After that, a one-night charge applies.",
-    children:
-      "Children under 10 stay free with parents. Extra bed charges apply.",
-    pets: "Sorry, pets are not allowed.",
-    extraBed: "$25 per night for extra beds (subject to availability).",
-  },
+  mapImage: "/api/placeholder/800/400",
 };
 
-export default function HotelDetails() {
-  const [selectedDates, setSelectedDates] = useState({
-    checkIn: null,
-    checkOut: null,
-  });
-  const [guests, setGuests] = useState({ adults: 2, children: 0 });
-  const [selectedRoom, setSelectedRoom] = useState(null);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [activeTab, setActiveTab] = useState("rooms");
+const TransportDetailPage = () => {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [activeTab, setActiveTab] = useState("overview");
+  const [selectedClass, setSelectedClass] = useState("Second Class");
+  const router = useRouter();
 
-  const handleBookNow = () => {
-    // In a real implementation, this would navigate to checkout or booking confirmation
-    alert(
-      `Booking confirmed for ${selectedRoom.name} from ${selectedDates.checkIn} to ${selectedDates.checkOut} for ${guests.adults} adults and ${guests.children} children`
-    );
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Toggle theme function
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
+  const handleBackClick = () => {
+    router.back();
+  };
+
+  const getIconComponent = (iconName) => {
+    switch (iconName) {
+      case "Wifi":
+        return <Wifi className="h-5 w-5" />;
+      case "Coffee":
+        return <Coffee className="h-5 w-5" />;
+      case "Briefcase":
+        return <Briefcase className="h-5 w-5" />;
+      case "CreditCard":
+        return <CreditCard className="h-5 w-5" />;
+      default:
+        return <Info className="h-5 w-5" />;
+    }
+  };
+
+  const getTransportIcon = () => {
+    switch (transportDetail.type) {
+      case "Car":
+        return <Car className="h-6 w-6 text-blue-500" />;
+      case "Bus":
+        return <Bus className="h-6 w-6 text-green-500" />;
+      case "Train":
+        return <Train className="h-6 w-6 text-red-500" />;
+      default:
+        return <Info className="h-6 w-6" />;
+    }
+  };
+
+  if (!mounted) {
+    return null;
+  }
+
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <Head>
-        <title>{hotelData.name} | YourBookingApp</title>
-        <meta name="description" content={hotelData.description} />
-      </Head>
-
-      {/* Header */}
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center">
-            <h1 className="text-3xl font-bold text-gray-900">
-              {hotelData.name}
-            </h1>
-            <div className="flex items-center">
-              <div className="flex items-center text-yellow-500 mr-2">
-                <Star className="w-5 h-5 fill-current" />
-                <span className="ml-1 font-semibold">{hotelData.rating}</span>
-              </div>
-              <span className="text-gray-600">
-                ({hotelData.reviewCount} reviews)
-              </span>
-            </div>
-          </div>
-          <div className="flex items-center mt-2 text-gray-600">
-            <MapPin className="w-4 h-4 mr-1" />
-            <span>{hotelData.location}</span>
-          </div>
-        </div>
-      </header>
-
-      <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        {/* Image Gallery */}
-        <div className="bg-white rounded-lg shadow overflow-hidden mb-8">
-          <div className="relative h-96">
-            <Image
-              src={hotelData.images[currentImageIndex]}
-              alt={`${hotelData.name} - image ${currentImageIndex + 1}`}
-              layout="fill"
-              objectFit="cover"
-              className="w-full"
-            />
-            <div className="absolute inset-0 flex items-center justify-between px-4">
-              <button
-                onClick={() =>
-                  setCurrentImageIndex((prev) =>
-                    prev === 0 ? hotelData.images.length - 1 : prev - 1
-                  )
-                }
-                className="bg-white p-2 rounded-full shadow hover:bg-gray-100"
-              >
-                &lt;
-              </button>
-              <button
-                onClick={() =>
-                  setCurrentImageIndex((prev) =>
-                    prev === hotelData.images.length - 1 ? 0 : prev + 1
-                  )
-                }
-                className="bg-white p-2 rounded-full shadow hover:bg-gray-100"
-              >
-                &gt;
-              </button>
-            </div>
-          </div>
-          <div className="p-4 overflow-x-auto">
-            <div className="flex space-x-2">
-              {hotelData.images.map((image, index) => (
-                <div
-                  key={index}
-                  className={`relative w-24 h-16 cursor-pointer ${
-                    currentImageIndex === index ? "ring-2 ring-blue-500" : ""
-                  }`}
-                  onClick={() => setCurrentImageIndex(index)}
-                >
-                  <Image
-                    src={image}
-                    alt={`${hotelData.name} thumbnail ${index + 1}`}
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded"
-                  />
-                </div>
-              ))}
-            </div>
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 transition-colors duration-200">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header with Theme Toggle and Back Button */}
+        <div className="flex justify-between items-center mb-6">
+          <Button
+            variant="ghost"
+            className="flex items-center gap-2"
+            onClick={handleBackClick}
+          >
+            <ArrowLeft className="h-5 w-5" /> Back to Search
+          </Button>
+          <div className="flex items-center gap-2">
+            <Sun className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+            <Switch checked={theme === "dark"} onCheckedChange={toggleTheme} />
+            <Moon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Main Content */}
-          <div className="lg:w-2/3">
-            {/* Description */}
-            <div className="bg-white rounded-lg shadow p-6 mb-8">
-              <h2 className="text-2xl font-bold mb-4">About This Hotel</h2>
-              <p className="text-gray-700">{hotelData.description}</p>
+        {/* Main Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Column - Main Details */}
+          <div className="lg:col-span-2">
+            {/* Image Gallery */}
+            <div className="mb-6 overflow-hidden rounded-lg">
+              <img
+                src={transportDetail.images[0]}
+                alt={transportDetail.name}
+                className="w-full h-auto object-cover"
+              />
             </div>
 
-            {/* Tabs Navigation */}
-            <div className="bg-white rounded-lg shadow mb-8">
-              <div className="border-b border-gray-200">
-                <nav className="flex">
-                  {[
-                    "rooms",
-                    "amenities",
-                    "reviews",
-                    "activities",
-                    "location",
-                    "policies",
-                  ].map((tab) => (
-                    <button
-                      key={tab}
-                      className={`px-4 py-3 font-medium text-sm ${
-                        activeTab === tab
-                          ? "border-b-2 border-blue-500 text-blue-600"
-                          : "text-gray-500 hover:text-gray-700"
-                      }`}
-                      onClick={() => setActiveTab(tab)}
-                    >
-                      {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                    </button>
-                  ))}
-                </nav>
-              </div>
-
-              {/* Tab Content */}
-              <div className="p-6">
-                {/* Rooms Tab */}
-                {activeTab === "rooms" && (
-                  <div>
-                    <h3 className="text-xl font-semibold mb-4">
-                      Available Rooms
-                    </h3>
-                    <div className="space-y-6">
-                      {hotelData.rooms.map((room) => (
-                        <div
-                          key={room.id}
-                          className="border rounded-lg p-4 flex flex-col md:flex-row gap-4"
-                        >
-                          <div className="md:w-1/3 relative h-48 md:h-auto">
-                            <Image
-                              src={room.image}
-                              alt={room.name}
-                              layout="fill"
-                              objectFit="cover"
-                              className="rounded-lg"
-                            />
-                          </div>
-                          <div className="md:w-2/3 flex flex-col">
-                            <div className="flex-grow">
-                              <h4 className="text-lg font-semibold">
-                                {room.name}
-                              </h4>
-                              <div className="flex items-center text-sm text-gray-600 mt-1 mb-2">
-                                <Users className="w-4 h-4 mr-1" />
-                                <span>
-                                  {room.capacity} guests • {room.beds} •{" "}
-                                  {room.size}
-                                </span>
-                              </div>
-                              <p className="text-gray-700 mb-2">
-                                {room.description}
-                              </p>
-                              <div className="flex flex-wrap gap-2 mb-3">
-                                {room.amenities.map((amenity, idx) => (
-                                  <span
-                                    key={idx}
-                                    className="bg-gray-100 px-2 py-1 rounded text-xs text-gray-700"
-                                  >
-                                    {amenity}
-                                  </span>
-                                ))}
-                              </div>
-                            </div>
-                            <div className="flex flex-wrap justify-between items-center mt-2">
-                              <div className="text-lg font-bold text-blue-600">
-                                ${room.price}{" "}
-                                <span className="text-sm font-normal text-gray-600">
-                                  / night
-                                </span>
-                              </div>
-                              <button
-                                onClick={() => setSelectedRoom(room)}
-                                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                              >
-                                Select Room
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
+            {/* Basic Info */}
+            <Card className="mb-6 dark:bg-zinc-800">
+              <CardContent className="pt-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    {getTransportIcon()}
+                    <div>
+                      <h1 className="text-2xl font-bold">
+                        {transportDetail.name}
+                      </h1>
+                      <p className="text-gray-600 dark:text-gray-400">
+                        by {transportDetail.provider}
+                      </p>
                     </div>
                   </div>
-                )}
+                  <div className="text-right">
+                    <div className="flex items-center gap-1 mb-1">
+                      <Star className="h-5 w-5 text-yellow-500 fill-current" />
+                      <span className="font-bold">
+                        {transportDetail.rating}
+                      </span>
+                      <span className="text-gray-500 dark:text-gray-400">
+                        ({transportDetail.reviews} reviews)
+                      </span>
+                    </div>
+                    <Badge variant="outline">{transportDetail.type}</Badge>
+                  </div>
+                </div>
 
-                {/* Amenities Tab */}
-                {activeTab === "amenities" && (
-                  <div>
-                    <h3 className="text-xl font-semibold mb-4">
-                      Hotel Amenities
-                    </h3>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                      {hotelData.amenities.map((amenity, index) => (
+                <div className="flex flex-col md:flex-row justify-between border-t border-b py-4 mb-4 dark:border-gray-700">
+                  <div className="flex items-center gap-2 mb-2 md:mb-0">
+                    <Clock className="h-5 w-5 text-gray-500" />
+                    <div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">
+                        Departure
+                      </div>
+                      <div className="font-medium">
+                        {transportDetail.departureTime}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 mb-2 md:mb-0">
+                    <Clock className="h-5 w-5 text-gray-500" />
+                    <div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">
+                        Duration
+                      </div>
+                      <div className="font-medium">
+                        {transportDetail.duration}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-5 w-5 text-gray-500" />
+                    <div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">
+                        Arrival
+                      </div>
+                      <div className="font-medium">
+                        {transportDetail.arrivalTime}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                  <div className="flex items-start gap-2">
+                    <MapPin className="h-5 w-5 text-gray-500 mt-0.5" />
+                    <div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">
+                        From
+                      </div>
+                      <div className="font-medium">
+                        {transportDetail.departureLocation}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <MapPin className="h-5 w-5 text-gray-500 mt-0.5" />
+                    <div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">
+                        To
+                      </div>
+                      <div className="font-medium">
+                        {transportDetail.arrivalLocation}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  {transportDetail.features.map((feature, index) => (
+                    <Badge key={index} variant="secondary">
+                      {feature}
+                    </Badge>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Tabs for Additional Information */}
+            <Card className="dark:bg-zinc-800">
+              <CardContent className="pt-6">
+                <Tabs
+                  defaultValue="overview"
+                  value={activeTab}
+                  onValueChange={setActiveTab}
+                  className="w-full"
+                >
+                  <TabsList className="mb-4 grid grid-cols-4">
+                    <TabsTrigger value="overview">Overview</TabsTrigger>
+                    <TabsTrigger value="route">Route</TabsTrigger>
+                    <TabsTrigger value="amenities">Amenities</TabsTrigger>
+                    <TabsTrigger value="schedule">Schedule</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="overview">
+                    <div className="space-y-6">
+                      <div>
+                        <h3 className="text-lg font-bold mb-2">Description</h3>
+                        <p className="text-gray-700 dark:text-gray-300">
+                          {transportDetail.description}
+                        </p>
+                      </div>
+
+                      <div>
+                        <h3 className="text-lg font-bold mb-2">Highlights</h3>
+                        <ul className="space-y-2">
+                          {transportDetail.highlights.map(
+                            (highlight, index) => (
+                              <li
+                                key={index}
+                                className="flex items-start gap-2"
+                              >
+                                <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
+                                <span className="text-gray-700 dark:text-gray-300">
+                                  {highlight}
+                                </span>
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+
+                      <div>
+                        <h3 className="text-lg font-bold mb-2">Map</h3>
+                        <div className="rounded-lg overflow-hidden">
+                          <img
+                            src={transportDetail.mapImage}
+                            alt="Route Map"
+                            className="w-full h-auto"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="route">
+                    <h3 className="text-lg font-bold mb-4">Complete Route</h3>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Station</TableHead>
+                          <TableHead>Arrival</TableHead>
+                          <TableHead>Departure</TableHead>
+                          <TableHead>Distance</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {transportDetail.route.map((stop, index) => (
+                          <TableRow key={index}>
+                            <TableCell className="font-medium">
+                              {stop.station}
+                            </TableCell>
+                            <TableCell>{stop.arrivalTime || "-"}</TableCell>
+                            <TableCell>{stop.departureTime || "-"}</TableCell>
+                            <TableCell>{stop.distance}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </TabsContent>
+
+                  <TabsContent value="amenities">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                      {transportDetail.amenities.map((amenity, index) => (
                         <div
                           key={index}
-                          className="flex items-center bg-gray-50 p-3 rounded-lg"
+                          className="flex flex-col items-center justify-center text-center p-4 border rounded-lg dark:border-gray-700"
                         >
-                          <div className="bg-blue-100 p-2 rounded-full mr-3">
-                            {amenity.icon === "Wifi" && (
-                              <Wifi className="w-5 h-5 text-blue-600" />
-                            )}
-                            {amenity.icon === "Coffee" && (
-                              <Coffee className="w-5 h-5 text-blue-600" />
-                            )}
-                            {amenity.icon === "Car" && (
-                              <Car className="w-5 h-5 text-blue-600" />
-                            )}
-                            {amenity.icon === "Clock" && (
-                              <Clock className="w-5 h-5 text-blue-600" />
-                            )}
-                            {amenity.icon === "Activity" && (
-                              <Activity className="w-5 h-5 text-blue-600" />
+                          <div
+                            className={`p-3 rounded-full mb-2 ${
+                              amenity.available
+                                ? "bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400"
+                                : "bg-gray-100 text-gray-500 dark:bg-gray-800"
+                            }`}
+                          >
+                            {getIconComponent(amenity.icon)}
+                          </div>
+                          <div className="font-medium">{amenity.name}</div>
+                          <div className="text-sm">
+                            {amenity.available ? (
+                              <span className="text-green-600 dark:text-green-400">
+                                Available
+                              </span>
+                            ) : (
+                              <span className="text-gray-500">
+                                Not Available
+                              </span>
                             )}
                           </div>
-                          <span className="text-gray-700">{amenity.name}</span>
                         </div>
                       ))}
                     </div>
-                  </div>
-                )}
+                  </TabsContent>
 
-                {/* Reviews Tab */}
-                {activeTab === "reviews" && (
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-xl font-semibold">Guest Reviews</h3>
-                      <div className="flex items-center">
-                        <div className="bg-green-100 text-green-800 font-semibold px-3 py-1 rounded-full flex items-center">
-                          <Star className="w-4 h-4 mr-1 fill-current" />
-                          {hotelData.rating}
+                  <TabsContent value="schedule">
+                    <h3 className="text-lg font-bold mb-4">Weekly Schedule</h3>
+                    <div className="space-y-3">
+                      {transportDetail.schedule.map((day, index) => (
+                        <div
+                          key={index}
+                          className="flex flex-col md:flex-row md:items-center justify-between border-b pb-3 dark:border-gray-700"
+                        >
+                          <div className="font-medium mb-2 md:mb-0 md:w-1/4">
+                            {day.day}
+                          </div>
+                          <div className="flex flex-wrap gap-2 md:w-3/4">
+                            {day.departures.map((time, timeIndex) => (
+                              <Badge
+                                key={timeIndex}
+                                variant="outline"
+                                className="px-3 py-1"
+                              >
+                                <Clock className="h-3 w-3 mr-1" /> {time}
+                              </Badge>
+                            ))}
+                          </div>
                         </div>
-                        <span className="ml-2 text-gray-600">
-                          ({hotelData.reviewCount} reviews)
+                      ))}
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Right Column - Booking and Additional Info */}
+          <div className="lg:col-span-1">
+            {/* Booking Card */}
+            <Card className="mb-6 dark:bg-zinc-800 sticky top-6">
+              <CardContent className="pt-6">
+                <h2 className="text-xl font-bold mb-4">Travel Classes</h2>
+
+                <div className="space-y-4 mb-6">
+                  {transportDetail.classes.map((classOption) => (
+                    <div
+                      key={classOption.name}
+                      className={`border rounded-lg p-4 cursor-pointer transition-colors ${
+                        selectedClass === classOption.name
+                          ? "border-blue-500 bg-blue-50 dark:bg-blue-900/20 dark:border-blue-600"
+                          : "dark:border-gray-700"
+                      }`}
+                      onClick={() => setSelectedClass(classOption.name)}
+                    >
+                      <div className="flex justify-between mb-2">
+                        <div className="font-bold">{classOption.name}</div>
+                        <div className="text-blue-600 dark:text-blue-400 font-bold">
+                          ${classOption.price}
+                        </div>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                        {classOption.description}
+                      </p>
+                      <div className="flex items-center text-sm">
+                        <Users className="h-4 w-4 mr-1 text-gray-500" />
+                        <span
+                          className={
+                            classOption.available < 10
+                              ? "text-red-500"
+                              : "text-gray-600 dark:text-gray-400"
+                          }
+                        >
+                          {classOption.available} seats left
                         </span>
                       </div>
                     </div>
-                    <div className="space-y-6">
-                      {hotelData.reviews.map((review) => (
-                        <div
-                          key={review.id}
-                          className="border-b pb-4 last:border-0"
-                        >
-                          <div className="flex items-center mb-2">
-                            <div className="relative w-10 h-10 mr-3">
-                              <Image
-                                src={review.avatar}
-                                alt={review.user}
-                                layout="fill"
-                                className="rounded-full"
-                              />
-                            </div>
-                            <div>
-                              <div className="font-medium">{review.user}</div>
-                              <div className="text-gray-500 text-sm">
-                                {review.date}
-                              </div>
-                            </div>
-                            <div className="ml-auto flex">
-                              {[...Array(5)].map((_, i) => (
-                                <Star
-                                  key={i}
-                                  className={`w-4 h-4 ${
-                                    i < review.rating
-                                      ? "text-yellow-400 fill-current"
-                                      : "text-gray-300"
-                                  }`}
-                                />
-                              ))}
-                            </div>
-                          </div>
-                          <p className="text-gray-700">{review.comment}</p>
-                        </div>
-                      ))}
+                  ))}
+                </div>
+
+                <div className="border-t pt-4 mb-4 dark:border-gray-700">
+                  <div className="flex justify-between mb-2">
+                    <div className="text-gray-600 dark:text-gray-400">
+                      Base fare
                     </div>
-                    <div className="mt-4">
-                      <button className="text-blue-600 font-medium">
-                        View all reviews
-                      </button>
+                    <div>
+                      $
+                      {transportDetail.classes.find(
+                        (c) => c.name === selectedClass
+                      )?.price || transportDetail.price}
                     </div>
                   </div>
-                )}
-
-                {/* Activities Tab */}
-                {activeTab === "activities" && (
-                  <div>
-                    <h3 className="text-xl font-semibold mb-4">
-                      Hotel Activities
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {hotelData.activities.map((activity, index) => (
-                        <div
-                          key={index}
-                          className="border rounded-lg overflow-hidden"
-                        >
-                          <div className="relative h-40">
-                            <Image
-                              src={activity.image}
-                              alt={activity.name}
-                              layout="fill"
-                              objectFit="cover"
-                            />
-                          </div>
-                          <div className="p-4">
-                            <h4 className="font-semibold text-lg">
-                              {activity.name}
-                            </h4>
-                            <p className="text-gray-600 mb-2">
-                              {activity.description}
-                            </p>
-                            <div className="flex justify-between items-center">
-                              <span className="font-medium text-blue-600">
-                                ${activity.price}{" "}
-                                <span className="text-sm text-gray-500">
-                                  per person
-                                </span>
-                              </span>
-                              <button className="text-blue-600 font-medium">
-                                Book Now
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
+                  <div className="flex justify-between mb-2">
+                    <div className="text-gray-600 dark:text-gray-400">
+                      Service fee
+                    </div>
+                    <div>$2</div>
+                  </div>
+                  <div className="flex justify-between font-bold text-lg pt-2 border-t dark:border-gray-700">
+                    <div>Total</div>
+                    <div>
+                      $
+                      {(transportDetail.classes.find(
+                        (c) => c.name === selectedClass
+                      )?.price || transportDetail.price) + 2}
                     </div>
                   </div>
-                )}
+                </div>
 
-                {/* Location Tab */}
-                {activeTab === "location" && (
-                  <div>
-                    <h3 className="text-xl font-semibold mb-4">
-                      Location & Nearby Places
-                    </h3>
-                    <div className="mb-6 relative h-64 bg-gray-200 rounded-lg overflow-hidden">
-                      {/* Placeholder for a real map */}
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Image
-                          src="/api/placeholder/800/400"
-                          alt="Map"
-                          layout="fill"
-                          objectFit="cover"
-                        />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-gray-500">
-                            Interactive Map would be displayed here
+                <Button className="w-full mb-4">Book Now</Button>
+
+                <div className="text-sm text-gray-500 dark:text-gray-400 text-center">
+                  No payment required now. Pay later.
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Additional Information Accordions */}
+            <Card className="dark:bg-zinc-800">
+              <CardContent className="pt-6">
+                <Accordion type="single" collapsible>
+                  <AccordionItem value="cancellation">
+                    <AccordionTrigger>Cancellation Policy</AccordionTrigger>
+                    <AccordionContent>
+                      <p className="text-gray-700 dark:text-gray-300">
+                        {transportDetail.cancellationPolicy}
+                      </p>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="pickup">
+                    <AccordionTrigger>Pickup Instructions</AccordionTrigger>
+                    <AccordionContent>
+                      <p className="text-gray-700 dark:text-gray-300">
+                        {transportDetail.pickupInstructions}
+                      </p>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="luggage">
+                    <AccordionTrigger>Luggage Policy</AccordionTrigger>
+                    <AccordionContent>
+                      <ul className="space-y-2">
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
+                          <span className="text-gray-700 dark:text-gray-300">
+                            First Class: 30kg per passenger (2 large bags)
                           </span>
-                        </div>
-                      </div>
-                    </div>
-                    <h4 className="font-semibold text-lg mb-3">
-                      Nearby Attractions
-                    </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      {hotelData.nearbyPlaces.map((place, index) => (
-                        <div
-                          key={index}
-                          className="border rounded-lg overflow-hidden"
-                        >
-                          <div className="relative h-32">
-                            <Image
-                              src={place.image}
-                              alt={place.name}
-                              layout="fill"
-                              objectFit="cover"
-                            />
-                          </div>
-                          <div className="p-3">
-                            <h5 className="font-medium">{place.name}</h5>
-                            <div className="flex items-center text-sm text-gray-600 mb-1">
-                              <Navigation className="w-3 h-3 mr-1" />
-                              <span>{place.distance}</span>
-                            </div>
-                            <p className="text-gray-700 text-sm">
-                              {place.description}
-                            </p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
+                          <span className="text-gray-700 dark:text-gray-300">
+                            Second Class: 25kg per passenger (2 medium bags)
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
+                          <span className="text-gray-700 dark:text-gray-300">
+                            Third Class: 20kg per passenger (1 large bag)
+                          </span>
+                        </li>
+                      </ul>
+                    </AccordionContent>
+                  </AccordionItem>
 
-                {/* Policies Tab */}
-                {activeTab === "policies" && (
-                  <div>
-                    <h3 className="text-xl font-semibold mb-4">
-                      Hotel Policies
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <h4 className="font-medium mb-2">
-                          Check-in / Check-out
-                        </h4>
-                        <div className="flex items-start mb-2">
-                          <Clock className="w-5 h-5 text-gray-500 mr-2 mt-0.5" />
-                          <div>
-                            <p className="text-gray-700">
-                              Check-in: {hotelData.policies.checkIn}
-                            </p>
-                            <p className="text-gray-700">
-                              Check-out: {hotelData.policies.checkOut}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <h4 className="font-medium mb-2">
-                          Cancellation Policy
-                        </h4>
-                        <p className="text-gray-700">
-                          {hotelData.policies.cancellation}
-                        </p>
-                      </div>
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <h4 className="font-medium mb-2">
-                          Children & Extra Beds
-                        </h4>
-                        <p className="text-gray-700">
-                          {hotelData.policies.children}
-                        </p>
-                        <p className="text-gray-700 mt-1">
-                          {hotelData.policies.extraBed}
-                        </p>
-                      </div>
-                      <div className="bg-gray-50 p-4 rounded-lg">
-                        <h4 className="font-medium mb-2">Pet Policy</h4>
-                        <p className="text-gray-700">
-                          {hotelData.policies.pets}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* Booking Sidebar */}
-          <div className="lg:w-1/3">
-            <div className="bg-white rounded-lg shadow p-6 sticky top-4">
-              <h3 className="text-xl font-bold mb-4">Book Your Stay</h3>
-
-              <div className="mb-4">
-                <div className="font-medium mb-2">Price</div>
-                <div className="text-2xl font-bold text-blue-600">
-                  ${selectedRoom ? selectedRoom.price : hotelData.price}
-                  <span className="text-sm font-normal text-gray-600">
-                    {" "}
-                    / night
-                  </span>
-                </div>
-              </div>
-
-              <div className="mb-4">
-                <label className="block font-medium mb-2">Dates</label>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="relative">
-                    <input
-                      type="date"
-                      className="w-full border rounded-md p-2"
-                      onChange={(e) =>
-                        setSelectedDates({
-                          ...selectedDates,
-                          checkIn: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="relative">
-                    <input
-                      type="date"
-                      className="w-full border rounded-md p-2"
-                      onChange={(e) =>
-                        setSelectedDates({
-                          ...selectedDates,
-                          checkOut: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="mb-6">
-                <label className="block font-medium mb-2">Guests</label>
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="block text-sm text-gray-600 mb-1">
-                      Adults
-                    </label>
-                    <select
-                      className="w-full border rounded-md p-2"
-                      value={guests.adults}
-                      onChange={(e) =>
-                        setGuests({
-                          ...guests,
-                          adults: parseInt(e.target.value),
-                        })
-                      }
-                    >
-                      {[1, 2, 3, 4, 5].map((num) => (
-                        <option key={num} value={num}>
-                          {num}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm text-gray-600 mb-1">
-                      Children
-                    </label>
-                    <select
-                      className="w-full border rounded-md p-2"
-                      value={guests.children}
-                      onChange={(e) =>
-                        setGuests({
-                          ...guests,
-                          children: parseInt(e.target.value),
-                        })
-                      }
-                    >
-                      {[0, 1, 2, 3, 4].map((num) => (
-                        <option key={num} value={num}>
-                          {num}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              </div>
-
-              <button
-                onClick={handleBookNow}
-                disabled={
-                  !selectedRoom ||
-                  !selectedDates.checkIn ||
-                  !selectedDates.checkOut
-                }
-                className={`w-full py-3 px-4 rounded-lg text-white font-medium ${
-                  selectedRoom &&
-                  selectedDates.checkIn &&
-                  selectedDates.checkOut
-                    ? "bg-blue-600 hover:bg-blue-700"
-                    : "bg-gray-400 cursor-not-allowed"
-                }`}
-              >
-                Book Now
-              </button>
-
-              {(!selectedRoom ||
-                !selectedDates.checkIn ||
-                !selectedDates.checkOut) && (
-                <p className="text-sm text-gray-600 mt-2 text-center">
-                  {!selectedRoom
-                    ? "Please select a room"
-                    : !selectedDates.checkIn || !selectedDates.checkOut
-                    ? "Please select check-in and check-out dates"
-                    : ""}
-                </p>
-              )}
-
-              <div className="mt-4 text-sm text-gray-600">
-                <div className="flex items-center">
-                  <ThumbsUp className="w-4 h-4 mr-1 text-green-600" />
-                  <span>Free cancellation until 48 hours before check-in</span>
-                </div>
-                <div className="flex items-center mt-1">
-                  <DollarSign className="w-4 h-4 mr-1 text-green-600" />
-                  <span>No payment required today</span>
-                </div>
-              </div>
-            </div>
+                  <AccordionItem value="safety">
+                    <AccordionTrigger>Safety Measures</AccordionTrigger>
+                    <AccordionContent>
+                      <ul className="space-y-2">
+                        <li className="flex items-start gap-2">
+                          <ShieldCheck className="h-5 w-5 text-green-500 mt-0.5" />
+                          <span className="text-gray-700 dark:text-gray-300">
+                            Regular safety inspections
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <ShieldCheck className="h-5 w-5 text-green-500 mt-0.5" />
+                          <span className="text-gray-700 dark:text-gray-300">
+                            First aid kits available
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <ShieldCheck className="h-5 w-5 text-green-500 mt-0.5" />
+                          <span className="text-gray-700 dark:text-gray-300">
+                            Security personnel on board
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <ShieldCheck className="h-5 w-5 text-green-500 mt-0.5" />
+                          <span className="text-gray-700 dark:text-gray-300">
+                            Emergency communication systems
+                          </span>
+                        </li>
+                      </ul>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </CardContent>
+            </Card>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
-}
+};
+
+export default TransportDetailPage;

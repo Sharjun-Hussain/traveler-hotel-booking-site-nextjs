@@ -86,9 +86,9 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="w-full z-50 bg-background/80 backdrop-blur-md border-b border-border sticky top-0">
+    <nav className="w-full z-50 bg-background border-b border-border sticky top-0">
       <div className="container mx-auto">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-24">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="text-2xl font-bold text-primary">
@@ -102,7 +102,7 @@ export default function Navbar() {
               <NavigationMenuList className="flex items-center gap-1">
                 {/* Hotels & Apartments */}
                 <NavigationMenuItem>
-                  <Link href="/hotels-apartments" legacyBehavior passHref>
+                  <Link href="/hotels-and-apartments" passHref>
                     <NavigationMenuLink
                       className={navigationMenuTriggerStyle()}
                     >
@@ -113,7 +113,7 @@ export default function Navbar() {
 
                 {/* Homestays */}
                 <NavigationMenuItem>
-                  <Link href="/homestays" legacyBehavior passHref>
+                  <Link href="/homestays" passHref>
                     <NavigationMenuLink
                       className={navigationMenuTriggerStyle()}
                     >

@@ -48,7 +48,7 @@ export default function SearchBar() {
               Activities
             </TabsTrigger>
             <TabsTrigger
-              value="packages"
+              value="transport"
               className="text-xs sm:text-sm whitespace-nowrap"
             >
               Transport
@@ -181,9 +181,9 @@ export default function SearchBar() {
             </div>
           </TabsContent>
 
-          <TabsContent value="packages" className="mt-0">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              <div className="sm:col-span-2">
+          <TabsContent value="transport" className="mt-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4">
+              <div className="sm:col-span-2 lg:col-span-1 ">
                 <Label className="text-xs sm:text-sm mb-1 block">From</Label>
                 <Input
                   type="text"
@@ -191,7 +191,7 @@ export default function SearchBar() {
                   className="text-sm"
                 />
               </div>
-              <div className="sm:col-span-2">
+              <div className="sm:col-span-2 lg:col-span-1">
                 <Label className="text-xs sm:text-sm mb-1 block">To</Label>
                 <Input
                   type="text"
@@ -199,17 +199,11 @@ export default function SearchBar() {
                   className="text-sm"
                 />
               </div>
-              {/* <div>
-                <Label className="text-xs sm:text-sm mb-1 block">
-                  Start Date
-                </Label>
-                <Input type="date" className="text-sm" />
+              {/* <div className="sm:col-span-2 lg:col-span-1">
+                <CustomGuestSelector type="transport" />
               </div>
-              <div>
-                <Label className="text-xs sm:text-sm mb-1 block">
-                  End Date
-                </Label>
-                <Input type="date" className="text-sm" />
+              <div className="lg:col-span-3">
+                <ModernDatepicker type="transport" />
               </div> */}
             </div>
           </TabsContent>

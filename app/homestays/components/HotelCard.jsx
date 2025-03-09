@@ -1,62 +1,19 @@
-import {
-  Bath,
-  Car,
-  Coffee,
-  Dumbbell,
-  MapPin,
-  PawPrint,
-  Star,
-  Utensils,
-  Waves,
-  Wifi,
-} from "lucide-react";
+import { MapPin, Star } from "lucide-react";
 import React from "react";
 
 const HotelCard = ({ hotel }) => {
-  // Map of amenities to their corresponding icons
-  const amenityIcons = {
-    "Free WiFi": <Wifi size={16} />,
-    Breakfast: <Coffee size={16} />,
-    Restaurant: <Utensils size={16} />,
-    Pool: <Waves size={16} />,
-    Gym: <Dumbbell size={16} />,
-    Parking: <Car size={16} />,
-    Spa: <Bath size={16} />,
-    "Pet Friendly": <PawPrint size={16} />,
-    // Add more amenities and their icons as needed
-  };
-
   return (
     <div>
       <div
         key={hotel.id}
         className="bg-white dark:bg-zinc-900 rounded-lg shadow overflow-hidden flex flex-col md:flex-row"
       >
-        <div className="md:w-1/3 h-48 md:h-auto relative">
-          {/* Gradient overlay for better icon visibility */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent z-10"></div>
-
+        <div className="md:w-1/3 h-48 md:h-auto">
           <img
             src={hotel.image}
             alt={hotel.name}
             className="h-full w-full object-cover"
           />
-
-          {/* Amenity icons overlay */}
-          <div className="absolute top-2 left-2 flex flex-col flex-wrap gap-2 z-20">
-            {hotel.amenities.map(
-              (amenity) =>
-                amenityIcons[amenity] && (
-                  <div
-                    key={amenity}
-                    className="p-2 bg-blue-400/80 rounded-full text-white"
-                    title={amenity}
-                  >
-                    {amenityIcons[amenity]}
-                  </div>
-                )
-            )}
-          </div>
         </div>
         <div className="flex-1 p-6 flex flex-col">
           <div className="flex justify-between">

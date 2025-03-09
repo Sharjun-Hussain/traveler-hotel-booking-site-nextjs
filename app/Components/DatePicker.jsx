@@ -4,7 +4,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { format, addDays } from "date-fns";
 import { CalendarDays, ArrowRight } from "lucide-react";
 
-const ModernDatepicker = () => {
+const ModernDatepicker = ({ type = "hotel" }) => {
   const [checkInDate, setCheckInDate] = useState(new Date());
   const [checkOutDate, setCheckOutDate] = useState(addDays(new Date(), 1));
   const [openPicker, setOpenPicker] = useState(null);
@@ -43,11 +43,13 @@ const ModernDatepicker = () => {
   }, [checkInDate, checkOutDate]);
 
   // Calculate stay duration
-  const stayDuration = () => {
-    const diffTime = Math.abs(checkOutDate - checkInDate);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays === 1 ? "1 night" : `${diffDays} nights`;
-  };
+  if (type !== "transport") {
+    var stayDuration = () => {
+      const diffTime = Math.abs(checkOutDate - checkInDate);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays === 1 ? "1 night" : `${diffDays} nights`;
+    };
+  }
 
   return (
     <>
@@ -56,7 +58,7 @@ const ModernDatepicker = () => {
         {/* Check-in Date Picker */}
         <div className="relative flex-1" ref={checkInRef}>
           <div
-            className="flex items-center justify-between cursor-pointe border border-gray-200 p-4 rounded-lg shadow-sm w-full hover:border-blue-400 transition-colors"
+            className="flex items-center justify-between cursor-pointer p-4 rounded-lg shadow-sm w-full hover:border-blue-400 transition-colors"
             onClick={() =>
               setOpenPicker(openPicker === "checkin" ? null : "checkin")
             }
@@ -89,7 +91,7 @@ const ModernDatepicker = () => {
         {/* Check-out Date Picker */}
         <div className="relative flex-1" ref={checkOutRef}>
           <div
-            className="flex items-center justify-between cursor-pointer  border border-gray-200 p-4 rounded-lg shadow-sm w-full hover:border-blue-400 transition-colors"
+            className="flex items-center justify-between cursor-pointer  border  p-4 rounded-lg shadow-sm w-full hover:border-blue-400 transition-colors"
             onClick={() =>
               setOpenPicker(openPicker === "checkout" ? null : "checkout")
             }
@@ -105,7 +107,7 @@ const ModernDatepicker = () => {
             <CalendarDays className="w-5 h-5 text-gray-500 dark:text-white" />
           </div>
           {openPicker === "checkout" && (
-            <div className="absolute mt-2 bg-white p-2 rounded-lg shadow-lg z-10 right-0">
+            <div className="absolute mt-2 bg-white dark:bg-zinc-800 p-2 rounded-lg shadow-lg z-10 right-0">
               <DatePicker
                 selected={checkOutDate}
                 onChange={(date) => {
@@ -123,7 +125,7 @@ const ModernDatepicker = () => {
       {/* Desktop Design (combined elegant selector) */}
       <div className="hidden md:block relative " ref={combinedPickerRef}>
         <div
-          className="flex items-center justify-between cursor-pointer  border border-gray-200 px-6 py-5 rounded-xl shadow-md w-full hover:shadow-lg transition-shadow"
+          className="flex items-center justify-between cursor-pointer  border  px-6 py-5 rounded-xl shadow-md w-full hover:shadow-lg transition-shadow"
           onClick={() => setOpenPicker(openPicker ? null : "combined")}
         >
           <div className="flex items-center gap-8">
@@ -150,14 +152,14 @@ const ModernDatepicker = () => {
 
           <div className="flex items-center gap-3">
             <span className="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-sm font-medium">
-              {stayDuration()}
+              {type != "transport" && stayDuration()}
             </span>
             <CalendarDays className="w-6 h-6 text-gray-500" />
           </div>
         </div>
 
         {openPicker === "combined" && (
-          <div className="absolute mt-4 bg-white p-4 rounded-xl shadow-xl z-10 left-0 right-0 border border-gray-200">
+          <div className="absolute mt-4 bg-white dark:bg-zinc-800 p-4 rounded-xl shadow-xl z-10 left-0 right-0 border">
             <div className="flex flex-col lg:flex-row gap-6">
               <div>
                 <h3 className="font-medium text-gray-700 mb-2">
