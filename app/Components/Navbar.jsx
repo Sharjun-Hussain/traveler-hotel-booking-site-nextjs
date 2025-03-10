@@ -148,7 +148,7 @@ export default function Navbar() {
 
                 {/* Activities */}
                 <NavigationMenuItem>
-                  <Link href="/activities" legacyBehavior passHref>
+                  <Link href="/activity" legacyBehavior passHref>
                     <NavigationMenuLink
                       className={navigationMenuTriggerStyle()}
                     >
