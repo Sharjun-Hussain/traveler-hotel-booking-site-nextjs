@@ -4,7 +4,6 @@
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -162,7 +161,7 @@ const TransportDetailPage = () => {
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
   const [selectedClass, setSelectedClass] = useState("Second Class");
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
@@ -174,7 +173,7 @@ const TransportDetailPage = () => {
   };
 
   const handleBackClick = () => {
-    router.back();
+    // router.back();
   };
 
   const getIconComponent = (iconName) => {
@@ -213,20 +212,6 @@ const TransportDetailPage = () => {
     <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 transition-colors duration-200">
       <div className="container mx-auto px-4 py-8">
         {/* Header with Theme Toggle and Back Button */}
-        <div className="flex justify-between items-center mb-6">
-          <Button
-            variant="ghost"
-            className="flex items-center gap-2"
-            onClick={handleBackClick}
-          >
-            <ArrowLeft className="h-5 w-5" /> Back to Search
-          </Button>
-          <div className="flex items-center gap-2">
-            <Sun className="h-5 w-5 text-gray-600 dark:text-gray-400" />
-            <Switch checked={theme === "dark"} onCheckedChange={toggleTheme} />
-            <Moon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
-          </div>
-        </div>
 
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
