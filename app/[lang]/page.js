@@ -1,13 +1,11 @@
 // pages/index.js
 import Head from "next/head";
-import Navbar from "./Components/Navbar";
 import HeroSection from "./Components/Hero";
-import SearchBar from "./Components/SearchBar";
 import FeaturedDestinations from "./Components/FeaturedDestination";
 import PopularExperiences from "./Components/PopularExperience";
 import SpecialOffers from "./Components/SpecialOffers";
-import Footer from "./Components/Footer";
 import Testimonials from "./Components/Testimonials";
+import Footer from "./Components/Footer";
 
 export default function Home() {
   return (

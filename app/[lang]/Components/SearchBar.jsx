@@ -63,18 +63,16 @@ export default function SearchBar() {
 
           {/* Search Forms */}
           <TabsContent value="hotels" className="mt-0 ">
-            <div className="grid grid-cols-1  sm:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1  sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               <div className="sm:col-span-2   lg:col-span-1">
-                <div className="">
-                  <Label className="text-xs sm:text-sm mb-1 block">
-                    Destination/Hotel
-                  </Label>
-                  <Input
-                    type="text"
-                    placeholder="Where are you going?"
-                    className="text-sm"
-                  />
-                </div>
+                <Label className="text-xs sm:text-sm mb-1 block">
+                  Destination/Hotel
+                </Label>
+                <Input
+                  type="text"
+                  placeholder="Where are you going?"
+                  className="text-sm"
+                />
               </div>
               <div className="sm:col-span-2  lg:col-span-1">
                 <div>
@@ -103,14 +101,15 @@ export default function SearchBar() {
                   </Select>
                 </div>
               </div>
+              <div className="lg:col-span-1">
+                <CustomGuestSelector />
+              </div>
 
-              <div className="sm:col-span-2">
+              <div className="sm:col-span-3">
                 <ModernDatepicker />
               </div>
 
-              <div className="sm:col-span-2">
-                <CustomGuestSelector />
-              </div>
+              <div className="sm:col-span-2"></div>
             </div>
           </TabsContent>
 
