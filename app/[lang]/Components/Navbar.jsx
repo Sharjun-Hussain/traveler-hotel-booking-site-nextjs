@@ -1,4 +1,3 @@
-// components/Navbar.js
 "use client";
 
 import React, { useState } from "react";
@@ -31,6 +30,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
+import CurrencyLanguageDialog from "./CurrencyLangModel";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -189,7 +189,21 @@ export default function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu> */}
 
-            <Globe />
+            <div className="flex gap-2 justify-center  items-center">
+              <button className="cursor-pointer text-sm hover:text-j-text-small">
+                {" "}
+                En
+              </button>
+              <button className="cursor-pointer text-sm  hover:text-j-text-small">
+                {" "}
+                த{" "}
+              </button>
+              <button className="cursor-pointer text-sm  hover:text-j-text-small">
+                {" "}
+                සි
+              </button>
+            </div>
+            <CurrencyLanguageDialog />
             {/* Auth Links */}
             <Link href="/login">
               <Button variant="ghost" size="sm" className="gap-1">
