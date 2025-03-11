@@ -15,9 +15,22 @@ import {
 import { Card, CardContent } from "@/components/ui/card";
 import ModernDatepicker from "./DatePicker";
 import CustomGuestSelector from "./PassengerPicker";
+import { MultiSelect } from "@/components/ui/MultipleSelector";
+import { Cat, Dog, Fish, Rabbit, Turtle } from "lucide-react";
 
 export default function SearchBar() {
   const [searchType, setSearchType] = useState("hotels");
+  const [selectedFoodType, setselectedFoodType] = useState([]);
+
+  const foodtype = [
+    {
+      value: "specialty-restaurant",
+      label: "Specialty Restaurant",
+      icon: Turtle,
+    },
+    { value: "cuisine-based", label: "Cuisine Based", icon: Cat },
+    { value: "dietary-preference", label: "Dietary Preference", icon: Dog },
+  ];
 
   return (
     <Card className="w-full relative max-w-7xl bg-background/95 backdrop-blur-sm border-none p-0  shadow-lg">
@@ -108,8 +121,6 @@ export default function SearchBar() {
               <div className="sm:col-span-3 lg:col-span-3 xl:col-span-3">
                 <ModernDatepicker className="absolute z-100" />
               </div>
-
-              <div className="sm:col-span-2"></div>
             </div>
           </TabsContent>
 
@@ -159,8 +170,6 @@ export default function SearchBar() {
               <div className="sm:col-span-3">
                 <ModernDatepicker />
               </div>
-
-              <div className="sm:col-span-2"></div>
             </div>
           </TabsContent>
 
@@ -179,24 +188,26 @@ export default function SearchBar() {
             </div>
           </TabsContent>
 
-          <TabsContent value="transport" className="mt-0">
+          <TabsContent value="transport" className="lg:mt-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4">
-              <div className="sm:col-span-2 lg:col-span-1 ">
-                <Label className="text-xs sm:text-sm mb-1 block">From</Label>
+              <div className="sm:col-span-2 lg:col-span-2  ">
+                <Label className="text-xs sm:text-sm mb-1 block">
+                  Desctination
+                </Label>
                 <Input
                   type="text"
-                  placeholder="Where From?"
+                  placeholder="Where To?"
                   className="text-sm"
                 />
               </div>
-              <div className="sm:col-span-2 lg:col-span-1">
+              {/* <div className="sm:col-span-2 lg:col-span-1">
                 <Label className="text-xs sm:text-sm mb-1 block">To</Label>
                 <Input
                   type="text"
                   placeholder="Where to?"
                   className="text-sm"
                 />
-              </div>
+              </div> */}
               {/* <div className="sm:col-span-2 lg:col-span-1">
                 <CustomGuestSelector type="transport" />
               </div>
@@ -206,7 +217,7 @@ export default function SearchBar() {
             </div>
           </TabsContent>
 
-          <TabsContent value="food" className="mt-0">
+          <TabsContent value="food" className="lg:mt-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div>
                 <Label className="text-xs sm:text-sm mb-1 block">
@@ -218,15 +229,12 @@ export default function SearchBar() {
                   className="text-sm"
                 />
               </div>
-              <div>
-                <Label className="text-xs sm:text-sm mb-1 block">Date</Label>
-                <Input type="date" className="text-sm" />
-              </div>
+
               <div>
                 <Label className="text-xs sm:text-sm mb-1 block">
                   Cuisine Type
                 </Label>
-                <Select defaultValue="all">
+                {/* <Select defaultValue="all">
                   <SelectTrigger className="text-sm">
                     <SelectValue placeholder="Select cuisine" />
                   </SelectTrigger>
@@ -237,9 +245,18 @@ export default function SearchBar() {
                     <SelectItem value="asian">Asian</SelectItem>
                     <SelectItem value="seafood">Seafood</SelectItem>
                   </SelectContent>
-                </Select>
+                </Select> */}
+                <MultiSelect
+                  options={foodtype}
+                  onValueChange={setselectedFoodType}
+                  defaultValue={selectedFoodType}
+                  placeholder="Select Food Type"
+                  variant="inverted"
+                  animation={2}
+                  maxCount={3}
+                />
               </div>
-              <div>
+              {/* <div>
                 <Label className="text-xs sm:text-sm mb-1 block">
                   Party Size
                 </Label>
@@ -254,7 +271,7 @@ export default function SearchBar() {
                     <SelectItem value="5p">5+ People</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
+              </div> */}
             </div>
           </TabsContent>
 
