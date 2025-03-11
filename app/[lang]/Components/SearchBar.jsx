@@ -20,7 +20,7 @@ export default function SearchBar() {
   const [searchType, setSearchType] = useState("hotels");
 
   return (
-    <Card className="w-full max-w-7xl bg-background/95 backdrop-blur-sm border-none p-0  shadow-lg">
+    <Card className="w-full relative max-w-7xl bg-background/95 backdrop-blur-sm border-none p-0  shadow-lg">
       <CardContent className="p-3 sm:p-6 rounded-lg">
         {/* Search Type Tabs */}
         <Tabs
@@ -106,7 +106,7 @@ export default function SearchBar() {
               </div>
 
               <div className="sm:col-span-3 lg:col-span-3 xl:col-span-3">
-                <ModernDatepicker />
+                <ModernDatepicker className="absolute z-100" />
               </div>
 
               <div className="sm:col-span-2"></div>
