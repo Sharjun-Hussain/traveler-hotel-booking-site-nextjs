@@ -20,7 +20,7 @@ export default function SearchBar() {
   const [searchType, setSearchType] = useState("hotels");
 
   return (
-    <Card className="w-full max-w-4xl bg-background/95 backdrop-blur-sm border-none p-0  shadow-lg">
+    <Card className="w-full max-w-7xl bg-background/95 backdrop-blur-sm border-none p-0  shadow-lg">
       <CardContent className="p-3 sm:p-6 rounded-lg">
         {/* Search Type Tabs */}
         <Tabs
@@ -28,7 +28,7 @@ export default function SearchBar() {
           onValueChange={setSearchType}
           className="w-full"
         >
-          <TabsList className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-1 overflow-x-auto mb-4 lg:m-0 sm:mb-6">
+          <TabsList className="flex justify-around w-full gap-2  overflow-x-auto mb-4 lg:m-0 sm:mb-6">
             <TabsTrigger
               value="hotels"
               className="text-xs sm:text-sm whitespace-nowrap"
@@ -62,19 +62,19 @@ export default function SearchBar() {
           </TabsList>
 
           {/* Search Forms */}
-          <TabsContent value="hotels" className="mt-0 ">
-            <div className="grid grid-cols-1  sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-              <div className="sm:col-span-2   lg:col-span-1">
+          <TabsContent value="hotels" className="lg:mt-6 ">
+            <div className="grid grid-cols-1  sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6  gap-3 sm:gap-4">
+              <div className="sm:col-span-1  md:col-span-1  lg:col-span-1 xl:col-span-1">
                 <Label className="text-xs sm:text-sm mb-1 block">
                   Destination/Hotel
                 </Label>
                 <Input
                   type="text"
                   placeholder="Where are you going?"
-                  className="text-sm"
+                  className="text-sm "
                 />
               </div>
-              <div className="sm:col-span-2  lg:col-span-1">
+              <div className="sm:col-span-1 md:col-span-1  lg:col-span-1 xl:col-span-1">
                 <div>
                   <Label className="text-xs sm:text-sm mb-1 block">
                     Travellor Type
@@ -101,7 +101,58 @@ export default function SearchBar() {
                   </Select>
                 </div>
               </div>
-              <div className="lg:col-span-1">
+              <div className="lg:col-span-1 md:col-span-1 sm:col-span-1 xl:col-span-1">
+                <CustomGuestSelector />
+              </div>
+
+              <div className="sm:col-span-3 lg:col-span-3 xl:col-span-3">
+                <ModernDatepicker />
+              </div>
+
+              <div className="sm:col-span-2"></div>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="homestay" className="lg:mt-6">
+            <div className="grid grid-cols-1  sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6  gap-3 sm:gap-4">
+              <div className="sm:col-span-1  md:col-span-1  lg:col-span-1">
+                <Label className="text-xs sm:text-sm mb-1 block">
+                  Destination/Hotel
+                </Label>
+                <Input
+                  type="text"
+                  placeholder="Where are you going?"
+                  className="text-sm "
+                />
+              </div>
+              <div className="sm:col-span-1 md:col-span-1  lg:col-span-1">
+                <div>
+                  <Label className="text-xs sm:text-sm mb-1 block">
+                    Travellor Type
+                  </Label>
+                  <Select defaultValue="1a0c">
+                    <SelectTrigger className="text-sm">
+                      <SelectValue placeholder="Select guests" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1a0c">
+                        Budget Tourer/Backpacker
+                      </SelectItem>
+                      <SelectItem value="Business Traveler">
+                        Business Traveler
+                      </SelectItem>
+                      <SelectItem value="Couple">Couple</SelectItem>
+                      <SelectItem value="2a0c">Digital Nomad</SelectItem>
+                      <SelectItem value="2a0c">Family</SelectItem>
+                      <SelectItem value="2a0c">Group</SelectItem>
+                      <SelectItem value="2a0c">Honeymooners</SelectItem>
+                      <SelectItem value="2a0c">Researcher/Student</SelectItem>
+                      <SelectItem value="2a0c">Solo Female</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="lg:col-span-1 md:col-span-1 sm:col-span-1">
                 <CustomGuestSelector />
               </div>
 
@@ -113,59 +164,7 @@ export default function SearchBar() {
             </div>
           </TabsContent>
 
-          <TabsContent value="homestay" className="mt-0">
-            <div className="grid grid-cols-1  sm:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4">
-              <div className="sm:col-span-2   lg:col-span-1">
-                <div className="">
-                  <Label className="text-xs sm:text-sm mb-1 block">
-                    Destination/Hotel
-                  </Label>
-                  <Input
-                    type="text"
-                    placeholder="Where are you going?"
-                    className="text-sm"
-                  />
-                </div>
-              </div>
-              <div className="sm:col-span-2  lg:col-span-1">
-                <div>
-                  <Label className="text-xs sm:text-sm mb-1 block">
-                    Travellor Type
-                  </Label>
-                  <Select defaultValue="1a0c">
-                    <SelectTrigger className="text-sm">
-                      <SelectValue placeholder="Select guests" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1a0c">
-                        Budget Tourer/Backpacker
-                      </SelectItem>
-                      <SelectItem value="Business Traveler">
-                        Business Traveler
-                      </SelectItem>
-                      <SelectItem value="Couple">Couple</SelectItem>
-                      <SelectItem value="2a0c">Digital Nomad</SelectItem>
-                      <SelectItem value="2a0c">Family</SelectItem>
-                      <SelectItem value="2a0c">Group</SelectItem>
-                      <SelectItem value="2a0c">Honeymooners</SelectItem>
-                      <SelectItem value="2a0c">Researcher/Student</SelectItem>
-                      <SelectItem value="2a0c">Solo Female</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div className="sm:col-span-2">
-                <ModernDatepicker />
-              </div>
-
-              <div className="sm:col-span-2">
-                <CustomGuestSelector />
-              </div>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="activities" className="mt-0">
+          <TabsContent value="activities" className="lg:mt-6">
             <div className="flex  gap-3 sm:gap-4">
               <div className="flex-1">
                 <Label className="text-xs sm:text-sm mb-1 block">

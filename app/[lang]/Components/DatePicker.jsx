@@ -125,15 +125,15 @@ const ModernDatepicker = ({ type = "hotel" }) => {
       {/* Desktop Design (combined elegant selector) */}
       <div className="hidden md:block relative " ref={combinedPickerRef}>
         <div
-          className="flex items-center justify-between cursor-pointer  border  px-6 py-5 rounded-xl shadow-md w-full hover:shadow-lg transition-shadow"
+          className="flex items-center justify-between cursor-pointer border shadow p-2 rounded-md   w-full  transition-shadow"
           onClick={() => setOpenPicker(openPicker ? null : "combined")}
         >
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-4">
             <div className="flex flex-col">
-              <span className="text-gray-500 dark:text-gray-300 text-sm font-medium mb-1">
+              <span className="text-black font-medium dark:text-gray-300 text-sm mb-2">
                 Check-in
               </span>
-              <span className="text-gray-900 dark:text-white text-lg font-semibold">
+              <span className="text-gray-900 dark:text-white text-sm">
                 {formatDateLong(checkInDate)}
               </span>
             </div>
@@ -141,10 +141,10 @@ const ModernDatepicker = ({ type = "hotel" }) => {
             <ArrowRight className="text-gray-400" />
 
             <div className="flex flex-col">
-              <span className="text-gray-500 dark:text-gray-300 text-sm font-medium mb-1">
+              <span className="text-black dark:text-gray-300 text-sm font-medium mb-2">
                 Check-out
               </span>
-              <span className="text-gray-900 dark:text-white text-lg font-semibold">
+              <span className="text-gray-900 dark:text-white text-sm ">
                 {formatDateLong(checkOutDate)}
               </span>
             </div>

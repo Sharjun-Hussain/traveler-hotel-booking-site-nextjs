@@ -19,13 +19,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* <Navbar /> */}
-
       <main>
         <HeroSection />
-        {/* <div className="container mx-auto px-4 -mt-16 relative z-10">
-          <SearchBar />
-        </div> */}
 
         <section className=" bg-white dark:bg-zinc-900 mx-auto px-12 py-16">
           <FeaturedDestinations />

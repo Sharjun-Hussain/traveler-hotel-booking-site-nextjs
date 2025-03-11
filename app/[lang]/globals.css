@@ -7,6 +7,13 @@
 @theme {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-j-light: #e6f8fc;
+  --color-j-primary: #06708c;
+  --color-j-primary-hover: #06707d;
+  --color-j-secondary: #0ca6e9;
+  --color-j-text-small: #5c6f8a;
+  --color-j-text-small-2: #6a6a6a;
+  --color-j-text-title: #14181f;
 }
 
 :root {

@@ -131,7 +131,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="w-full z-50 bg-transparent  sticky top-0">
+    <nav className="w-full z-50  bg-transparent  ">
       <div className="container mx-auto">
         <div className="flex justify-between items-center h-14">
           {/* Logo */}
@@ -181,7 +181,7 @@ export default function Navbar() {
             </DropdownMenu>
 
             {/* Theme Toggle */}
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
 
             {/* Auth Links */}
             <Link href="/login">
