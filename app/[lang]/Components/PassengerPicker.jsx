@@ -54,11 +54,18 @@ const CustomGuestSelector = ({ showlabel = true, type = "hotel" }) => {
             <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-full p-0" align="start">
+        <PopoverContent className="w-min-md p-0" align="start">
           <div className="p-4 space-y-4">
             {/* Adults selector */}
             <div className="flex items-center justify-between">
-              <Label className="font-medium">Adults</Label>
+              <Label className="">
+                <div className="flex flex-col gap-1 font-medium">
+                  Adults{" "}
+                  <span className="text-j-text-small-2 text-xs">
+                    Ages 13 or above
+                  </span>
+                </div>
+              </Label>
               <div className="flex items-center">
                 <Button
                   variant="outline"
@@ -67,7 +74,7 @@ const CustomGuestSelector = ({ showlabel = true, type = "hotel" }) => {
                   onClick={() => decrement(setAdults, adults, 1)}
                   disabled={adults <= 1}
                 >
-                  <span className="text-lg font-bold">-</span>
+                  <span className="text-lg font-normal">-</span>
                 </Button>
                 <span className="w-10 text-center">{adults}</span>
                 <Button
@@ -76,14 +83,21 @@ const CustomGuestSelector = ({ showlabel = true, type = "hotel" }) => {
                   className="h-8 w-8 rounded-full"
                   onClick={() => increment(setAdults, adults)}
                 >
-                  <span className="text-lg font-bold">+</span>
+                  <span className="text-lg font-normal">+</span>
                 </Button>
               </div>
             </div>
 
             {/* Children selector */}
             <div className="flex items-center justify-between">
-              <Label className="font-medium">Children</Label>
+              <Label className="">
+                <div className="flex flex-col gap-1 font-medium">
+                  Children{" "}
+                  <span className="text-j-text-small-2 text-xs">
+                    Ages 2 – 12
+                  </span>
+                </div>
+              </Label>
               <div className="flex items-center">
                 <Button
                   variant="outline"
@@ -92,7 +106,7 @@ const CustomGuestSelector = ({ showlabel = true, type = "hotel" }) => {
                   onClick={() => decrement(setChildren, children)}
                   disabled={children <= 0}
                 >
-                  <span className="text-lg font-bold">-</span>
+                  <span className="text-lg font-normal">-</span>
                 </Button>
                 <span className="w-10 text-center">{children}</span>
                 <Button
@@ -101,7 +115,7 @@ const CustomGuestSelector = ({ showlabel = true, type = "hotel" }) => {
                   className="h-8 w-8 rounded-full"
                   onClick={() => increment(setChildren, children)}
                 >
-                  <span className="text-lg font-bold">+</span>
+                  <span className="text-lg font-normal">+</span>
                 </Button>
               </div>
             </div>
@@ -118,7 +132,7 @@ const CustomGuestSelector = ({ showlabel = true, type = "hotel" }) => {
                     onClick={() => decrement(setRooms, rooms, 1)}
                     disabled={rooms <= 1}
                   >
-                    <span className="text-lg font-bold">-</span>
+                    <span className="text-lg font-normal">-</span>
                   </Button>
                   <span className="w-10 text-center">{rooms}</span>
                   <Button
@@ -127,7 +141,7 @@ const CustomGuestSelector = ({ showlabel = true, type = "hotel" }) => {
                     className="h-8 w-8 rounded-full"
                     onClick={() => increment(setRooms, rooms)}
                   >
-                    <span className="text-lg font-bold">+</span>
+                    <span className="text-lg font-normal">+</span>
                   </Button>
                 </div>
               </div>

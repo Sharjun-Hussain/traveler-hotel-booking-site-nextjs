@@ -160,11 +160,11 @@ const ModernDatepicker = ({ type = "hotel", props }) => {
                 />
               </div>
             </div>
-            <div className="p-4 border-t">
+            {/* <div className="p-4 border-t">
               <Button className="w-full" onClick={() => document.body.click()}>
                 Apply
               </Button>
-            </div>
+            </div> */}
           </PopoverContent>
         </Popover>
       </div>

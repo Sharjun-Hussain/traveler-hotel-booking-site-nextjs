@@ -3,7 +3,16 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Menu, X, ChevronDown, Users, PenBoxIcon, Home } from "lucide-react";
+import {
+  Menu,
+  X,
+  ChevronDown,
+  Users,
+  PenBoxIcon,
+  Home,
+  WholeWordIcon,
+  Globe,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
@@ -141,10 +150,10 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Right side - Auth, Currency, Language, Theme */}
+          {/*  Auth, Currency, Language, Theme */}
           <div className="hidden md:flex items-center space-x-3">
             {/* Currency Dropdown */}
-            <DropdownMenu>
+            {/* <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
@@ -160,10 +169,10 @@ export default function Navbar() {
                 <DropdownMenuItem>EUR - Euro</DropdownMenuItem>
                 <DropdownMenuItem>GBP - British Pound</DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu> */}
 
             {/* Language Dropdown */}
-            <DropdownMenu>
+            {/* <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
                   variant="ghost"
@@ -178,11 +187,9 @@ export default function Navbar() {
                 <DropdownMenuItem>Sinhala</DropdownMenuItem>
                 <DropdownMenuItem>Tamil</DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu>
+            </DropdownMenu> */}
 
-            {/* Theme Toggle */}
-            {/* <ThemeToggle /> */}
-
+            <Globe />
             {/* Auth Links */}
             <Link href="/login">
               <Button variant="ghost" size="sm" className="gap-1">
