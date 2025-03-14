@@ -1,6 +1,13 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  // redirects: async () => [
+  //   {
+  //     source: "/",
+  //     destination: "/en",
+  //     permanent: true, // 301 redirect (permanent)
+  //   },
+  // ],
   images: {
     remotePatterns: [
       {

@@ -21,9 +21,23 @@ export default function SpecialOffers() {
 
   return (
     <div>
-      <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-8 text-center">
-        Special Offers
-      </h2>
+      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8">
+        <div>
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900">
+            Special Offers
+          </h2>
+          <p className="mt-2 text-lg text-gray-600">
+            Special offers in srilanka{" "}
+          </p>
+        </div>
+        {/* <Button
+            variant="outline"
+            className="mt-4 md:mt-0"
+            onClick={onViewAll}
+          >
+            View All Events
+          </Button> */}
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {offers.map((offer) => (

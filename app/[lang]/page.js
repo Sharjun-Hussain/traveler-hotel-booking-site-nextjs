@@ -1,11 +1,15 @@
 // pages/index.js
 import Head from "next/head";
 import HeroSection from "./Components/Hero";
-import FeaturedDestinations from "./Components/FeaturedDestination";
-import PopularExperiences from "./Components/PopularExperience";
 import SpecialOffers from "./Components/SpecialOffers";
 import Testimonials from "./Components/Testimonials";
 import Footer from "./Components/Footer";
+import Sponsored from "./Components/CarausalSposored";
+import FeaturedDestinations from "./mainSections/FeaturedDestinations";
+import SponsoredHotels from "./mainSections/SponsoredHotels";
+import UserStory from "./mainSections/UserStory";
+import StoryStaysSection from "./mainSections/UserStory";
+import PopularEventsSection from "./mainSections/PopularEvents";
 
 export default function Home() {
   return (
@@ -22,17 +26,30 @@ export default function Home() {
       <main>
         <HeroSection />
 
-        <section className=" bg-white dark:bg-zinc-900 mx-auto px-12 py-16">
+        <section className=" bg-white dark:bg-zinc-900 mx-auto px-6 lg:px-4 py-10">
+          {/* <Featured Destinations /> */}
           <FeaturedDestinations />
         </section>
 
-        <section className="bg-white dark:bg-zinc-900 mx-auto px-12 py-16">
-          <PopularExperiences />
+        <section className=" bg-white dark:bg-zinc-900 mx-auto px-6 lg:px-4 py-10">
+          {/* Sponsore dDestinations /> */}
+          <SponsoredHotels />
         </section>
 
-        <section className="bg-blue-50 dark:bg-zinc-900 py-16">
+        <section className=" bg-white dark:bg-zinc-900 mx-auto px-6 lg:px-4 py-10">
+          {/* <User Story /> */}
+          <StoryStaysSection />
+        </section>
+
+        <section className="bg-white dark:bg-zinc-900 mx-auto px-6 lg:px-4 py-10">
           <div className="container mx-auto px-4">
             <SpecialOffers />
+          </div>
+        </section>
+
+        <section className="bg-white dark:bg-zinc-900 mx-auto px-6 lg:px-4 py-10">
+          <div className="container mx-auto px-4">
+            <PopularEventsSection />
           </div>
         </section>
 

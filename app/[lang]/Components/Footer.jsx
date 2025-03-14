@@ -1,5 +1,10 @@
+"use client";
 import Link from "next/link";
+import PrivacyToggle from "./PrivacyChoiceSelector";
 
+import privacy from "@/public/privacy.svg";
+import CurrencyLanguageDialog from "./CurrencyLangModel";
+import { Facebook, Instagram, Twitter } from "lucide-react";
 export default function Footer() {
   return (
     <footer className="bg-gray-800 text-gray-200 pt-12 pb-8">
@@ -206,7 +211,7 @@ export default function Footer() {
                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>
-                <span>info@srilankatravels.com</span>
+                <span>info@srilankavista.com</span>
               </li>
               <li className="flex items-center">
                 <svg
@@ -251,14 +256,31 @@ export default function Footer() {
         </div> */}
 
         {/* Copyright */}
-        <div className="border-t border-gray-700 pt-6 text-center text-gray-400 text-sm">
-          <p>
-            &copy; {new Date().getFullYear()} Sri Lanka Travels. All rights
-            reserved.
-          </p>
-          <p className="mt-2">
-            Designed and developed with ❤️ for travelers around the world
-          </p>
+        <div className="border-t border-gray-700 pt-6 text-start text-gray-400 text-sm">
+          <div className="flex justify-between">
+            <div className="flex  items-center ">
+              <p>
+                &copy; {new Date().getFullYear()} Sri Lanka Vista. All rights
+                reserved.
+              </p>{" "}
+              <pre className="h-6 items-stretch"> . </pre>
+              <a href="#">Terms</a>
+              <pre className="h-6 items-stretch"> . </pre>
+              <a href="#">Sitemap</a>
+              <pre className="h-6 items-stretch"> . </pre>
+              <a href="#">Privacy</a>
+              <pre className="h-6 items-stretch"> . </pre>
+              <a href="#">Your Privacy Choices</a>
+            </div>
+            <div className="flex gap-3 items-center">
+              <div>English</div>
+              <CurrencyLanguageDialog />
+              <Facebook size={18} />
+              <Twitter size={18} />
+              <Instagram size={18} />
+            </div>
+          </div>
+          <p className="">Designed and developed by SoftXpertz(PVT) Ltd.</p>
         </div>
       </div>
     </footer>
