@@ -192,11 +192,11 @@ export default function SearchBar() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4">
               <div className="sm:col-span-2 lg:col-span-2  ">
                 <Label className="text-xs sm:text-sm mb-1 block">
-                  Desctination
+                  Service Provider/City
                 </Label>
                 <Input
                   type="text"
-                  placeholder="Where To?"
+                  placeholder="Uber or Colombo"
                   className="text-sm"
                 />
               </div>

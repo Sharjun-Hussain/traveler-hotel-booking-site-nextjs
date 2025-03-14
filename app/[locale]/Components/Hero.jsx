@@ -15,7 +15,7 @@ export default function HeroSection() {
       <div className="hidden md:block md:absolute z-[6] bg-gradient-to-b from-white via-transparent to-transparent h-[40%] from-0% via-100% to-100% top-0 left-0 right-0 pointer-events-none"></div>
       <div className="hidden md:block md:absolute z-[6] bg-gradient-to-b from-trasparent to-white h-[20%] bottom-0 left-0 right-0 pointer-events-none"></div>
       <div className="absolute z-20 left-0 right-0">
-        <Navbar />
+        {/* <Navbar /> */}
         <SecNav />
       </div>
       {/* Video Background */}

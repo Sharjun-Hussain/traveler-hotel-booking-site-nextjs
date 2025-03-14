@@ -150,7 +150,14 @@ const CustomGuestSelector = ({ showlabel = true, type = "hotel" }) => {
             {/* Transport type (only for transport) */}
             {type === "transport" && (
               <div className="flex items-center justify-between">
-                <Label className="font-medium">Infants</Label>
+                <Label className="">
+                  <div className="flex flex-col gap-1 font-medium">
+                    Adults{" "}
+                    <span className="text-j-text-small-2 text-xs">
+                      Ages 0 - 2
+                    </span>
+                  </div>
+                </Label>
                 <div className="flex items-center">
                   <Button
                     variant="outline"

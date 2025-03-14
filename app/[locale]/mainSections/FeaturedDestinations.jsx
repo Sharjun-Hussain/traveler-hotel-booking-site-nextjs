@@ -10,32 +10,32 @@ import Image from "next/image";
 const FeaturedDestinations = () => {
   const destinations = [
     {
-      id: 1,
+      id: "1212-1124-124124-124124-1241241-124124124",
       name: "Sigiriya",
       description: "Ancient rock fortress with frescoes",
       image: kandy,
-      url: "/hotels-and-apartments/colombo",
+      url: "/hotels-and-apartments/",
     },
     {
       id: 2,
       name: "Ella",
       description: "Scenic mountain village  tea plantations",
       image: elle,
-      url: "/destinations/ella",
+      url: "/hotels-and-apartments/",
     },
     {
       id: 3,
       name: "Mirissa",
       description: "Beautiful beach with whale watching",
       image: mirissa,
-      url: "/destinations/mirissa",
+      url: "/hotels-and-apartments/",
     },
     {
       id: 4,
       name: "Kandy",
       description: "Cultural capital with Temple of the Tooth",
       image: kandy,
-      url: "/destinations/kandy",
+      url: "/hotels-and-apartments/",
     },
   ];
 

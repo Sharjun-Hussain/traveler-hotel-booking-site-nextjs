@@ -1,0 +1,31 @@
+// app/[locale]/layout.tsx
+import { notFound } from "next/navigation";
+import { NextIntlClientProvider } from "next-intl";
+import Navbar from "./Components/Navbar";
+
+// Locales supported by our app
+const locales = ["en", "ta", "si"];
+
+export default async function LocaleLayout({ children, params: { locale } }) {
+  // Validate that the locale is supported
+  if (!locales.includes(locale)) notFound();
+
+  // Import the messages for the requested locale
+  let messages;
+  try {
+    messages = (await import(`../../messages/${locale}.json`)).default;
+  } catch (error) {
+    notFound();
+  }
+
+  return (
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      {children}
+    </NextIntlClientProvider>
+  );
+}
+
+// Generate locale variants for all pages under this layout
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}

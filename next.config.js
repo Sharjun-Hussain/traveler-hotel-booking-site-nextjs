@@ -1,13 +1,8 @@
+const withNextIntl = require("next-intl/plugin")();
+
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  // redirects: async () => [
-  //   {
-  //     source: "/",
-  //     destination: "/en",
-  //     permanent: true, // 301 redirect (permanent)
-  //   },
-  // ],
   images: {
     remotePatterns: [
       {
@@ -26,8 +21,21 @@ const nextConfig = {
         protocol: "https",
         hostname: "dynamic-media-cdn.tripadvisor.com",
       },
+      {
+        protocol: "https",
+        hostname: "ik.imgkit.net",
+      },
+      {
+        protocol: "https",
+        hostname: "cf.bstatic.com",
+      },
+      {
+        protocol: "https",
+        hostname: "encrypted-tbn0.gstatic.com",
+      },
     ],
   },
 };
 
-export default nextConfig;
+// Wrap your Next.js config with the `next-intl` plugin.
+module.exports = withNextIntl(nextConfig);

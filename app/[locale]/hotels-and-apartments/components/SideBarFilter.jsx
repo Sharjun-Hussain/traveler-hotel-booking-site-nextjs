@@ -11,7 +11,7 @@ const SideBarFilter = () => {
   });
   return (
     <div>
-      <div className="w-full md:w-80 bg-[#F4C430]/30 dark:bg-zinc-800 p-6 rounded-lg shadow h-fit">
+      <div className="w-full md:w-75 bg-[#F4C430]/30 dark:bg-zinc-800 p-6 rounded-lg shadow h-fit">
         <div className="flex justify-between items-center mb-6">
           <h2 className="font-bold text-xl">Filters</h2>
           <Filter size={20} className="text-indigo-600" />

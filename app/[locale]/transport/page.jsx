@@ -275,14 +275,14 @@ const TransportPage = () => {
         {/* Search Form */}
         <Card className="mb-8 dark:bg-zinc-900">
           <CardContent className="">
-            <Tabs defaultValue="oneway" className="w-full">
-              <TabsList className="mb-4">
+            <Tabs defaultValue="oneway" className="w-full mt-4">
+              {/* <TabsList className="mb-4">
                 <TabsTrigger value="oneway">One-way</TabsTrigger>
                 <TabsTrigger value="roundtrip">Round-trip</TabsTrigger>
-              </TabsList>
+              </TabsList> */}
 
               <TabsContent value="oneway" className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4">
                   {/* Transport Type */}
                   <div className="space-y-2">
                     <Label>Transport Type</Label>
@@ -308,7 +308,7 @@ const TransportPage = () => {
                   </div>
 
                   {/* From */}
-                  <div className="space-y-2">
+                  {/* <div className="space-y-2">
                     <Label>From</Label>
                     <div className="flex items-center relative">
                       <MapPin className="absolute left-3 h-4 w-4 text-gray-500" />
@@ -324,10 +324,10 @@ const TransportPage = () => {
                         }
                       />
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* To */}
-                  <div className="space-y-2">
+                  {/* <div className="space-y-2">
                     <Label>To</Label>
                     <div className="flex items-center relative">
                       <MapPin className="absolute left-3 h-4 w-4 text-gray-500" />
@@ -343,7 +343,7 @@ const TransportPage = () => {
                         }
                       />
                     </div>
-                  </div>
+                  </div> */}
 
                   {/* Date */}
                   <div className="space-y-2">
@@ -371,14 +371,13 @@ const TransportPage = () => {
                   <div>
                     <CustomGuestSelector type="transport" />
                   </div>
+                  <Button
+                    className="w-full md:w-auto mt-4"
+                    onClick={handleSearch}
+                  >
+                    Search Transport
+                  </Button>
                 </div>
-
-                <Button
-                  className="w-full md:w-auto mt-4"
-                  onClick={handleSearch}
-                >
-                  Search Transport
-                </Button>
               </TabsContent>
 
               <TabsContent value="roundtrip">
@@ -521,7 +520,7 @@ const TransportPage = () => {
                         <Button
                           variant="outline"
                           size="sm"
-                          className={` gap-2 bg-zinc-700 ${
+                          className={` gap-2  ${
                             activeFilters.some(
                               (f) => f.type === "vehicle" && f.value === type
                             )
@@ -559,7 +558,7 @@ const TransportPage = () => {
                         <Button
                           variant="outline"
                           size="sm"
-                          className={`flex items-center gap-2 bg-zinc-700 ${
+                          className={`flex items-center gap-2  ${
                             activeFilters.some(
                               (f) =>
                                 f.type === "departure" && f.value === location
@@ -802,9 +801,9 @@ const TransportPage = () => {
                           ))}
                         </div>
 
-                        <div className="flex justify-end">
+                        {/* <div className="flex justify-end">
                           <Button>Select</Button>
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </Card>

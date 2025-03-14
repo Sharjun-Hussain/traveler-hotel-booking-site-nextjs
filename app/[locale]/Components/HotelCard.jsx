@@ -54,7 +54,15 @@ const HotelCard = ({
   };
 
   return (
-    <Link href={url ?? "#"}>
+    <Link
+      href={
+        type == "destination"
+          ? `/hotels-and-apartments?destination=${id}`
+          : type == "hotel"
+          ? `/hotels-and-apartments/hotel/${name}`
+          : "#"
+      }
+    >
       <Card className="max-w-xs w-full overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 relative">
         {/* Sponsored Badge */}
         {sponsored && (

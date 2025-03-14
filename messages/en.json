@@ -1,0 +1,11 @@
+{
+  "Index": {
+    "title": "Welcome",
+    "description": "This is a multilingual website"
+  },
+  "Navigation": {
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact"
+  }
+}

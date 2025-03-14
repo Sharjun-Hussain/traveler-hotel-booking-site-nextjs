@@ -14,7 +14,7 @@ const CustomizedSectionWithCarousel = ({
   headTitle,
   title,
   description,
-  sponsored,
+  sponsored = false,
   destinations = [],
   scrollInterval = 3000,
   type,
@@ -296,7 +296,7 @@ const CustomizedSectionWithCarousel = ({
       // Grid layout with predefined Tailwind classes
       return (
         <div
-          className={`grid grid-cols-1 
+          className={`grid grid-cols-1 gap-4
           ${
             gridItemsToShowBreakpoints.md
               ? `md:${getGridColsClass(gridItemsToShowBreakpoints.md)}`
@@ -314,8 +314,9 @@ const CustomizedSectionWithCarousel = ({
           }`}
         >
           {destinations.map((destination) => (
-            <div key={destination.id} className="p-2">
+            <div key={destination.id} className="">
               <HotelCard
+                id={destination.id}
                 type={type}
                 url={destination.url}
                 imageUrl={destination.image}
@@ -366,6 +367,7 @@ const CustomizedSectionWithCarousel = ({
               >
                 <HotelCard
                   type={type}
+                  id={destination.id}
                   amenities={destination.amenities}
                   url={destination.url}
                   imageUrl={destination.image}
@@ -391,9 +393,13 @@ const CustomizedSectionWithCarousel = ({
   };
 
   return (
-    <div className="w-full relative px-4 py-8">
+    <div
+      className={`w-full relative ${
+        headTitle || description ? "py-8  px-4" : ""
+      } `}
+    >
       <div className="font-bold text-j-primary text-lg">
-        {headTitle.toUpperCase()}
+        {headTitle && headTitle.toUpperCase()}
       </div>
       <div className="flex justify-between items-center mb-2">
         <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">
@@ -403,7 +409,11 @@ const CustomizedSectionWithCarousel = ({
           View all →
         </a> */}
       </div>
-      <div className="text-md text-j-text-small mb-8 max-w-3xl">
+      <div
+        className={`text-md text-j-text-small ${
+          headTitle || description ? "mb-8" : ""
+        } max-w-3xl`}
+      >
         {description}
       </div>
 

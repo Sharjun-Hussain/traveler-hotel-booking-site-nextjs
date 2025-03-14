@@ -23,6 +23,10 @@ import {
   Mountain,
   Map,
   Waves,
+  AlignVerticalSpaceBetweenIcon,
+  ShoppingBag,
+  GitPullRequestDraft,
+  Torus,
 } from "lucide-react";
 
 import {
@@ -67,6 +71,30 @@ const SecNav = () => {
       icon: <Utensils size={18} />,
       isDropdown: true,
       content: "food",
+    },
+    {
+      title: "Events & Local Artists",
+      icon: <AlignVerticalSpaceBetweenIcon size={18} />,
+      isDropdown: true,
+      content: "events",
+    },
+    {
+      title: "Shoppings",
+      icon: <ShoppingBag size={18} />,
+      isDropdown: true,
+      content: "shopping",
+    },
+    {
+      title: "Licensed Tour Guides",
+      icon: <Torus size={18} />,
+      isDropdown: true,
+      content: "tourguide",
+    },
+    {
+      title: "Other",
+      icon: <Torus size={18} />,
+      isDropdown: true,
+      content: "other",
     },
   ];
 
@@ -347,7 +375,7 @@ const SecNav = () => {
 
                     {item.content === "activity" && (
                       <NavigationMenuContent>
-                        <div className="grid w-[800px] grid-cols-3 gap-3 p-4">
+                        <div className="grid w-6xl grid-cols-5 gap-3 p-4">
                           {activityCategories.map((option) => (
                             <Link
                               key={option.title}
@@ -364,7 +392,7 @@ const SecNav = () => {
 
                     {item.content === "food" && (
                       <NavigationMenuContent>
-                        <div className="grid grid-cols-3 w-[800px] gap-3 p-4">
+                        <div className="grid grid-cols-3 w-5xl gap-3 p-4">
                           <div>
                             <h3 className="font-medium text-sm mb-2 text-primary">
                               Dietary Preference
@@ -425,6 +453,23 @@ const SecNav = () => {
                               ))}
                             </ul>
                           </div>
+                        </div>
+                      </NavigationMenuContent>
+                    )}
+
+                    {item.content === "tourguide" && (
+                      <NavigationMenuContent>
+                        <div className="grid w-6xl grid-cols-5 gap-3 p-4">
+                          {activityCategories.map((option) => (
+                            <Link
+                              key={option.title}
+                              href={option.href}
+                              className="flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-md transition-colors"
+                            >
+                              {option.icon}
+                              <span>{option.title}</span>
+                            </Link>
+                          ))}
                         </div>
                       </NavigationMenuContent>
                     )}

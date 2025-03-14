@@ -31,8 +31,13 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import CurrencyLanguageDialog from "./CurrencyLangModel";
+import { useLocale } from "next-intl";
+import { usePathname, useRouter } from "@/i18n/navigation";
 
 export default function Navbar() {
+  // const locale = useLocale();
+  // const router = useRouter();
+  // const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const transportOptions = [

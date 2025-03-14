@@ -1,17 +1,21 @@
-import { NextRequest, NextResponse } from "next/server";
+// middleware.ts
+import createMiddleware from "next-intl/middleware";
 
-export function middleware(req) {
-  const { pathname } = req.nextUrl;
+export default createMiddleware({
+  // A list of all locales that are supported
+  locales: ["en", "ta", "si"],
 
-  // Redirect if the user visits "/"
-  if (pathname === "/") {
-    return NextResponse.redirect(new URL("/en", req.url));
-  }
+  // The default locale to use when visiting a non-localized path
+  defaultLocale: "en",
 
-  return NextResponse.next();
-}
+  // Use pathname routing for explicit language selection in URLs
+  localePrefix: "always",
+});
 
-// Apply middleware only for "/"
 export const config = {
-  matcher: "/",
+  // Match all pathnames except for
+  // - API routes
+  // - Static files (like favicon.ico)
+  // - etc.
+  matcher: ["/((?!api|_next|.*\\..*).*)"],
 };
