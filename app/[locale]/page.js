@@ -26,7 +26,7 @@ export default function Home() {
       <main>
         <HeroSection />
 
-        <section className=" bg-white dark:bg-zinc-900 mx-auto px-6 lg:px-4 py-10">
+        <section className=" bg-white dark:bg-zinc-900 mx-auto px-6 lg:px-4 ">
           {/* <Featured Destinations /> */}
           <FeaturedDestinations />
         </section>

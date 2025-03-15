@@ -17,10 +17,25 @@ import ModernDatepicker from "./DatePicker";
 import CustomGuestSelector from "./PassengerPicker";
 import { MultiSelect } from "@/components/ui/MultipleSelector";
 import { Cat, Dog, Fish, Rabbit, Turtle } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function SearchBar() {
   const [searchType, setSearchType] = useState("hotels");
   const [selectedFoodType, setselectedFoodType] = useState([]);
+  const router = useRouter();
+
+  const handleSearchClick = () => {
+    const routes = {
+      hotels: "/hotels-and-apartments",
+      homestay: "/homestays",
+      activities: "/activity",
+      transport: "/transport",
+      food: "/food-beverages",
+    };
+
+    const route = routes[searchType];
+    router.push(route);
+  };
 
   const foodtype = [
     {
@@ -77,18 +92,20 @@ export default function SearchBar() {
           {/* Search Forms */}
           <TabsContent value="hotels" className="lg:mt-6 ">
             <div className="grid grid-cols-1  sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6  gap-3 sm:gap-4">
-              <div className="sm:col-span-1  md:col-span-1  lg:col-span-1 xl:col-span-1">
-                <Label className="text-xs sm:text-sm mb-1 block">
-                  Destination/Hotel
-                </Label>
-                <Input
-                  type="text"
-                  placeholder="Where are you going?"
-                  className="text-sm "
-                />
+              <div className="sm:col-span-1   md:col-span-1  lg:col-span-1 xl:col-span-1">
+                <div className="p-2 bg-white border shadow rounded-md transition-shadow">
+                  <Label className="text-xs sm:text-sm mb-1 block">
+                    Destination/Hotel
+                  </Label>
+                  <Input
+                    type="text"
+                    placeholder="Where are you going?"
+                    className="text-sm "
+                  />
+                </div>
               </div>
               <div className="sm:col-span-1 md:col-span-1  lg:col-span-1 xl:col-span-1">
-                <div>
+                <div className="p-2 bg-white border shadow rounded-md transition-shadow">
                   <Label className="text-xs sm:text-sm mb-1 block">
                     Travellor Type
                   </Label>
@@ -115,7 +132,9 @@ export default function SearchBar() {
                 </div>
               </div>
               <div className="lg:col-span-1 md:col-span-1 sm:col-span-1 xl:col-span-1">
-                <CustomGuestSelector />
+                <div className="p-2 bg-white border shadow rounded-md transition-shadow">
+                  <CustomGuestSelector />
+                </div>
               </div>
 
               <div className="sm:col-span-3 lg:col-span-3 xl:col-span-3">
@@ -125,19 +144,21 @@ export default function SearchBar() {
           </TabsContent>
 
           <TabsContent value="homestay" className="lg:mt-6">
-            <div className="grid grid-cols-1  sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6  gap-3 sm:gap-4">
-              <div className="sm:col-span-1  md:col-span-1  lg:col-span-1">
-                <Label className="text-xs sm:text-sm mb-1 block">
-                  Destination/Hotel
-                </Label>
-                <Input
-                  type="text"
-                  placeholder="Where are you going?"
-                  className="text-sm "
-                />
+            <div className="grid grid-cols-1  sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6  gap-3 sm:gap-4">
+              <div className="sm:col-span-1   md:col-span-1  lg:col-span-1 xl:col-span-1">
+                <div className="p-2 bg-white border shadow rounded-md transition-shadow">
+                  <Label className="text-xs sm:text-sm mb-1 block">
+                    Destination/Hotel
+                  </Label>
+                  <Input
+                    type="text"
+                    placeholder="Where are you going?"
+                    className="text-sm "
+                  />
+                </div>
               </div>
-              <div className="sm:col-span-1 md:col-span-1  lg:col-span-1">
-                <div>
+              <div className="sm:col-span-1 md:col-span-1  lg:col-span-1 xl:col-span-1">
+                <div className="p-2 bg-white border shadow rounded-md transition-shadow">
                   <Label className="text-xs sm:text-sm mb-1 block">
                     Travellor Type
                   </Label>
@@ -163,12 +184,14 @@ export default function SearchBar() {
                   </Select>
                 </div>
               </div>
-              <div className="lg:col-span-1 md:col-span-1 sm:col-span-1">
-                <CustomGuestSelector />
+              <div className="lg:col-span-1 md:col-span-1 sm:col-span-1 xl:col-span-1">
+                <div className="p-2 bg-white border shadow rounded-md transition-shadow">
+                  <CustomGuestSelector />
+                </div>
               </div>
 
-              <div className="sm:col-span-3">
-                <ModernDatepicker />
+              <div className="sm:col-span-3 lg:col-span-3 xl:col-span-3">
+                <ModernDatepicker className="absolute z-100" />
               </div>
             </div>
           </TabsContent>
@@ -277,7 +300,9 @@ export default function SearchBar() {
 
           {/* Search Button */}
           <div className="mt-4 sm:mt-6">
-            <Button className="w-full text-sm">Search</Button>
+            <Button onClick={handleSearchClick} className="w-full text-sm">
+              Search
+            </Button>
           </div>
         </Tabs>
       </CardContent>

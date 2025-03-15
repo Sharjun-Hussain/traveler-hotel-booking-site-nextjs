@@ -11,10 +11,10 @@ const SideBarFilter = () => {
   });
   return (
     <div>
-      <div className="w-full md:w-80 bg-[#F4C430]/40 dark:bg-zinc-800 p-6 rounded-lg shadow h-fit">
+      <div className="w-full md:w-75  dark:bg-zinc-800 p-6 rounded-lg shadow h-fit">
         <div className="flex justify-between items-center mb-6">
           <h2 className="font-bold text-xl">Filters</h2>
-          <Filter size={20} className="text-indigo-600" />
+          <Filter size={20} className="text-j-secondary" />
         </div>
 
         {/* Price Range */}
@@ -28,7 +28,7 @@ const SideBarFilter = () => {
             type="range"
             min="0"
             max="1000"
-            className="w-full mt-2 accent-[#017E7F]"
+            className="w-full mt-2 accent-j-secondary"
             value={filters.priceRange[1]}
             onChange={(e) =>
               setFilters({
@@ -81,7 +81,7 @@ const SideBarFilter = () => {
                 <input
                   type="checkbox"
                   id={amenity}
-                  className="mr-2 accent-indigo-600"
+                  className="mr-2 accent-j-secondary"
                   onChange={() => {
                     const newAmenities = filters.amenities.includes(amenity)
                       ? filters.amenities.filter((a) => a !== amenity)
@@ -106,7 +106,7 @@ const SideBarFilter = () => {
                     type="radio"
                     id={type}
                     name="propertyType"
-                    className="mr-2 accent-indigo-600"
+                    className="mr-2 accent-j-secondary"
                     checked={filters.propertyType === type}
                     onChange={() =>
                       setFilters({ ...filters, propertyType: type })

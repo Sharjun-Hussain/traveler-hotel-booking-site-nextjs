@@ -48,7 +48,7 @@ const CustomGuestSelector = ({ showlabel = true, type = "hotel" }) => {
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className="w-full justify-between bg-transparent text-left font-normal text-sm border  h-10"
+            className="w-full justify-between bg-transparent text-left font-normal text-sm border"
           >
             <span className="truncate">{getSummaryText()}</span>
             <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />

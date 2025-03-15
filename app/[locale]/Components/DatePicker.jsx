@@ -98,39 +98,46 @@ const ModernDatepicker = ({ type = "hotel", props }) => {
           <PopoverTrigger asChild>
             <div className="flex items-center justify-between cursor-pointer border shadow p-2 rounded-md w-full transition-shadow bg-white dark:bg-zinc-800">
               <div className="flex items-center gap-4">
-                <div className="flex flex-col">
-                  <span className="text-black font-medium dark:text-gray-300 text-sm mb-2">
-                    Check-in
-                  </span>
-                  <span className="text-gray-900 dark:text-white text-sm">
-                    {formatDateLong(checkInDate)}
-                  </span>
+                <div className="flex items-center gap-3">
+                  <div className="flex flex-col my-1 mb-2 justify-between">
+                    <span className="text-black font-medium dark:text-gray-300 text-sm mb-1 ">
+                      Check-in
+                    </span>
+                    <span className="text-gray-900  dark:text-white text-md font-bold">
+                      {formatDateLong(checkInDate)}
+                    </span>
+                  </div>
+
+                  <CalendarDays className="w-5 h-5 text-gray-500" />
                 </div>
 
                 <ArrowRight className="text-gray-400" />
 
-                <div className="flex flex-col">
-                  <span className="text-black dark:text-gray-300 text-sm font-medium mb-2">
-                    Check-out
-                  </span>
-                  <span className="text-gray-900 dark:text-white text-sm">
-                    {formatDateLong(checkOutDate)}
-                  </span>
+                <div className="flex items-center gap-3">
+                  <div className="flex flex-col my-1 mb-2 justify-between">
+                    <span className="text-black font-medium dark:text-gray-300 text-sm mb-1 ">
+                      Check-out
+                    </span>
+                    <span className="text-gray-900  dark:text-white text-md font-bold">
+                      {formatDateLong(checkOutDate)}
+                    </span>
+                  </div>
+
+                  <CalendarDays className="w-5 h-5 text-gray-500" />
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex gap-1">
                 <span className="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-sm font-medium dark:bg-blue-900 dark:text-blue-200">
                   {type != "transport" && stayDuration()}
                 </span>
-                <CalendarDays className="w-6 h-6 text-gray-500" />
               </div>
             </div>
           </PopoverTrigger>
           <PopoverContent
             className="w-auto p-0 z-50"
             align="center"
-            side="bottom"
+            side="top"
             sideOffset={8}
             avoidCollisions={false}
           >

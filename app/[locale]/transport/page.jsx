@@ -266,20 +266,15 @@ const TransportPage = () => {
     <div className="min-h-screen bg-white dark:bg-zinc-950 transition-colors duration-200">
       <div className="container mx-auto px-4 py-8">
         {/* Header with Theme Toggle */}
-        {/* <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-            Find Transport
-          </h1>
-        </div> */}
 
         {/* Search Form */}
         <Card className="mb-8 dark:bg-zinc-900">
           <CardContent className="">
             <Tabs defaultValue="oneway" className="w-full mt-4">
-              {/* <TabsList className="mb-4">
+              <TabsList className="mb-4">
                 <TabsTrigger value="oneway">One-way</TabsTrigger>
                 <TabsTrigger value="roundtrip">Round-trip</TabsTrigger>
-              </TabsList> */}
+              </TabsList>
 
               <TabsContent value="oneway" className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4">
@@ -308,7 +303,7 @@ const TransportPage = () => {
                   </div>
 
                   {/* From */}
-                  {/* <div className="space-y-2">
+                  <div className="space-y-2">
                     <Label>From</Label>
                     <div className="flex items-center relative">
                       <MapPin className="absolute left-3 h-4 w-4 text-gray-500" />
@@ -324,10 +319,10 @@ const TransportPage = () => {
                         }
                       />
                     </div>
-                  </div> */}
+                  </div>
 
                   {/* To */}
-                  {/* <div className="space-y-2">
+                  <div className="space-y-2">
                     <Label>To</Label>
                     <div className="flex items-center relative">
                       <MapPin className="absolute left-3 h-4 w-4 text-gray-500" />
@@ -343,7 +338,7 @@ const TransportPage = () => {
                         }
                       />
                     </div>
-                  </div> */}
+                  </div>
 
                   {/* Date */}
                   <div className="space-y-2">

@@ -1,8 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Search, MapPin, Star, Filter, Calendar, Users } from "lucide-react";
-import Footer from "../Components/Footer";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -14,9 +12,11 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import CustomGuestSelector from "../Components/PassengerPicker";
-import SideBarFilter from "./components/SideBarFilter";
-import HotelCard from "./components/HotelCard";
+
 import { Button } from "@/components/ui/button";
+import HotelCard from "../Components/HotelCard";
+import CustomizedSectionWithCarousel from "../Components/CarausalSposored";
+import SideBarFilter from "../Components/SideBarFilter";
 
 export default function HotelsListingPage() {
   const [lastscrollY, setlastscrollY] = useState(0);
@@ -183,14 +183,14 @@ export default function HotelsListingPage() {
       </div>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+      <main className="max-w-8xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row gap-8">
           {/* Filters Sidebar */}
           <SideBarFilter />
 
           {/* Hotels List */}
           <div className="flex-1">
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex justify-between items-center">
               <h2 className="font-bold text-2xl">4 properties found</h2>
               <div className="flex items-center gap-2">
                 <Select>
@@ -217,10 +217,13 @@ export default function HotelsListingPage() {
             </div>
 
             {/* Hotel Cards */}
-            <div className="space-y-6">
-              {hotels.map((hotel) => (
-                <HotelCard hotel={hotel} key={hotel.id} />
-              ))}
+            <div className="">
+              <CustomizedSectionWithCarousel
+                gridItemsToShowBreakpoints={{ sm: 1, md: 2, lg: 3, xl: 4 }}
+                type="hotel"
+                displayMode="grid"
+                destinations={hotels}
+              />
             </div>
 
             {/* Pagination */}

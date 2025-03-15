@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import CustomGuestSelector from "../Components/PassengerPicker";
-import SideBarFilter from "./components/SideBarFilter";
+import SideBarFilter from "../Components/SideBarFilter";
 
 import { Button } from "@/components/ui/button";
 import HotelCard from "../Components/HotelCard";
@@ -106,7 +106,7 @@ export default function HotelsListingPage() {
     <div className="min-h-screen bg-gray-50  dark:bg-zinc-900/90">
       {/* Search Bar */}
       <div
-        className={`transition-all duration-300 ease-in-out bg-[#017E7F] dark:bg-blue-950 py-6 ${
+        className={`transition-all duration-300 ease-in-out bg-j-primary-hover dark:bg-blue-950 py-6 ${
           isfixed ? "fixed top-0 left-0 w-full shadow-md z-50" : "relative"
         }`}
       >
