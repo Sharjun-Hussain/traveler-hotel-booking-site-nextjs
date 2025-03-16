@@ -110,10 +110,14 @@ export default function SearchBar() {
                     Travellor Type
                   </Label>
                   <Select defaultValue="1a0c">
-                    <SelectTrigger className="text-sm">
+                    <SelectTrigger className="text-sm ">
                       <SelectValue placeholder="Select guests" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent
+                      className="w-[200px] max-w-full"
+                      position="popper"
+                      sideOffset={4}
+                    >
                       <SelectItem value="1a0c">
                         Budget Tourer/Backpacker
                       </SelectItem>
