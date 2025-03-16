@@ -38,7 +38,6 @@ export default function HotelsListingPage() {
     return () => window.removeEventListener("scroll", handlescroll);
   }, [lastscrollY]);
 
-  // Sample data - in a real app this would come from your API
   const hotels = [
     {
       id: 1,

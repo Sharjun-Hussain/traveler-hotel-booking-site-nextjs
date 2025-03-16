@@ -326,6 +326,22 @@ const SecNav = () => {
     { name: "Street Food", icon: <Pizza size={16} /> },
   ];
 
+  const shoppingItems = [
+    "Ayurvedic Products and herbal oils",
+    "Ceylon Cinnamon",
+    "Ceylon Tea",
+    "Gems",
+    "Handcrafted silverware and Brassware",
+    "Handloom and Batik clothing",
+    "Leather goods and Accessories",
+    "Souverniors",
+    "Spices",
+    "Sri Lankan art paintings",
+    "Sri Lankan sweets",
+    "Sunscreen & Mosquito repellents",
+    "Traditional handicrafts and wooden masks",
+  ];
+
   const specialtyRestaurants = [
     { name: "Brunch Spots", icon: <Coffee size={16} /> },
     { name: "Dessert / Ice Cream Parlor", icon: <Coffee size={16} /> },
@@ -340,6 +356,95 @@ const SecNav = () => {
     { name: "Themed Restaurants", icon: <Utensils size={16} /> },
   ];
 
+  const other = [
+    " Air ticketing / Travel agents",
+    "Beach Bars and clubs",
+    "Casinos",
+    "Courier Service",
+    "Entertainment and night life",
+    "Free WiFi spots",
+    "Grocery shop",
+    "Hospitals & clinics",
+    "Insurance",
+    "Laundry",
+    "Live music",
+    "Money changer",
+    "Pharmacies and medication",
+    "Simcards & mobile data",
+    "Visa extension / Facilitation",
+    "Weather",
+  ];
+
+  const eventsAndArtists = {
+    events: [
+      { name: "Cultural Festivals", icon: <Palmtree size={16} /> },
+      {
+        name: "Music Concerts",
+        icon: <AlignVerticalSpaceBetweenIcon size={16} />,
+      },
+      { name: "Art Exhibitions", icon: <Compass size={16} /> },
+      {
+        name: "Traditional Performances",
+        icon: <AlignVerticalSpaceBetweenIcon size={16} />,
+      },
+      { name: "Local Markets", icon: <ShoppingBag size={16} /> },
+    ],
+    artists: [
+      {
+        name: "Handloom Weavers",
+        icon: <AlignVerticalSpaceBetweenIcon size={16} />,
+      },
+      {
+        name: "Jewelry Designers",
+        icon: <AlignVerticalSpaceBetweenIcon size={16} />,
+      },
+      {
+        name: "Lace Makers & Embroiderers",
+        icon: <AlignVerticalSpaceBetweenIcon size={16} />,
+      },
+      { name: "Musicians", icon: <AlignVerticalSpaceBetweenIcon size={16} /> },
+      {
+        name: "Novelists & Writers",
+        icon: <AlignVerticalSpaceBetweenIcon size={16} />,
+      },
+      { name: "Painters", icon: <AlignVerticalSpaceBetweenIcon size={16} /> },
+      {
+        name: "Photographers",
+        icon: <AlignVerticalSpaceBetweenIcon size={16} />,
+      },
+      {
+        name: "Playwrights",
+        icon: <AlignVerticalSpaceBetweenIcon size={16} />,
+      },
+      { name: "Poets", icon: <AlignVerticalSpaceBetweenIcon size={16} /> },
+      {
+        name: "Pottery Artists",
+        icon: <AlignVerticalSpaceBetweenIcon size={16} />,
+      },
+      { name: "Sculptors", icon: <AlignVerticalSpaceBetweenIcon size={16} /> },
+      { name: "Singers", icon: <AlignVerticalSpaceBetweenIcon size={16} /> },
+      {
+        name: "Street Artists / Muralists",
+        icon: <AlignVerticalSpaceBetweenIcon size={16} />,
+      },
+      {
+        name: "Street Performers",
+        icon: <AlignVerticalSpaceBetweenIcon size={16} />,
+      },
+      {
+        name: "Traditional Dancers",
+        icon: <AlignVerticalSpaceBetweenIcon size={16} />,
+      },
+      {
+        name: "Traditional Mask Makers",
+        icon: <AlignVerticalSpaceBetweenIcon size={16} />,
+      },
+      {
+        name: "Wood Carvers",
+        icon: <AlignVerticalSpaceBetweenIcon size={16} />,
+      },
+    ],
+  };
   return (
     <div className="hidden md:flex">
       <div className="max-w-screen-xl mx-auto">
@@ -457,6 +562,73 @@ const SecNav = () => {
                       </NavigationMenuContent>
                     )}
 
+                    {item.content === "shopping" && (
+                      <NavigationMenuContent>
+                        <div className="grid grid-cols-4 gap-4 p-4 w-6xl">
+                          {shoppingItems.map((option) => (
+                            <Link
+                              key={option}
+                              href={`/shopping/${option
+                                .toLowerCase()
+                                .replace(/[^a-z0-9]/g, "-")}`}
+                              className="flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-md transition-colors"
+                            >
+                              <ShoppingBag size={16} />
+                              <span>{option}</span>
+                            </Link>
+                          ))}
+                        </div>
+                      </NavigationMenuContent>
+                    )}
+
+                    {item.content === "events" && (
+                      <NavigationMenuContent>
+                        <div className="grid grid-cols-5 gap-3 p-4 w-6xl">
+                          <div className="col-span-1 border-r pr-4">
+                            <div className="mt-4">
+                              <h3 className="font-medium text-sm mb-2 text-primary">
+                                Event Types
+                              </h3>
+                              <ul className="space-y-1">
+                                {eventsAndArtists.events.map((event) => (
+                                  <li key={event.name}>
+                                    <Link
+                                      href={`/events/${event.name
+                                        .toLowerCase()
+                                        .replace(/[^a-z0-9]/g, "-")}`}
+                                      className="flex items-center gap-2 py-1 text-sm hover:text-primary transition-colors"
+                                    >
+                                      {event.icon}
+                                      <span>{event.name}</span>
+                                    </Link>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+                          <div className="col-span-3">
+                            <h3 className="font-semibold text-md mb-3 text-primary">
+                              Local Artists
+                            </h3>
+                            <div className="grid grid-cols-3 gap-3">
+                              {eventsAndArtists.artists.map((artist) => (
+                                <Link
+                                  key={artist.name}
+                                  href={`/artists/${artist.name
+                                    .toLowerCase()
+                                    .replace(/[^a-z0-9]/g, "-")}`}
+                                  className="flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-md transition-colors"
+                                >
+                                  {artist.icon}
+                                  <span>{artist.name}</span>
+                                </Link>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </NavigationMenuContent>
+                    )}
+
                     {item.content === "tourguide" && (
                       <NavigationMenuContent>
                         <div className="grid w-6xl grid-cols-5 gap-3 p-4">
@@ -468,6 +640,26 @@ const SecNav = () => {
                             >
                               {option.icon}
                               <span>{option.title}</span>
+                            </Link>
+                          ))}
+                        </div>
+                      </NavigationMenuContent>
+                    )}
+
+                    {item.content === "other" && (
+                      <NavigationMenuContent>
+                        <div className="grid grid-cols-4 gap-4 p-4 w-6xl">
+                          {other.map((option) => (
+                            <Link
+                              key={option}
+                              href={`/other/${option
+                                .trim()
+                                .toLowerCase()
+                                .replace(/[^a-z0-9]/g, "-")}`}
+                              className="flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-md transition-colors"
+                            >
+                              <Compass size={16} />
+                              <span>{option}</span>
                             </Link>
                           ))}
                         </div>

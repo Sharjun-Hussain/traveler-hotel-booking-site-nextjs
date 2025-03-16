@@ -26,34 +26,34 @@ export default function Home() {
       <main>
         <HeroSection />
 
-        <section className=" bg-white dark:bg-zinc-900 mx-auto px-6 lg:px-4 ">
+        <section className=" bg-white dark:bg-zinc-900 mx-auto px-2 lg:px-4 ">
           {/* <Featured Destinations /> */}
           <FeaturedDestinations />
         </section>
 
-        <section className=" bg-white dark:bg-zinc-900 mx-auto px-6 lg:px-4 py-10">
+        <section className=" bg-white dark:bg-zinc-900 mx-auto px-2 lg:px-4 py-10">
           {/* Sponsore dDestinations /> */}
           <SponsoredHotels />
         </section>
 
-        <section className=" bg-white dark:bg-zinc-900 mx-auto px-6 lg:px-4 py-10">
+        <section className=" bg-white dark:bg-zinc-900 mx-auto px-3 lg:px-4 py-10">
           {/* <User Story /> */}
           <StoryStaysSection />
         </section>
 
-        <section className="bg-white dark:bg-zinc-900 mx-auto px-6 lg:px-4 py-10">
+        <section className="bg-white dark:bg-zinc-900 mx-auto px-2 lg:px-4 py-10">
           <div className="container mx-auto px-4">
             <SpecialOffers />
           </div>
         </section>
 
-        <section className="bg-white dark:bg-zinc-900 mx-auto px-6 lg:px-4 py-10">
+        <section className="bg-white dark:bg-zinc-900 mx-auto px-2 lg:px-4 py-10">
           <div className="container mx-auto px-4">
             <PopularEventsSection />
           </div>
         </section>
 
-        <section className="container mx-auto px-4 py-16">
+        <section className="container mx-auto px-6 lg:px-4 py-16">
           <Testimonials />
         </section>
       </main>

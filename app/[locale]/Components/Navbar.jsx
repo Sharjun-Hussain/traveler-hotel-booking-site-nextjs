@@ -144,6 +144,22 @@ export default function Navbar() {
     "Themed Restaurants",
   ];
 
+  const shoppingItems = [
+    "Ayurvedic Products and herbal oils",
+    "Ceylon Cinnamon",
+    "Ceylon Tea",
+    "Gems",
+    "Handcrafted silverware and Brassware",
+    "Handloom and Batik clothing",
+    "Leather goods and Accessories",
+    "Souverniors",
+    "Spices",
+    "Sri Lankan art paintings",
+    "Sri Lankan sweets",
+    "Sunscreen & Mosquito repellents",
+    "Traditional handicrafts and wooden masks",
+  ];
+
   return (
     <nav className="w-full z-50  bg-transparent  ">
       <div className="container mx-auto">
