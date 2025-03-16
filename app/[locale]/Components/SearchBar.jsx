@@ -152,7 +152,7 @@ export default function SearchBar() {
               <div className="sm:col-span-1   md:col-span-1  lg:col-span-1 xl:col-span-1">
                 <div className="p-2 bg-white border shadow rounded-md transition-shadow">
                   <Label className="text-xs sm:text-sm mb-1 block">
-                    Destination/Hotel
+                    Destination / Hotel
                   </Label>
                   <Input
                     type="text"
@@ -219,7 +219,7 @@ export default function SearchBar() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4">
               <div className="sm:col-span-2 lg:col-span-2  ">
                 <Label className="text-xs sm:text-sm mb-1 block">
-                  Service Provider/City
+                  Service Provider / City
                 </Label>
                 <Input
                   type="text"

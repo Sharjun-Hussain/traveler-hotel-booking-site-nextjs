@@ -256,31 +256,76 @@ export default function Footer() {
         </div> */}
 
         {/* Copyright */}
-        <div className="border-t border-gray-700 pt-6 text-start text-gray-400 text-sm">
-          <div className="flex justify-between">
-            <div className="flex  items-center ">
+        <div className="border-t border-gray-700 pt-4 sm:pt-6 text-start text-gray-400 text-sm">
+          <div className="flex flex-col sm:flex-row gap-4 sm:justify-between">
+            {/* Copyright and links - stacks on mobile */}
+            <div className="flex flex-wrap gap-2 items-center">
               <p>
                 &copy; {new Date().getFullYear()} Sri Lanka Vista. All rights
                 reserved.
-              </p>{" "}
-              <pre className="h-6 items-stretch"> . </pre>
-              <a href="#">Terms</a>
-              <pre className="h-6 items-stretch"> . </pre>
-              <a href="#">Sitemap</a>
-              <pre className="h-6 items-stretch"> . </pre>
-              <a href="#">Privacy</a>
-              <pre className="h-6 items-stretch"> . </pre>
-              <a href="#">Your Privacy Choices</a>
+              </p>
+
+              <div className="hidden sm:flex items-center">
+                <span className="px-1">·</span>
+                <a href="#" className="hover:text-gray-300">
+                  Terms
+                </a>
+                <span className="px-1">·</span>
+                <a href="#" className="hover:text-gray-300">
+                  Sitemap
+                </a>
+                <span className="px-1">·</span>
+                <a href="#" className="hover:text-gray-300">
+                  Privacy
+                </a>
+                <span className="px-1">·</span>
+                <a href="#" className="hover:text-gray-300">
+                  Your Privacy Choices
+                </a>
+              </div>
+
+              {/* Mobile-only links in a more compact format */}
+              <div className="flex sm:hidden gap-3 mt-2">
+                <a href="#" className="hover:text-gray-300">
+                  Terms
+                </a>
+                <a href="#" className="hover:text-gray-300">
+                  Sitemap
+                </a>
+                <a href="#" className="hover:text-gray-300">
+                  Privacy
+                </a>
+                <a href="#" className="hover:text-gray-300">
+                  Your Privacy Choices
+                </a>
+              </div>
             </div>
-            <div className="flex gap-3 items-center">
+
+            {/* Language selector and social icons */}
+            <div className="flex gap-3 items-center mt-4 sm:mt-0">
               <div>English</div>
               <CurrencyLanguageDialog />
-              <Facebook size={18} />
-              <Twitter size={18} />
-              <Instagram size={18} />
+              <div className="flex gap-3">
+                <Facebook
+                  size={18}
+                  className="cursor-pointer hover:text-gray-300"
+                />
+                <Twitter
+                  size={18}
+                  className="cursor-pointer hover:text-gray-300"
+                />
+                <Instagram
+                  size={18}
+                  className="cursor-pointer hover:text-gray-300"
+                />
+              </div>
             </div>
           </div>
-          <p className="">Designed and developed by SoftXpertz(PVT) Ltd.</p>
+
+          {/* Credits line */}
+          <p className="mt-4 sm:mt-2">
+            Designed and developed by SoftXpertz(PVT) Ltd.
+          </p>
         </div>
       </div>
     </footer>
