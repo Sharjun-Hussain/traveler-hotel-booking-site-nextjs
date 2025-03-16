@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/Providers/ThemeProvider";
 import ReactQueryProvider from "@/Providers/ReactQueryProvider";
 import Navbar from "./[locale]/Components/Navbar";
 import { usePathname } from "next/navigation";
+import Footer from "./[locale]/Components/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({ children }) {
           <ReactQueryProvider>
             {!shouldhidenavbar && <Navbar />}
             {children}
+            {!shouldhidenavbar && <Footer />}
           </ReactQueryProvider>
         </ThemeProvider>
       </body>

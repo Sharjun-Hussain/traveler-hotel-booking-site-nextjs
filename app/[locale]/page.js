@@ -3,11 +3,8 @@ import Head from "next/head";
 import HeroSection from "./Components/Hero";
 import SpecialOffers from "./Components/SpecialOffers";
 import Testimonials from "./Components/Testimonials";
-import Footer from "./Components/Footer";
-import Sponsored from "./Components/CarausalSposored";
 import FeaturedDestinations from "./mainSections/FeaturedDestinations";
 import SponsoredHotels from "./mainSections/SponsoredHotels";
-import UserStory from "./mainSections/UserStory";
 import StoryStaysSection from "./mainSections/UserStory";
 import PopularEventsSection from "./mainSections/PopularEvents";
 
@@ -57,8 +54,6 @@ export default function Home() {
           <Testimonials />
         </section>
       </main>
-
-      <Footer />
     </div>
   );
 }
