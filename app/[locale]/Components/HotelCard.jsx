@@ -63,7 +63,7 @@ const HotelCard = ({
           : "#"
       }
     >
-      <Card className="max-w-xs w-full overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 relative">
+      <Card className="max-w-full w-full overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 relative">
         {/* Sponsored Badge */}
         {sponsored && (
           <div className="absolute top-0 left-0 bg-blue-500 text-white py-1 px-10 text-xs font-medium transform -rotate-45 origin-bottom-left translate-y-20  z-10">

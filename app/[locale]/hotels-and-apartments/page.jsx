@@ -107,7 +107,7 @@ export default function HotelsListingPage() {
       {/* Search Bar */}
       <div
         className={`transition-all duration-300 ease-in-out bg-j-primary-hover dark:bg-blue-950 py-6 ${
-          isfixed ? "fixed top-0 left-0 w-full shadow-md z-50" : "relative"
+          isfixed ? " top-0 left-0 w-full shadow-md z-50" : "relative"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -191,7 +191,9 @@ export default function HotelsListingPage() {
           {/* Hotels List */}
           <div className="flex-1">
             <div className="flex justify-between items-center">
-              <h2 className="font-bold text-2xl">4 properties found</h2>
+              <h2 className="font-bold text-md lg:text-2xl">
+                4 properties found
+              </h2>
               <div className="flex items-center gap-2">
                 <Select>
                   <SelectTrigger className="w-[180px]">

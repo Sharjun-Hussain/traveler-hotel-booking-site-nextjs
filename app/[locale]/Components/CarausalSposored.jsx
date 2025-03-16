@@ -296,7 +296,7 @@ const CustomizedSectionWithCarousel = ({
       // Grid layout with predefined Tailwind classes
       return (
         <div
-          className={`grid grid-cols-1 gap-4
+          className={`grid grid-cols-1 gap-4 
           ${
             gridItemsToShowBreakpoints.md
               ? `md:${getGridColsClass(gridItemsToShowBreakpoints.md)}`
@@ -314,7 +314,7 @@ const CustomizedSectionWithCarousel = ({
           }`}
         >
           {destinations.map((destination) => (
-            <div key={destination.id} className="">
+            <div key={destination.id} className="w-full">
               <HotelCard
                 id={destination.id}
                 type={type}
