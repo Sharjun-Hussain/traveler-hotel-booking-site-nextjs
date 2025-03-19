@@ -6,11 +6,10 @@ import Navbar from "./Components/Navbar";
 // Locales supported by our app
 const locales = ["en", "ta", "si"];
 
-export default async function LocaleLayout({ children, params: { locale } }) {
-  // Validate that the locale is supported
+export default async function LocaleLayout({ children, params }) {
+  const { locale } = await params;
   if (!locales.includes(locale)) notFound();
 
-  // Import the messages for the requested locale
   let messages;
   try {
     messages = (await import(`../../messages/${locale}.json`)).default;

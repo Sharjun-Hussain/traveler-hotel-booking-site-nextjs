@@ -18,7 +18,7 @@ const inter = Inter({ subsets: ["latin"] });
 export default function RootLayout({ children }) {
   const pathname = usePathname();
 
-  const HideNavBarRoute = ["/en/login"];
+  const HideNavBarRoute = ["/en/auth/login"];
   const shouldhidenavbar = HideNavBarRoute.some((route) =>
     pathname.startsWith(route)
   );
