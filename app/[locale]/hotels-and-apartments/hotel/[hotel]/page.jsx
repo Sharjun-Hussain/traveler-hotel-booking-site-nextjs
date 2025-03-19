@@ -1,6 +1,7 @@
 // pages/hotels/[id].js
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 import Head from "next/head";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -12,12 +13,10 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import {
-  Calendar,
   Clock,
   MapPin,
   Star,
@@ -38,9 +37,19 @@ import {
   Briefcase,
   Shield,
   MessageCircle,
+  CalendarIcon,
+  User,
 } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
 
 export default function HotelDetails() {
+  const router = useRouter();
+  const bookingSectionRef = useRef(null);
   const [selectedDates, setSelectedDates] = useState({
     checkIn: null,
     checkOut: null,
@@ -234,13 +243,12 @@ export default function HotelDetails() {
   };
 
   const handleBookNow = () => {
-    // In a real implementation, this would navigate to checkout or booking confirmation
-    alert(
-      `Booking confirmed for ${
-        selectedRoom ? selectedRoom.name : hotelData.rooms[0].name
-      } from ${selectedDates.checkIn} to ${selectedDates.checkOut} for ${
-        guests.adults
-      } adults and ${guests.children} children`
+    if (!selectedRoom || !selectedDates.checkIn || !selectedDates.checkOut) {
+      alert("Please select a room, check-in, and check-out dates.");
+      return;
+    }
+    router.push(
+      `/checkout?roomId=${selectedRoom.id}&checkIn=${selectedDates.checkIn}&checkOut=${selectedDates.checkOut}&adults=${guests.adults}&children=${guests.children}`
     );
   };
 
@@ -261,6 +269,11 @@ export default function HotelDetails() {
     return Math.round(totalPrice() * 0.1);
   };
 
+  const handleRoomClick = (room) => {
+    setSelectedRoom(room);
+    bookingSectionRef.current.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="bg-white min-h-screen">
       <Head>
@@ -268,7 +281,7 @@ export default function HotelDetails() {
         <meta name="description" content={hotelData.description} />
       </Head>
 
-      {/* Photo Gallery - Mobile (single photo with count indicator) */}
+      {/* Photo Gallery - Mobile */}
       <div className="md:hidden relative">
         <div className="relative h-64 w-full">
           <Image
@@ -556,7 +569,8 @@ export default function HotelDetails() {
               {hotelData.rooms.map((room) => (
                 <Card
                   key={room.id}
-                  className="hover:shadow-md transition-shadow"
+                  className="hover:shadow-md transition-shadow cursor-pointer"
+                  onClick={() => handleRoomClick(room)}
                 >
                   <div className="flex flex-col md:flex-row gap-4 p-4">
                     <div className="md:w-1/3 relative h-48">
@@ -803,10 +817,12 @@ export default function HotelDetails() {
           </div>
 
           {/* Booking Sidebar */}
-          <div className="lg:w-1/3">
-            <div className="bg-white rounded-lg shadow p-6 sticky top-4">
+          {/* Booking Sidebar */}
+          <div className="lg:w-1/3" ref={bookingSectionRef}>
+            <div className="bg-white rounded-lg shadow-lg border p-6 sticky top-4">
               <h3 className="text-xl font-bold mb-4">Book Your Stay</h3>
 
+              {/* Price Display */}
               <div className="mb-4">
                 <div className="font-medium mb-2">Price</div>
                 <div className="text-2xl font-bold text-[--color-j-primary]">
@@ -818,85 +834,214 @@ export default function HotelDetails() {
                 </div>
               </div>
 
+              {/* Date Picker */}
               <div className="mb-4">
                 <label className="block font-medium mb-2">Dates</label>
                 <div className="grid grid-cols-2 gap-2">
-                  <div className="relative">
-                    <input
-                      type="date"
-                      className="w-full border rounded-md p-2"
-                      onChange={(e) =>
-                        setSelectedDates({
-                          ...selectedDates,
-                          checkIn: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-                  <div className="relative">
-                    <input
-                      type="date"
-                      className="w-full border rounded-md p-2"
-                      onChange={(e) =>
-                        setSelectedDates({
-                          ...selectedDates,
-                          checkOut: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start text-left font-normal"
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {selectedDates.checkIn
+                          ? selectedDates.checkIn.toLocaleDateString()
+                          : "Check-in"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={selectedDates.checkIn}
+                        onSelect={(date) =>
+                          setSelectedDates({ ...selectedDates, checkIn: date })
+                        }
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start text-left font-normal"
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {selectedDates.checkOut
+                          ? selectedDates.checkOut.toLocaleDateString()
+                          : "Check-out"}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0">
+                      <Calendar
+                        mode="single"
+                        selected={selectedDates.checkOut}
+                        onSelect={(date) =>
+                          setSelectedDates({ ...selectedDates, checkOut: date })
+                        }
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
                 </div>
               </div>
 
+              {/* Guest Selector */}
               <div className="mb-6">
                 <label className="block font-medium mb-2">Guests</label>
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="block text-sm text-[--color-j-text-small] mb-1">
-                      Adults
-                    </label>
-                    <select
-                      className="w-full border rounded-md p-2"
-                      value={guests.adults}
-                      onChange={(e) =>
-                        setGuests({
-                          ...guests,
-                          adults: parseInt(e.target.value),
-                        })
-                      }
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className="w-full justify-start text-left font-normal"
                     >
-                      {[1, 2, 3, 4, 5].map((num) => (
-                        <option key={num} value={num}>
-                          {num}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm text-[--color-j-text-small] mb-1">
-                      Children
-                    </label>
-                    <select
-                      className="w-full border rounded-md p-2"
-                      value={guests.children}
-                      onChange={(e) =>
-                        setGuests({
-                          ...guests,
-                          children: parseInt(e.target.value),
-                        })
-                      }
-                    >
-                      {[0, 1, 2, 3, 4].map((num) => (
-                        <option key={num} value={num}>
-                          {num}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                      <User className="mr-2 h-4 w-4" />
+                      {guests.adults} adults, {guests.children} children,{" "}
+                      {guests.infants} infants
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-80">
+                    <div className="space-y-4">
+                      {/* Adults */}
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <h4 className="font-medium">Adults</h4>
+                          <p className="text-sm text-gray-500">Ages 13+</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              setGuests({
+                                ...guests,
+                                adults: Math.max(1, guests.adults - 1),
+                              })
+                            }
+                          >
+                            -
+                          </Button>
+                          <span>{guests.adults}</span>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              setGuests({
+                                ...guests,
+                                adults: guests.adults + 1,
+                              })
+                            }
+                          >
+                            +
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Children */}
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <h4 className="font-medium">Children</h4>
+                          <p className="text-sm text-gray-500">Ages 2–12</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              setGuests({
+                                ...guests,
+                                children: Math.max(0, guests.children - 1),
+                              })
+                            }
+                          >
+                            -
+                          </Button>
+                          <span>{guests.children}</span>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              setGuests({
+                                ...guests,
+                                children: guests.children + 1,
+                              })
+                            }
+                          >
+                            +
+                          </Button>
+                        </div>
+                      </div>
+
+                      {/* Infants */}
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <h4 className="font-medium">Infants</h4>
+                          <p className="text-sm text-gray-500">Under 2</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              setGuests({
+                                ...guests,
+                                infants: Math.max(0, guests.infants - 1),
+                              })
+                            }
+                          >
+                            -
+                          </Button>
+                          <span>{guests.infants}</span>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              setGuests({
+                                ...guests,
+                                infants: guests.infants + 1,
+                              })
+                            }
+                          >
+                            +
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              </div>
+
+              {/* Total Amount and Nights */}
+              <div className="mb-6">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-[--color-j-text-small]">
+                    ${selectedRoom ? selectedRoom.price : hotelData.price} x{" "}
+                    {calculateNights()} nights
+                  </span>
+                  <span className="font-medium">
+                    $
+                    {(selectedRoom ? selectedRoom.price : hotelData.price) *
+                      calculateNights()}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-[--color-j-text-small]">
+                    Service fee
+                  </span>
+                  <span className="font-medium">${serviceFee()}</span>
+                </div>
+                <Separator className="my-2" />
+                <div className="flex justify-between items-center">
+                  <span className="font-bold">Total</span>
+                  <span className="font-bold text-[--color-j-primary]">
+                    ${totalPrice() + serviceFee()}
+                  </span>
                 </div>
               </div>
 
-              <button
+              {/* Reserve Button */}
+              <Button
                 onClick={handleBookNow}
                 disabled={
                   !selectedRoom ||
@@ -907,12 +1052,12 @@ export default function HotelDetails() {
                   selectedRoom &&
                   selectedDates.checkIn &&
                   selectedDates.checkOut
-                    ? "bg-[--color-j-primary] hover:bg-[--color-j-primary-hover]"
+                    ? "bg-j-primary hover:bg-[--color-j-primary-hover]"
                     : "bg-gray-400 cursor-not-allowed"
                 }`}
               >
-                Book Now
-              </button>
+                Reserve
+              </Button>
 
               {(!selectedRoom ||
                 !selectedDates.checkIn ||
@@ -926,6 +1071,7 @@ export default function HotelDetails() {
                 </p>
               )}
 
+              {/* Additional Info */}
               <div className="mt-4 text-sm text-[--color-j-text-small]">
                 <div className="flex items-center">
                   <ThumbsUp className="w-4 h-4 mr-1 text-green-600" />
