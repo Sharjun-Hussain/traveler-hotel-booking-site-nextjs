@@ -102,11 +102,11 @@ export default function HotelsListingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50  dark:bg-zinc-900/90">
+    <div className="min-h-screen bg-gray-50  dark:bg-zinc-900/90 pt-14">
       {/* Search Bar */}
       <div
-        className={`transition-all duration-300 ease-in-out bg-j-primary-hover dark:bg-blue-950 py-6 ${
-          isfixed ? " top-0 left-0 w-full shadow-md z-50" : "relative"
+        className={`fixed transition-all duration-300 ease-in-out bg-j-primary-hover dark:bg-blue-950 py-6 ${
+          isfixed ? " top-14 left-0 w-full shadow-md z-52" : "relative"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

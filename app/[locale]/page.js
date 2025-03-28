@@ -20,7 +20,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
+      <main className="pt-14">
         <HeroSection />
 
         <section className=" bg-white dark:bg-zinc-900 mx-auto px-2 lg:px-4 ">

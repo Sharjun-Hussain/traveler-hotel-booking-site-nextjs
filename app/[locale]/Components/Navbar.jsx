@@ -11,6 +11,8 @@ import {
   Home,
   WholeWordIcon,
   Globe,
+  Headphones,
+  ShoppingCart,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -33,6 +35,7 @@ import { cn } from "@/lib/utils";
 import CurrencyLanguageDialog from "./CurrencyLangModel";
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
+import Image from "next/image";
 
 export default function Navbar() {
   // const locale = useLocale();
@@ -161,70 +164,43 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="w-full z-50  bg-transparent  ">
+    <nav className="w-full z-50   fixed top-0 left-0 right-0 bg-background shadow-sm  ">
       <div className="container mx-auto">
         <div className="flex justify-between items-center h-14">
-          {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="text-2xl font-bold text-primary">
-              Sri Lanka Vista
-            </Link>
+          <div className="flex">
+            <div className="rounded-full h-12 w-12  overflow-hidden">
+              <Image width={100} height={100} src="/logo.jpg" alt="logo" />
+            </div>
+            <div className="flex-shrink-0 flex items-center">
+              <Link href="/" className="text-2xl font-bold text-primary">
+                Sri Lanka Vista
+              </Link>
+            </div>
           </div>
 
           {/*  Auth, Currency, Language, Theme */}
           <div className="hidden md:flex items-center space-x-3">
-            {/* Currency Dropdown */}
-            {/* <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="flex items-center gap-1"
-                >
-                  USD <ChevronDown className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>USD - US Dollar</DropdownMenuItem>
-                <DropdownMenuItem>LKR - Sri Lankan Rupee</DropdownMenuItem>
-                <DropdownMenuItem>EUR - Euro</DropdownMenuItem>
-                <DropdownMenuItem>GBP - British Pound</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu> */}
-
-            {/* Language Dropdown */}
-            {/* <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="flex items-center gap-1"
-                >
-                  English <ChevronDown className="h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem>English</DropdownMenuItem>
-                <DropdownMenuItem>Sinhala</DropdownMenuItem>
-                <DropdownMenuItem>Tamil</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu> */}
-
             <div className="flex gap-2 justify-center  items-center">
-              <button className="cursor-pointer text-sm hover:text-j-text-small">
+              <Button variant="ghost" className="bg-white/80 backdrop-blur-sm">
+                List my property
+              </Button>
+              <Button variant="ghost" className="bg-white/80 backdrop-blur-sm">
+                <ShoppingCart className="h-5 w-5 mr-1" />
+              </Button>
+              <button className="cursor-pointer text-[16px] hover:text-j-text-small">
                 {" "}
                 En
               </button>
-              <button className="cursor-pointer text-sm  hover:text-j-text-small">
+              <button className="cursor-pointer text-[17px] -mt-[1px]  hover:text-j-text-small">
                 {" "}
                 த{" "}
               </button>
-              <button className="cursor-pointer text-sm  hover:text-j-text-small">
+              <button className="cursor-pointer text-[18px]  hover:text-j-text-small">
                 {" "}
                 සි
               </button>
+              <CurrencyLanguageDialog />
             </div>
-            <CurrencyLanguageDialog />
             {/* Auth Links */}
             <Link href="/login">
               <Button variant="ghost" size="sm" className="gap-1">
@@ -236,6 +212,11 @@ export default function Navbar() {
               <Button size="sm" className="gap-1">
                 <PenBoxIcon size={16} />
                 Sign Up
+              </Button>
+            </Link>
+            <Link href="/register">
+              <Button size="sm" className="gap-1 bg-j-primary-hover">
+                <Headphones size={16} />
               </Button>
             </Link>
           </div>
