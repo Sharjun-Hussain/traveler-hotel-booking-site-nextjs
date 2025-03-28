@@ -471,7 +471,7 @@ const SecNav = () => {
                               href={transport.href}
                               icon={transport.icon}
                             >
-                              {transport.description}
+                              {/* {transport.description} */}
                             </ListItem>
                           ))}
                         </ul>
