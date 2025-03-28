@@ -92,18 +92,6 @@ export default function SearchBar() {
           {/* Search Forms */}
           <TabsContent value="hotels" className="lg:mt-6 ">
             <div className="grid grid-cols-1  sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6  gap-3 sm:gap-4">
-              <div className="sm:col-span-1   md:col-span-1  lg:col-span-1 xl:col-span-1">
-                <div className="p-2 bg-white border shadow rounded-md transition-shadow">
-                  <Label className="text-xs sm:text-sm mb-1 block">
-                    Destination/Hotel
-                  </Label>
-                  <Input
-                    type="text"
-                    placeholder="Where are you going?"
-                    className="text-sm "
-                  />
-                </div>
-              </div>
               <div className="sm:col-span-1 md:col-span-1  lg:col-span-1 xl:col-span-1">
                 <div className="p-2 bg-white border shadow rounded-md transition-shadow">
                   <Label className="text-xs sm:text-sm mb-1 block">
@@ -135,6 +123,18 @@ export default function SearchBar() {
                   </Select>
                 </div>
               </div>
+              <div className="sm:col-span-1   md:col-span-1  lg:col-span-1 xl:col-span-1">
+                <div className="p-2 bg-white border shadow rounded-md transition-shadow">
+                  <Label className="text-xs sm:text-sm mb-1 block">
+                    Destination / Hotel
+                  </Label>
+                  <Input
+                    type="text"
+                    placeholder="Where are you going?"
+                    className="text-sm "
+                  />
+                </div>
+              </div>
               <div className="lg:col-span-1 md:col-span-1 sm:col-span-1 xl:col-span-1">
                 <div className="p-2 bg-white border shadow rounded-md transition-shadow">
                   <CustomGuestSelector />
@@ -149,18 +149,6 @@ export default function SearchBar() {
 
           <TabsContent value="homestay" className="lg:mt-6">
             <div className="grid grid-cols-1  sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6  gap-3 sm:gap-4">
-              <div className="sm:col-span-1   md:col-span-1  lg:col-span-1 xl:col-span-1">
-                <div className="p-2 bg-white border shadow rounded-md transition-shadow">
-                  <Label className="text-xs sm:text-sm mb-1 block">
-                    Destination / Hotel
-                  </Label>
-                  <Input
-                    type="text"
-                    placeholder="Where are you going?"
-                    className="text-sm "
-                  />
-                </div>
-              </div>
               <div className="sm:col-span-1 md:col-span-1  lg:col-span-1 xl:col-span-1">
                 <div className="p-2 bg-white border shadow rounded-md transition-shadow">
                   <Label className="text-xs sm:text-sm mb-1 block">
@@ -186,6 +174,18 @@ export default function SearchBar() {
                       <SelectItem value="2a0c">Solo Female</SelectItem>
                     </SelectContent>
                   </Select>
+                </div>
+              </div>
+              <div className="sm:col-span-1   md:col-span-1  lg:col-span-1 xl:col-span-1">
+                <div className="p-2 bg-white border shadow rounded-md transition-shadow">
+                  <Label className="text-xs sm:text-sm mb-1 block">
+                    Destination
+                  </Label>
+                  <Input
+                    type="text"
+                    placeholder="Where are you going?"
+                    className="text-sm "
+                  />
                 </div>
               </div>
               <div className="lg:col-span-1 md:col-span-1 sm:col-span-1 xl:col-span-1">

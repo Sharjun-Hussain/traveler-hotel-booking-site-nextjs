@@ -126,7 +126,7 @@ const PopularEventsSection = ({
                     {event.category}
                   </Badge>
                   <span className="font-semibold text-j-primary">
-                    {formatPrice(event.price)}
+                    {/* {formatPrice(event.price)} */} Free
                   </span>
                 </div>
                 <CardTitle className="text-xl line-clamp-1">
