@@ -1,7 +1,7 @@
 import React from "react";
 import CustomizedSectionWithCarousel from "../Components/CarausalSposored";
 
-const SponsoredHotels = () => {
+const ExploreStays = () => {
   const destinations = [
     {
       id: 1,
@@ -235,11 +235,11 @@ const SponsoredHotels = () => {
   return (
     <div className="container mx-auto w-full">
       <CustomizedSectionWithCarousel
-        displayMode="carousel"
+        displayMode="grid"
         loadMoreEnabled={true}
         destinations={destinations}
-        headTitle="Featured Properties"
-        title="Sponsored stays - Featured for you"
+        headTitle="Explore Stays"
+        title="Endless Choices - One Perfect Stay"
         description="Lorem ipsum dolor sit amet consectetur, adipisicing elit. Accusantium
         laudantium iste quod quos. Possimus perferendis at dolore aspernatur
         eligendi voluptates voluptatem tenetur natus dolorem, hic beatae nemo
@@ -249,4 +249,4 @@ const SponsoredHotels = () => {
   );
 };
 
-export default SponsoredHotels;
+export default ExploreStays;

@@ -7,6 +7,7 @@ import FeaturedDestinations from "./mainSections/FeaturedDestinations";
 import SponsoredHotels from "./mainSections/SponsoredHotels";
 import StoryStaysSection from "./mainSections/UserStory";
 import PopularEventsSection from "./mainSections/PopularEvents";
+import ExploreStays from "./mainSections/ExploreStays";
 
 export default function Home() {
   return (
@@ -31,6 +32,11 @@ export default function Home() {
         <section className=" bg-white dark:bg-zinc-900 mx-auto px-2 lg:px-4 py-10">
           {/* Sponsore dDestinations /> */}
           <SponsoredHotels />
+        </section>
+
+        <section className=" bg-white dark:bg-zinc-900 mx-auto px-2 lg:px-4 py-10">
+          {/* Sponsore dDestinations /> */}
+          <ExploreStays />
         </section>
 
         <section className=" bg-white dark:bg-zinc-900 mx-auto px-3 lg:px-4 py-10">
