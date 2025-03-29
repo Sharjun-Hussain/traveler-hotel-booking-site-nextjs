@@ -13,6 +13,7 @@ import {
   Globe,
   Headphones,
   ShoppingCart,
+  Building,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -42,6 +43,21 @@ export default function Navbar() {
   // const router = useRouter();
   // const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const mainnavitem = [
+    {
+      title: "Hotels & Apartments",
+      href: "/hotels-and-apartments",
+      icon: <Building size={18} />,
+      isDropdown: false,
+    },
+    {
+      title: "Homestays",
+      href: "/homestays",
+      icon: <Home size={18} />,
+      isDropdown: false,
+    },
+  ];
 
   const transportOptions = [
     {
@@ -175,6 +191,19 @@ export default function Navbar() {
               <Link href="/" className="text-2xl font-bold text-primary">
                 Sri Lanka Vista
               </Link>
+            </div>
+            <div className="lg:flex hidden  ms-5 gap-4 text-sm  items-center">
+              {mainnavitem.map((item) => {
+                return (
+                  <Link
+                    className="hover:text-j-primary"
+                    href={item.href}
+                    id={item.href}
+                  >
+                    {item.title}
+                  </Link>
+                );
+              })}
             </div>
           </div>
 
