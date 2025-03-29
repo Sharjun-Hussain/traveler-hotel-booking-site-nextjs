@@ -43,18 +43,6 @@ import { cn } from "@/lib/utils";
 const SecNav = () => {
   const mainNavItems = [
     {
-      title: "Hotels & Apartments",
-      href: "/hotels-and-apartments",
-      icon: <Building size={18} />,
-      isDropdown: false,
-    },
-    {
-      title: "Homestays",
-      href: "/homestays",
-      icon: <Home size={18} />,
-      isDropdown: false,
-    },
-    {
       title: "Transport",
       icon: <Car size={18} />,
       isDropdown: true,
