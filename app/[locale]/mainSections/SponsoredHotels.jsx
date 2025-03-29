@@ -6,9 +6,11 @@ const SponsoredHotels = () => {
     {
       id: 1,
       name: "Cinnamon Grand Colombo",
-      image: "/api/placeholder/800/500",
-      rating: 4.7,
-      price: "199",
+      image:
+        "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/17/18/22/f7/shangri-la-hotel-jakarta.jpg?w=700&h=-1&s=1",
+      rating: 4.5,
+      reviewCount: 120,
+      price: "209",
       description:
         "Luxury hotel in the heart of Colombo with world-class dining.",
       url: "/hotel?id=1&ref=sponsored_abc123",
@@ -24,7 +26,8 @@ const SponsoredHotels = () => {
     {
       id: 2,
       name: "Shangri-La Colombo",
-      image: "/api/placeholder/800/500",
+      image:
+        "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/17/18/22/f7/shangri-la-hotel-jakarta.jpg?w=700&h=-1&s=1",
       rating: 4.8,
       price: "249",
       description:
@@ -42,7 +45,8 @@ const SponsoredHotels = () => {
     {
       id: 3,
       name: "Heritance Kandalama",
-      image: "/api/placeholder/800/500",
+      image:
+        "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/17/18/22/f7/shangri-la-hotel-jakarta.jpg?w=700&h=-1&s=1",
       rating: 4.9,
       price: "279",
       description:
@@ -60,13 +64,14 @@ const SponsoredHotels = () => {
     {
       id: 4,
       name: "Jetwing Lighthouse",
-      image: "/api/placeholder/800/500",
+      image:
+        "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/17/18/22/f7/shangri-la-hotel-jakarta.jpg?w=700&h=-1&s=1",
       rating: 4.6,
       price: "229",
       description:
         "Colonial-style beachfront hotel offering breathtaking sunsets.",
       url: "/hotel?id=4&campaign=deal_march2024",
-      sponsored: false,
+      sponsored: true,
       amenities: [
         { type: "wifi", label: "Free WiFi" },
         { type: "pool", label: "Swimming Pool" },
@@ -130,7 +135,8 @@ const SponsoredHotels = () => {
       id: 8,
       name: "The Fortress Resort & Spa",
       image: "/api/placeholder/800/500",
-      rating: 4.7,
+      rating: 4.5,
+      reviewCount: 120,
       price: "289",
       description: "Elegant beachfront luxury with Ayurvedic spa treatments.",
       url: "/hotel?id=8&referral=travel_site",

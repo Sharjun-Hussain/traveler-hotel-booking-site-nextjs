@@ -63,7 +63,7 @@ const HotelCard = ({
           : "#"
       }
     >
-      <Card className="max-w-full w-full overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 relative">
+      <Card className="max-w-full w-full overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 relative">
         {/* Sponsored Badge */}
         {sponsored && (
           <div className="absolute top-0 left-0 bg-blue-500 text-white py-1 px-10 text-xs font-medium transform -rotate-45 origin-bottom-left translate-y-20  z-10">
@@ -98,11 +98,11 @@ const HotelCard = ({
           {type == "hotel" && (
             <button
               onClick={() => onFavoriteToggle(id)}
-              className="absolute top-2 right-2 bg-white p-1 rounded-full shadow-md"
+              className="absolute top-2 right-2 bg-white/80 p-1 rounded-full shadow-md"
             >
               <Heart
                 className={`h-5 w-5 hover:text-red-600 hover:fill-red-700 ${
-                  isFavorite ? "fill-red-500 text-red-500" : "text-gray-400"
+                  isFavorite ? "fill-red-500 text-red-500" : "text-black"
                 }`}
               />
             </button>
@@ -120,11 +120,11 @@ const HotelCard = ({
         <CardContent className="p-2">
           {/* Header */}
           <div className="flex justify-between items-start mb-1">
-            <h3 className="font-light text-[14px] text-gray-900">{name}</h3>
-            {type == "hote" && (
+            <h3 className="font-semibold text-[14px] text-gray-900">{name}</h3>
+            {type == "hotel" && (
               <div className="flex items-center text-yellow-400 text-sm">
-                <Star className="h-3 w-3 mr-1 fill-yellow-400" />
-                <span>{rating}</span>
+                <Star className="h-3 w-3 mr-1 fill-yellow-400 " />
+                <span className="text-black">{rating}</span>
                 <span className="text-gray-400 ml-1">({reviewCount})</span>
               </div>
             )}
@@ -141,7 +141,7 @@ const HotelCard = ({
               {amenities.map((amenity, index) => (
                 <div
                   key={index}
-                  className="flex items-center text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded-md"
+                  className="flex items-center text-xs text-gray-600 bg-j-secondary/20 px-2 py-1 rounded-md"
                 >
                   {renderAmenityIcon(amenity.type)}
                   <span>{amenity.label}</span>
@@ -173,9 +173,9 @@ const HotelCard = ({
               </div>
               <Button
                 onClick={() => onDetailsClick(id)}
-                className=" py-1 px-3 h-auto font-semibold"
+                className=" py-2 px-3 h-auto font-semibold bg-j-primary"
               >
-                Details
+                Get More Details
               </Button>
             </div>
           )}
