@@ -146,7 +146,7 @@ const SponsoredHotels = () => {
   ];
 
   return (
-    <div>
+    <div className="container mx-auto w-full">
       <CustomizedSectionWithCarousel
         displayMode="carousel"
         destinations={destinations}
