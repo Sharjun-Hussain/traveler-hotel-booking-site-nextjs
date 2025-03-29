@@ -15,6 +15,8 @@ const FeaturedDestinations = () => {
       description: "Ancient rock fortress with frescoes",
       image: kandy,
       url: "/hotels-and-apartments/",
+      rating: 4.5,
+      reviewCount: 120,
     },
     {
       id: 2,

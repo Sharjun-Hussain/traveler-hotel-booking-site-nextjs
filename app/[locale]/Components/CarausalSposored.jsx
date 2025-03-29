@@ -323,9 +323,9 @@ const CustomizedSectionWithCarousel = ({
                 name={destination.name}
                 price={destination.price}
                 rating={destination.rating}
-                reviewCount={destination.rating}
+                reviewCount={destination.reviewCount}
                 isFavorite={false}
-                sponsored={sponsored}
+                sponsored={destination.sponsored}
                 onFavoriteToggle={() => alert()}
                 description={destination.description}
                 key={destination.id}
@@ -376,7 +376,7 @@ const CustomizedSectionWithCarousel = ({
                   rating={destination.rating}
                   reviewCount={destination.rating}
                   isFavorite={false}
-                  sponsored={sponsored}
+                  sponsored={destination.sponsored}
                   onFavoriteToggle={() => alert()}
                   description={destination.description}
                   key={destination.id}
