@@ -9,6 +9,48 @@ import {
   Circle,
 } from "lucide-react";
 import HotelCard from "./HotelCard";
+import { Button } from "@/components/ui/button"; // Assuming you have this component
+
+// Skeleton component for loading state
+const HotelCardSkeleton = () => (
+  <div className="w-full mt-4 h-full rounded-lg">
+    <div className="max-w-full w-full overflow-hidden shadow-sm relative rounded-lg">
+      {/* Image skeleton */}
+      <div className="relative h-48 bg-gray-200 animate-pulse"></div>
+
+      {/* Content skeleton */}
+      <div className="p-4">
+        {/* Title skeleton */}
+        <div className="flex justify-between items-start mb-2">
+          <div className="h-5 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+          <div className="h-4 bg-gray-200 rounded w-1/6 animate-pulse"></div>
+        </div>
+
+        {/* Hotel type skeleton */}
+        <div className="h-4 bg-gray-200 rounded w-1/4 mb-3 animate-pulse"></div>
+
+        {/* Amenities skeleton */}
+        <div className="flex flex-wrap gap-2 mb-3">
+          {[...Array(3)].map((_, i) => (
+            <div
+              key={i}
+              className="h-6 bg-gray-200 rounded w-20 animate-pulse"
+            ></div>
+          ))}
+        </div>
+
+        {/* Description skeleton */}
+        <div className="h-10 bg-gray-200 rounded w-full mb-4 animate-pulse"></div>
+
+        {/* Price and button skeleton */}
+        <div className="flex justify-between items-center mt-4">
+          <div className="h-6 bg-gray-200 rounded w-1/4 animate-pulse"></div>
+          <div className="h-9 bg-gray-200 rounded w-1/3 animate-pulse"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
 const CustomizedSectionWithCarousel = ({
   headTitle,
@@ -40,6 +82,14 @@ const CustomizedSectionWithCarousel = ({
   indicatorType = "dot", // "dot", "line", "number"
   indicatorPosition = "bottom", // "bottom", "top", "side"
   displayMode = "carousel", // "carousel" or "grid"
+  // Load more feature props
+  initialItemsLimit = 12,
+  loadMoreEnabled = true,
+  loadMoreButtonLabel = "Load More",
+  loadMoreButtonClass = "bg-j-primary text-white py-2 px-4 rounded-md hover:bg-blue-700 mt-8 mx-auto",
+  onLoadMore = () => {},
+  loadingMoreItems = false,
+  loadMoreItemsCount = 12, // Number of items to load each time
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -50,6 +100,7 @@ const CustomizedSectionWithCarousel = ({
   const [carouselItemsToShow, setCarouselItemsToShow] = useState(
     carouselItemsToShowBreakpoints.xl
   );
+  const [visibleItems, setVisibleItems] = useState(initialItemsLimit);
   const carouselRef = useRef(null);
 
   // Check window size and set appropriate breakpoint
@@ -143,6 +194,12 @@ const CustomizedSectionWithCarousel = ({
 
   const handleMouseLeave = () => {
     setIsPaused(false);
+  };
+
+  // Handle load more button click
+  const handleLoadMore = () => {
+    onLoadMore(visibleItems, visibleItems + loadMoreItemsCount);
+    setVisibleItems((prev) => prev + loadMoreItemsCount);
   };
 
   // Calculate pagination dots
@@ -290,57 +347,121 @@ const CustomizedSectionWithCarousel = ({
     return colsMap[cols] || "grid-cols-1";
   };
 
+  // Render loading skeletons for grid layout
+  const renderLoadingSkeletons = () => {
+    return (
+      <div
+        className={`grid grid-cols-1 gap-4 
+        ${
+          gridItemsToShowBreakpoints.md
+            ? `md:${getGridColsClass(gridItemsToShowBreakpoints.md)}`
+            : ""
+        } 
+        ${
+          gridItemsToShowBreakpoints.lg
+            ? `lg:${getGridColsClass(gridItemsToShowBreakpoints.lg)}`
+            : ""
+        } 
+        ${
+          gridItemsToShowBreakpoints.xl
+            ? `xl:${getGridColsClass(gridItemsToShowBreakpoints.xl)}`
+            : ""
+        }`}
+      >
+        {[...Array(loadMoreItemsCount)].map((_, index) => (
+          <div key={`skeleton-${index}`} className="w-full">
+            <HotelCardSkeleton />
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+  // Render load more button
+  const renderLoadMoreButton = () => {
+    if (
+      displayMode !== "grid" ||
+      !loadMoreEnabled ||
+      destinations.length < initialItemsLimit
+      // || visibleItems >= destinations.length
+    ) {
+      return null;
+    }
+
+    return (
+      <div className="flex justify-center mt-4">
+        <Button
+          onClick={handleLoadMore}
+          className={loadMoreButtonClass}
+          disabled={loadingMoreItems}
+        >
+          {loadingMoreItems ? "Loading..." : loadMoreButtonLabel}
+        </Button>
+      </div>
+    );
+  };
+
   // Render content based on display mode
   const renderContent = () => {
     if (displayMode === "grid") {
+      const itemsToDisplay = destinations.slice(0, visibleItems);
+
       // Grid layout with predefined Tailwind classes
       return (
-        <div
-          className={`grid grid-cols-1 gap-4 
-          ${
-            gridItemsToShowBreakpoints.md
-              ? `md:${getGridColsClass(gridItemsToShowBreakpoints.md)}`
-              : ""
-          } 
-          ${
-            gridItemsToShowBreakpoints.lg
-              ? `lg:${getGridColsClass(gridItemsToShowBreakpoints.lg)}`
-              : ""
-          } 
-          ${
-            gridItemsToShowBreakpoints.xl
-              ? `xl:${getGridColsClass(gridItemsToShowBreakpoints.xl)}`
-              : ""
-          }`}
-        >
-          {destinations.map((destination) => (
-            <div key={destination.id} className="w-full">
-              <HotelCard
-                id={destination.id}
-                type={type}
-                url={destination.url}
-                imageUrl={destination.image}
-                name={destination.name}
-                price={destination.price}
-                rating={destination.rating}
-                reviewCount={destination.reviewCount}
-                isFavorite={false}
-                sponsored={destination.sponsored}
-                onFavoriteToggle={() => alert()}
-                description={destination.description}
-                key={destination.id}
-                amenities={[
-                  { type: "wifi", label: "Free WiFi" },
-                  { type: "pool", label: "Swimming Pool" },
-                  { type: "ac", label: "Air Conditioning" },
-                  { type: "breakfast", label: "Free Breakfast" },
-                  { type: "parking", label: "Free Parking" },
-                ]}
-                location={destination.name}
-              />
-            </div>
-          ))}
-        </div>
+        <>
+          <div
+            className={`grid grid-cols-1 gap-4 
+            ${
+              gridItemsToShowBreakpoints.md
+                ? `md:${getGridColsClass(gridItemsToShowBreakpoints.md)}`
+                : ""
+            } 
+            ${
+              gridItemsToShowBreakpoints.lg
+                ? `lg:${getGridColsClass(gridItemsToShowBreakpoints.lg)}`
+                : ""
+            } 
+            ${
+              gridItemsToShowBreakpoints.xl
+                ? `xl:${getGridColsClass(gridItemsToShowBreakpoints.xl)}`
+                : ""
+            }`}
+          >
+            {itemsToDisplay.map((destination) => (
+              <div key={destination.id} className="w-full">
+                <HotelCard
+                  id={destination.id}
+                  type={type}
+                  url={destination.url}
+                  imageUrl={destination.image}
+                  name={destination.name}
+                  price={destination.price}
+                  rating={destination.rating}
+                  reviewCount={destination.reviewCount}
+                  isFavorite={false}
+                  sponsored={destination.sponsored}
+                  onFavoriteToggle={() => alert()}
+                  description={destination.description}
+                  key={destination.id}
+                  amenities={[
+                    { type: "wifi", label: "Free WiFi" },
+                    { type: "pool", label: "Swimming Pool" },
+                    { type: "ac", label: "Air Conditioning" },
+                    { type: "breakfast", label: "Free Breakfast" },
+                    { type: "parking", label: "Free Parking" },
+                  ]}
+                  location={destination.name}
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Show loading skeletons if more items are being loaded */}
+          {loadingMoreItems && renderLoadingSkeletons()}
+
+          {/* Render load more button if needed */}
+          {renderLoadMoreButton()}
+        </>
       );
     } else {
       // Carousel layout with dedicated carousel configuration
