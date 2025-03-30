@@ -196,7 +196,8 @@ export default function Navbar() {
               {mainnavitem.map((item) => {
                 return (
                   <Link
-                    className="hover:text-j-primary"
+                    key={item.href}
+                    className="hover:text-j-primary font-semibold"
                     href={item.href}
                     id={item.href}
                   >
