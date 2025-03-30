@@ -143,12 +143,12 @@ const CustomizedSectionWithCarousel = ({
   initialItemsLimit = 12,
   loadMoreEnabled = true,
   loadMoreButtonLabel = "Load More",
-  loadMoreButtonClass = "bg-j-primary text-white py-2 px-4 rounded-md hover:bg-blue-700 mt-8 mx-auto",
+  loadMoreButtonClass = "bg-j-primary text-white py-2 px-4 rounded-md  mt-8 mx-auto",
   onLoadMore = () => {},
   loadingMoreItems = false,
   loadMoreItemsCount = 12, // Number of items to load each time
   // Sorting props
-  enableSorting = true,
+  enableSorting = false,
   sortingOptions = [
     {
       label: "Popularity",

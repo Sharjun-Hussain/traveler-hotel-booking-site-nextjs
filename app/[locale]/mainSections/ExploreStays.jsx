@@ -236,6 +236,7 @@ const ExploreStays = () => {
     <div className="container mx-auto w-full">
       <CustomizedSectionWithCarousel
         displayMode="grid"
+        enableSorting={true}
         loadMoreEnabled={true}
         destinations={destinations}
         headTitle="Explore Stays"
