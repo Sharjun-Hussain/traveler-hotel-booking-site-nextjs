@@ -61,10 +61,16 @@ const SecNav = () => {
       content: "food",
     },
     {
-      title: "Events & Local Artists",
+      title: "Events ",
       icon: <AlignVerticalSpaceBetweenIcon size={18} />,
       isDropdown: true,
       content: "events",
+    },
+    {
+      title: "Local Artists",
+      icon: <AlignVerticalSpaceBetweenIcon size={18} />,
+      isDropdown: true,
+      content: "artists",
     },
     {
       title: "Shoppings",
@@ -72,12 +78,12 @@ const SecNav = () => {
       isDropdown: true,
       content: "shopping",
     },
-    // {
-    //   title: "Licensed Tour Guides",
-    //   icon: <Torus size={18} />,
-    //   isDropdown: true,
-    //   content: "tourguide",
-    // },
+    {
+      title: "Licensed Tour Guides",
+      icon: <Torus size={18} />,
+      isDropdown: true,
+      content: "tourguide",
+    },
     {
       title: "Other",
       icon: <Torus size={18} />,
@@ -363,6 +369,19 @@ const SecNav = () => {
     "Weather",
   ];
 
+  const tourguides = [
+    "Guide1	",
+    "Guide2	",
+    "Guide3	",
+    "Guide4	",
+    "Guide5	",
+    "Guide6	",
+    "Guide7	",
+    "Guide8	",
+    "Guide9	",
+    "Guide10	",
+  ];
+
   const eventsAndArtists = {
     events: [
       { name: "Cultural Festivals", icon: <Palmtree size={16} /> },
@@ -434,7 +453,7 @@ const SecNav = () => {
     ],
   };
   return (
-    <div className="hidden md:flex flex-1  overflow-hidden">
+    <div className="hidden md:flex   ">
       <div className="max-w-screen-xl mx-auto">
         <NavigationMenu className="relative">
           <NavigationMenuList className=" container flex justify-center wrap lg:scale-100 md:scale-80 space-x-1">
@@ -449,7 +468,7 @@ const SecNav = () => {
                       </div>
                     </NavigationMenuTrigger>
 
-                    {item.content == "transport" && (
+                    {item.content === "transport" && (
                       <NavigationMenuContent>
                         <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[700px] lg:grid-cols-3">
                           {transportOptions.map((transport) => (
@@ -468,7 +487,7 @@ const SecNav = () => {
 
                     {item.content === "activity" && (
                       <NavigationMenuContent>
-                        <div className="grid w-6xl grid-cols-5 gap-3 p-4">
+                        <div className="grid md:w-screen lg:w-5xl grid-cols-5 gap-3 p-4">
                           {activityCategories.map((option) => (
                             <Link
                               key={option.title}
@@ -485,7 +504,7 @@ const SecNav = () => {
 
                     {item.content === "food" && (
                       <NavigationMenuContent>
-                        <div className="grid grid-cols-3 w-5xl gap-3 p-4">
+                        <div className="grid grid-cols-3 md:w-screen lg:w-3xl gap-3 p-4">
                           <div>
                             <h3 className="font-medium text-sm mb-2 text-primary">
                               Dietary Preference
@@ -552,7 +571,7 @@ const SecNav = () => {
 
                     {item.content === "shopping" && (
                       <NavigationMenuContent>
-                        <div className="grid grid-cols-4 gap-4 p-4 w-6xl">
+                        <div className="grid grid-cols-3 gap-4 p-4 md:w-screen lg:w-5xl">
                           {shoppingItems.map((option) => (
                             <Link
                               key={option}
@@ -571,33 +590,32 @@ const SecNav = () => {
 
                     {item.content === "events" && (
                       <NavigationMenuContent>
-                        <div className="grid grid-cols-5 gap-3 p-4 w-6xl">
-                          <div className="col-span-1 border-r pr-4">
-                            <div className="mt-4">
-                              <h3 className="font-medium text-sm mb-2 text-primary">
-                                Event Types
-                              </h3>
-                              <ul className="space-y-1">
-                                {eventsAndArtists.events.map((event) => (
-                                  <li key={event.name}>
-                                    <Link
-                                      href={`/events/${event.name
-                                        .toLowerCase()
-                                        .replace(/[^a-z0-9]/g, "-")}`}
-                                      className="flex items-center gap-2 py-1 text-sm hover:text-primary transition-colors"
-                                    >
-                                      {event.icon}
-                                      <span>{event.name}</span>
-                                    </Link>
-                                  </li>
-                                ))}
-                              </ul>
+                        <div className="md:w-screen lg:w-5xl ">
+                          <div className="">
+                            <div className=" grid grid-cols-3 gap-3 p-4">
+                              {eventsAndArtists.events.map((event) => (
+                                <div key={event.name}>
+                                  <Link
+                                    href={`/events/${event.name
+                                      .toLowerCase()
+                                      .replace(/[^a-z0-9]/g, "-")}`}
+                                    className="flex items-center gap-2 py-1 text-sm hover:text-primary transition-colors"
+                                  >
+                                    {event.icon}
+                                    <span>{event.name}</span>
+                                  </Link>
+                                </div>
+                              ))}
                             </div>
                           </div>
+                        </div>
+                      </NavigationMenuContent>
+                    )}
+
+                    {item.content === "artists" && (
+                      <NavigationMenuContent>
+                        <div className=" gap-3 p-4 lg:w-5xl md:w-screen ">
                           <div className="col-span-3">
-                            <h3 className="font-semibold text-md mb-3 text-primary">
-                              Local Artists
-                            </h3>
                             <div className="grid grid-cols-3 gap-3">
                               {eventsAndArtists.artists.map((artist) => (
                                 <Link
@@ -619,15 +637,15 @@ const SecNav = () => {
 
                     {item.content === "tourguide" && (
                       <NavigationMenuContent>
-                        <div className="grid w-6xl grid-cols-5 gap-3 p-4">
-                          {activityCategories.map((option) => (
+                        <div className="grid md:w-screen lg:w-5xl grid-cols-5 gap-3 p-4">
+                          {tourguides.map((option, index) => (
                             <Link
-                              key={option.title}
-                              href={option.href}
+                              key={index}
+                              href={option}
                               className="flex items-center gap-2 p-2 text-sm hover:bg-accent rounded-md transition-colors"
                             >
-                              {option.icon}
-                              <span>{option.title}</span>
+                              {option}
+                              {/* <span>{option.title}</span> */}
                             </Link>
                           ))}
                         </div>
@@ -636,7 +654,7 @@ const SecNav = () => {
 
                     {item.content === "other" && (
                       <NavigationMenuContent>
-                        <div className="grid grid-cols-4 gap-4 p-4 w-6xl">
+                        <div className="grid grid-cols-4 lg:w-[1000px] gap-4 p-4 md:w-screen ">
                           {other.map((option) => (
                             <Link
                               key={option}
