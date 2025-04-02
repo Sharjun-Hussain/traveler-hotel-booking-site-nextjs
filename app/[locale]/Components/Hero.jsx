@@ -6,6 +6,7 @@ import SearchBar from "./SearchBar";
 import Navbar from "./Navbar";
 import SecNav from "./SecNav";
 import Image from "next/image";
+import MobileNav from "@/components/ui/MobileNav";
 
 export default function HeroSection() {
   const { theme } = useTheme();
@@ -18,6 +19,7 @@ export default function HeroSection() {
         <div className="absolute z-20 left-0 right-0">
           {/* <Navbar /> */}
           <SecNav />
+          <MobileNav />
         </div>
         {/* Video Background */}
         <div className="absolute inset-0 overflow-hidden">
