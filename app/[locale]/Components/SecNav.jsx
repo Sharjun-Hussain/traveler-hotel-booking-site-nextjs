@@ -434,7 +434,7 @@ const SecNav = () => {
     ],
   };
   return (
-    <div className="hidden md:flex">
+    <div className="hidden lg:flex">
       <div className="max-w-screen-xl mx-auto">
         <NavigationMenu className="relative">
           <NavigationMenuList className="flex justify-center space-x-1">
