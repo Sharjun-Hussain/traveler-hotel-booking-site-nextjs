@@ -123,7 +123,7 @@ const MobileNav = () => {
   return (
     <>
       {/* Top scrollable category navigation */}
-      <div className="lg:hidden sticky top-0 bg-white z-10 shadow-sm">
+      {/* <div className="lg:hidden sticky top-0 bg-white z-10 shadow-sm">
         <div className="overflow-x-auto pb-2 pt-4 px-4 hide-scrollbar">
           <div className="flex space-x-6 min-w-max">
             {categories.map((category, index) => (
@@ -140,7 +140,7 @@ const MobileNav = () => {
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Fixed bottom navigation bar (mobile only) */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50">

@@ -72,12 +72,12 @@ const SecNav = () => {
       isDropdown: true,
       content: "shopping",
     },
-    {
-      title: "Licensed Tour Guides",
-      icon: <Torus size={18} />,
-      isDropdown: true,
-      content: "tourguide",
-    },
+    // {
+    //   title: "Licensed Tour Guides",
+    //   icon: <Torus size={18} />,
+    //   isDropdown: true,
+    //   content: "tourguide",
+    // },
     {
       title: "Other",
       icon: <Torus size={18} />,
@@ -434,10 +434,10 @@ const SecNav = () => {
     ],
   };
   return (
-    <div className="hidden lg:flex">
+    <div className="hidden md:flex flex-1  overflow-hidden">
       <div className="max-w-screen-xl mx-auto">
         <NavigationMenu className="relative">
-          <NavigationMenuList className="flex justify-center space-x-1">
+          <NavigationMenuList className=" container flex justify-center wrap lg:scale-100 md:scale-80 space-x-1">
             {mainNavItems.map((item, index) => (
               <NavigationMenuItem key={index}>
                 {item.isDropdown ? (
@@ -449,7 +449,7 @@ const SecNav = () => {
                       </div>
                     </NavigationMenuTrigger>
 
-                    {item.content === "transport" && (
+                    {item.content == "transport" && (
                       <NavigationMenuContent>
                         <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[700px] lg:grid-cols-3">
                           {transportOptions.map((transport) => (
