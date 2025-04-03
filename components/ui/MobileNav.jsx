@@ -159,15 +159,17 @@ const MobileNav = () => {
       </div>
 
       {/* Add custom styles for hiding scrollbar but allowing scrolling */}
-      <style jsx global>{`
-        .hide-scrollbar {
-          -ms-overflow-style: none; /* IE and Edge */
-          scrollbar-width: none; /* Firefox */
-        }
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none; /* Chrome, Safari and Opera */
-        }
-      `}</style>
+      <style jsx global>
+        {`
+          .hide-scrollbar {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+          }
+          .hide-scrollbar::-webkit-scrollbar {
+            display: none; /* Chrome, Safari and Opera */
+          }
+        `}
+      </style>
     </>
   );
 };

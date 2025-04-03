@@ -42,7 +42,7 @@ const FeaturedDestinations = () => {
   ];
 
   return (
-    <div className="container mx-auto w-screen m-o">
+    <div className="container mx-auto w-full">
       <CustomizedSectionWithCarousel
         displayMode="grid"
         type="destination"

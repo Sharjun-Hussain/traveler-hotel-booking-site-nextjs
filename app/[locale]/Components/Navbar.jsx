@@ -434,7 +434,7 @@ export default function Navbar() {
 
   return (
     <nav className="w-full z-50 fixed top-0 left-0 right-0 bg-background shadow-sm">
-      <div className="container mx-auto">
+      <div className="container md:px-4 mx-auto">
         <div className="flex justify-between items-center h-14">
           <div className="flex">
             <div className="rounded-full h-12 w-12 overflow-hidden">
@@ -445,11 +445,11 @@ export default function Navbar() {
                 Sri Lanka Vista
               </Link>
             </div>
-            <div className="lg:flex hidden ms-5 gap-4 text-sm items-center">
+            <div className="lg:flex hidden ms-12 gap-4 text-sm items-center">
               {mainNavItems.map((item) => (
                 <Link
                   key={item.href}
-                  className="hover:text-primary font-semibold"
+                  className="hover:text-primary rounded-full  border-1 px-4 py-1 bg-j-secondary/60 transition-colors  hover:bg-j-secondary-hover font-semibold"
                   href={item.href}
                   id={item.href}
                 >
@@ -460,7 +460,7 @@ export default function Navbar() {
           </div>
 
           {/* Auth, Currency, Language, Theme - Desktop */}
-          <div className="hidden md:flex items-center space-x-3">
+          <div className="hidden lg:flex items-center space-x-3">
             <div className="flex gap-2 justify-center items-center">
               <Button variant="ghost" className="bg-white/80 backdrop-blur-sm">
                 List my property
@@ -500,7 +500,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile menu Sheet trigger */}
-          <div className="md:hidden flex items-center gap-2">
+          <div className="lg:hidden flex items-center gap-2">
             <Button variant="ghost" size="icon" className="relative">
               <ShoppingCart className="h-5 w-5" />
               <span className="absolute -top-1 -right-1 bg-primary text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
