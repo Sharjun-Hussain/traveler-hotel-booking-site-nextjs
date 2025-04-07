@@ -25,26 +25,26 @@ export default function Home() {
         <HeroSection />
 
         <section className=" bg-white dark:bg-zinc-900 mx-auto px-2 lg:px-4 ">
-          {/* <Featured Destinations /> */}
+          {/* Magical Destinations */}
           <FeaturedDestinations />
         </section>
 
-        <section className=" bg-white dark:bg-zinc-900 mx-auto px-2 lg:px-4 py-10">
+        <section className=" bg-white dark:bg-zinc-900 mx-auto px-2 lg:px-4 ">
           {/* Sponsore dDestinations /> */}
           <SponsoredHotels />
         </section>
 
-        <section className=" bg-white dark:bg-zinc-900 mx-auto px-2 lg:px-4 py-10">
+        <section className=" bg-white dark:bg-zinc-900 mx-auto px-2 lg:px-4 ">
           {/* Sponsore dDestinations /> */}
           <ExploreStays />
         </section>
 
-        <section className=" bg-white dark:bg-zinc-900 mx-auto px-3 lg:px-4 py-10">
+        <section className=" bg-white dark:bg-zinc-900 mx-auto px-3 lg:px-4 ">
           {/* <User Story /> */}
           <StoryStaysSection />
         </section>
 
-        <section className="bg-white dark:bg-zinc-900 mx-auto px-2 lg:px-4 py-10">
+        <section className="bg-white dark:bg-zinc-900 mx-auto px-2 lg:px-4 ">
           <div className="container mx-auto px-4">
             <SpecialOffers />
           </div>
@@ -56,7 +56,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="container mx-auto px-6 lg:px-4 py-16">
+        <section className="container mx-auto px-6 lg:px-4 py-4">
           <Testimonials />
         </section>
       </main>
