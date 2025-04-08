@@ -17,5 +17,8 @@ export const config = {
   // - API routes
   // - Static files (like favicon.ico)
   // - etc.
-  matcher: ["/((?!api|_next|.*\\..*).*)"],
+  matcher: [
+    // Match all routes EXCEPT public routes
+    "/((?!api|_next|.*\\..*|login|signup|forgot-password|reset-password).*)",
+  ],
 };

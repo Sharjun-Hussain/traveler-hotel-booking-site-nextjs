@@ -1,12 +1,11 @@
 "use client";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-
 import { ThemeProvider } from "@/Providers/ThemeProvider";
 import ReactQueryProvider from "@/Providers/ReactQueryProvider";
-import Navbar from "./[locale]/Components/Navbar";
-import { usePathname } from "next/navigation";
-import Footer from "./[locale]/Components/Footer";
+// import Navbar from "./[locale]/Components/Navbar";
+// import { usePathname } from "next/navigation";
+// import Footer from "./[locale]/Components/Footer";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -23,20 +22,20 @@ const poppins = Poppins({
 // };
 
 export default function RootLayout({ children }) {
-  const pathname = usePathname();
+  // const pathname = usePathname();
 
-  const HideNavBarRoute = ["/en/auth/login"];
-  const shouldhidenavbar = HideNavBarRoute.some((route) =>
-    pathname.startsWith(route)
-  );
+  // const HideNavBarRoute = ["/en/auth/login"];
+  // const shouldhidenavbar = HideNavBarRoute.some((route) =>
+  //   pathname.startsWith(route)
+  // );
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={poppins.variable}>
         <ThemeProvider>
           <ReactQueryProvider>
-            {!shouldhidenavbar && <Navbar />}
+            {/* {!shouldhidenavbar && <Navbar />} */}
             {children}
-            {!shouldhidenavbar && <Footer />}
+            {/* {!shouldhidenavbar && <Footer />} */}
           </ReactQueryProvider>
         </ThemeProvider>
       </body>
