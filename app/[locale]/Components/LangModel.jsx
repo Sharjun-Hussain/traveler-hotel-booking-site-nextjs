@@ -15,6 +15,7 @@ import { Check, Globe, Search } from "lucide-react";
 const LanguageDialog = ({ onselect }) => {
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const [selectedLanguage, setSelectedLanguage] = useState("English");
+  const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   const currencies = [
@@ -54,7 +55,7 @@ const LanguageDialog = ({ onselect }) => {
   );
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <button className="h-8 w-8 hover:bg-gray-200 hover:text-gray-600 cursor-pointer rounded-full flex justify-center items-center">
           {selectedLanguage && (
@@ -93,7 +94,10 @@ const LanguageDialog = ({ onselect }) => {
                     ? "bg-j-primary-hover/25"
                     : ""
                 }`}
-                onClick={() => setSelectedLanguage(language.name)}
+                onClick={() => {
+                  setSelectedLanguage(language.name);
+                  setIsOpen(false);
+                }}
               >
                 <span className="flex items-center gap-3">
                   {language.contryflag} {language.name}
