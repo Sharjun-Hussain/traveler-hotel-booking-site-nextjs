@@ -6,53 +6,23 @@ import {
   Menu,
   X,
   ChevronDown,
-  ChevronRight,
   Users,
   PenBoxIcon,
   Home,
-  Building,
-  ShoppingCart,
+  WholeWordIcon,
+  Globe,
   Headphones,
-  Compass,
-  Utensils,
-  ShoppingBag,
-  Bike,
-  Car,
-  Palmtree,
-  Mountain,
-  Map,
-  Anchor,
-  Waves,
-  AlignVerticalSpaceBetweenIcon,
-  LocateIcon,
-  Coffee,
-  Cake,
-  Music,
-  Banknote,
-  WifiIcon,
-  Stethoscope,
-  MessageSquareText,
-  CloudSun,
-  Torus,
+  ShoppingCart,
+  Building,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -63,14 +33,18 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import CurrencyLanguageDialog from "./CurrencyLangModel";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
+import LanguageDialog from "./LangModel";
+import CurrencyDialog from "./CurrencyModel";
 
 export default function Navbar() {
+  // const locale = useLocale();
+  // const router = useRouter();
+  // const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const mainNavItems = [
+  const mainnavitem = [
     {
       title: "Hotels & Apartments",
       href: "/hotels-and-apartments",
@@ -85,359 +59,132 @@ export default function Navbar() {
     },
   ];
 
-  const navigationItems = [
+  const transportOptions = [
     {
-      title: "Transport",
-      icon: <Car size={18} />,
-      isDropdown: true,
-      id: "transport",
-      children: [
-        {
-          title: "Bicycles",
-          href: "/transport/bicycles",
-          icon: <Bike size={16} />,
-        },
-        {
-          title: "Buses",
-          href: "/transport/buses",
-          icon: <Car size={16} />,
-        },
-        {
-          title: "Cars",
-          href: "/transport/cars",
-          icon: <Car size={16} />,
-        },
-        {
-          title: "Ferries/Boats",
-          href: "/transport/ferries-boats",
-          icon: <Anchor size={16} />,
-        },
-        {
-          title: "Flights",
-          href: "/transport/flights",
-          icon: <Compass size={16} />,
-        },
-        {
-          title: "Motorcycles/Scooties",
-          href: "/transport/motorcycles-scooties",
-          icon: <Bike size={16} />,
-        },
-        {
-          title: "Tuktuk",
-          href: "/transport/tuktuk",
-          icon: <Car size={16} />,
-        },
-        {
-          title: "Vans",
-          href: "/transport/vans",
-          icon: <Car size={16} />,
-        },
-        {
-          title: "Other",
-          href: "/transport/other",
-          icon: <Compass size={16} />,
-        },
-      ],
+      title: "Bicycles",
+      href: "/transport/bicycles",
+      description:
+        "A two-wheeled, human-powered mode of transport ideal for short distances and eco-friendly travel.",
     },
     {
-      title: "Activities",
-      icon: <Compass size={18} />,
-      isDropdown: true,
-      id: "activities",
-      children: [
-        {
-          title: "Artisan Making Place Visit",
-          href: "/activity/artisan-making",
-          icon: <Palmtree size={16} />,
-        },
-        {
-          title: "Ayurveda and Spa Treatments",
-          href: "/activity/ayurveda-spa",
-          icon: <Palmtree size={16} />,
-        },
-        {
-          title: "Camping & Glamping",
-          href: "/activity/camping-glamping",
-          icon: <Mountain size={16} />,
-        },
-        {
-          title: "City Tours",
-          href: "/activity/city-tours",
-          icon: <Map size={16} />,
-        },
-        {
-          title: "Colonial Heritage Tours",
-          href: "/activity/colonial-heritage",
-          icon: <Building size={16} />,
-        },
-        {
-          title: "Cooking Classes",
-          href: "/activity/cooking-classes",
-          icon: <Utensils size={16} />,
-        },
-        {
-          title: "Eco Tours / Experience",
-          href: "/activity/eco-tours",
-          icon: <Palmtree size={16} />,
-        },
-        {
-          title: "Hiking and Trekking",
-          href: "/activity/hiking-trekking",
-          icon: <Mountain size={16} />,
-        },
-        {
-          title: "Safari",
-          href: "/activity/safari",
-          icon: <Compass size={16} />,
-        },
-        {
-          title: "Other",
-          href: "/activity/other",
-          icon: <Compass size={16} />,
-        },
-      ],
+      title: "Buses",
+      href: "/transport/buses",
+      description:
+        "Public or private road transport designed to carry multiple passengers efficiently within cities or between locations.",
     },
     {
-      title: "Food & Beverage",
-      icon: <Utensils size={18} />,
-      isDropdown: true,
-      id: "food",
-      children: [
-        {
-          title: "Dietary Preferences",
-          isGroup: true,
-          items: [
-            {
-              title: "Vegetarian",
-              href: "/food-beverage/dietary/vegetarian",
-              icon: <Palmtree size={16} />,
-            },
-            {
-              title: "Vegan",
-              href: "/food-beverage/dietary/vegan",
-              icon: <Palmtree size={16} />,
-            },
-            {
-              title: "Gluten Free",
-              href: "/food-beverage/dietary/gluten-free",
-              icon: <Cake size={16} />,
-            },
-            {
-              title: "Halal",
-              href: "/food-beverage/dietary/halal",
-              icon: <Utensils size={16} />,
-            },
-            {
-              title: "Kosher",
-              href: "/food-beverage/dietary/kosher",
-              icon: <Utensils size={16} />,
-            },
-          ],
-        },
-        {
-          title: "Cuisine Types",
-          isGroup: true,
-          items: [
-            {
-              title: "Sri Lankan Authentic",
-              href: "/food-beverage/cuisine/sri-lankan",
-              icon: <Utensils size={16} />,
-            },
-            {
-              title: "Asian Cuisine",
-              href: "/food-beverage/cuisine/asian",
-              icon: <Utensils size={16} />,
-            },
-            {
-              title: "European Cuisine",
-              href: "/food-beverage/cuisine/european",
-              icon: <Utensils size={16} />,
-            },
-            {
-              title: "Fast Food",
-              href: "/food-beverage/cuisine/fast-food",
-              icon: <Coffee size={16} />,
-            },
-            {
-              title: "Seafood Restaurant",
-              href: "/food-beverage/cuisine/seafood",
-              icon: <Anchor size={16} />,
-            },
-          ],
-        },
-        {
-          title: "Specialty Restaurants",
-          isGroup: true,
-          items: [
-            {
-              title: "Dessert / Ice Cream Parlor",
-              href: "/food-beverage/specialty/dessert",
-              icon: <Cake size={16} />,
-            },
-            {
-              title: "Rooftop Restaurants",
-              href: "/food-beverage/specialty/rooftop",
-              icon: <Building size={16} />,
-            },
-            {
-              title: "Tea Houses",
-              href: "/food-beverage/specialty/tea-houses",
-              icon: <Coffee size={16} />,
-            },
-            {
-              title: "Food Truck",
-              href: "/food-beverage/specialty/food-truck",
-              icon: <Car size={16} />,
-            },
-          ],
-        },
-      ],
+      title: "Cars",
+      href: "/transport/cars",
+      description:
+        "Personal or rental four-wheeled vehicles offering flexible and comfortable travel options.",
     },
     {
-      title: "Events & Local Artists",
-      icon: <AlignVerticalSpaceBetweenIcon size={18} />,
-      isDropdown: true,
-      id: "events",
-      children: [
-        {
-          title: "Events",
-          isGroup: true,
-          items: [
-            {
-              title: "Cultural Festivals",
-              href: "/events/cultural-festivals",
-              icon: <Palmtree size={16} />,
-            },
-            {
-              title: "Music Concerts",
-              href: "/events/music-concerts",
-              icon: <Music size={16} />,
-            },
-            {
-              title: "Art Exhibitions",
-              href: "/events/art-exhibitions",
-              icon: <Compass size={16} />,
-            },
-            {
-              title: "Traditional Performances",
-              href: "/events/traditional-performances",
-              icon: <AlignVerticalSpaceBetweenIcon size={16} />,
-            },
-            {
-              title: "Local Markets",
-              href: "/events/local-markets",
-              icon: <ShoppingBag size={16} />,
-            },
-          ],
-        },
-        {
-          title: "Local Artists",
-          isGroup: true,
-          items: [
-            {
-              title: "Handloom Weavers",
-              href: "/artists/handloom-weavers",
-              icon: <AlignVerticalSpaceBetweenIcon size={16} />,
-            },
-            {
-              title: "Musicians",
-              href: "/artists/musicians",
-              icon: <Music size={16} />,
-            },
-            {
-              title: "Painters",
-              href: "/artists/painters",
-              icon: <AlignVerticalSpaceBetweenIcon size={16} />,
-            },
-            {
-              title: "Traditional Dancers",
-              href: "/artists/traditional-dancers",
-              icon: <AlignVerticalSpaceBetweenIcon size={16} />,
-            },
-          ],
-        },
-      ],
+      title: "Ferries/Boats",
+      href: "/transport/ferries-boats",
+      description:
+        "Water-based transport used for crossing rivers, lakes, or short sea routes.",
     },
     {
-      title: "Shopping",
-      icon: <ShoppingBag size={18} />,
-      isDropdown: true,
-      id: "shopping",
-      children: [
-        {
-          title: "Ayurvedic Products",
-          href: "/shopping/ayurvedic-products",
-          icon: <ShoppingBag size={16} />,
-        },
-        {
-          title: "Ceylon Cinnamon",
-          href: "/shopping/ceylon-cinnamon",
-          icon: <ShoppingBag size={16} />,
-        },
-        {
-          title: "Ceylon Tea",
-          href: "/shopping/ceylon-tea",
-          icon: <Coffee size={16} />,
-        },
-        {
-          title: "Gems",
-          href: "/shopping/gems",
-          icon: <ShoppingBag size={16} />,
-        },
-        {
-          title: "Handcrafted silverware",
-          href: "/shopping/handcrafted-silverware",
-          icon: <ShoppingBag size={16} />,
-        },
-      ],
+      title: "Flights",
+      href: "/transport/flights",
+      description:
+        "Air travel for long-distance and international transportation with commercial or private airlines.",
     },
     {
-      title: "Licensed Tour Guides",
-      icon: <LocateIcon size={18} />,
-      isDropdown: false,
-      href: "/tour-guides",
+      title: "Motorcycles/Scooties",
+      href: "/transport/motorcycles-scooties",
+      description:
+        "Two-wheeled motorized vehicles ideal for quick urban transport and personal commuting.",
     },
     {
-      title: "Other Services",
-      icon: <Compass size={18} />,
-      isDropdown: true,
-      id: "other",
-      children: [
-        {
-          title: "Air ticketing / Travel agents",
-          href: "/other/air-ticketing",
-          icon: <Compass size={16} />,
-        },
-        {
-          title: "Beach Bars and clubs",
-          href: "/other/beach-bars-clubs",
-          icon: <Music size={16} />,
-        },
-        {
-          title: "Free WiFi spots",
-          href: "/other/free-wifi",
-          icon: <WifiIcon size={16} />,
-        },
-        {
-          title: "Hospitals & clinics",
-          href: "/other/hospitals",
-          icon: <Stethoscope size={16} />,
-        },
-        {
-          title: "Money changer",
-          href: "/other/money-changer",
-          icon: <Banknote size={16} />,
-        },
-      ],
+      title: "Tuktuk",
+      href: "/transport/tuktuk",
+      description:
+        "A three-wheeled auto-rickshaw used as an affordable and quick transport option in many cities.",
+    },
+    {
+      title: "Vans",
+      href: "/transport/vans",
+      description:
+        "Larger vehicles used for group transport, delivery services, or road trips.",
+    },
+    {
+      title: "Other",
+      href: "/transport/other",
+      description:
+        "Any other mode of transport not listed above, including experimental and emerging technologies.",
     },
   ];
 
+  // Food & Beverage categories
+  const dietaryPreferences = [
+    "Diabetic-Friendly",
+    "Gluten Free",
+    "Halal",
+    "Jain",
+    "Keto",
+    "Kosher",
+    "Non-Vegetarian",
+    "Organic",
+    "Vegan",
+    "Vegetarian",
+  ];
+
+  const cuisineTypes = [
+    "Sri Lankan Authentic",
+    "African Cuisine",
+    "American Cuisine",
+    "Asian Cuisine",
+    "BBQ / Grill",
+    "Buffet",
+    "Café / Bistro",
+    "Casual Dining",
+    "European Cuisine",
+    "Fast Food",
+    "Fine Dining",
+    "Fusion Cuisine",
+    "Middle Eastern Cuisine",
+    "Seafood Restaurant",
+    "Steakhouse",
+    "Street Food",
+  ];
+
+  const specialtyRestaurants = [
+    "Brunch Spots",
+    "Dessert / Ice Cream Parlor",
+    "Diners",
+    "Farm-to-Table",
+    "Food Truck",
+    "Juice Bar",
+    "Hookah Lounge",
+    "Rooftop Restaurants",
+    "Sushi Bars",
+    "Tea Houses",
+    "Themed Restaurants",
+  ];
+
+  const shoppingItems = [
+    "Ayurvedic Products and herbal oils",
+    "Ceylon Cinnamon",
+    "Ceylon Tea",
+    "Gems",
+    "Handcrafted silverware and Brassware",
+    "Handloom and Batik clothing",
+    "Leather goods and Accessories",
+    "Souverniors",
+    "Spices",
+    "Sri Lankan art paintings",
+    "Sri Lankan sweets",
+    "Sunscreen & Mosquito repellents",
+    "Traditional handicrafts and wooden masks",
+  ];
+
   return (
-    <nav className="w-full z-50 fixed top-0 left-0 right-0 bg-background shadow-sm">
-      <div className="container md:px-4 mx-auto">
+    <nav className="w-full z-50   fixed top-0 left-0 right-0 bg-background shadow-sm  ">
+      <div className="container mx-auto">
         <div className="flex justify-between items-center h-14">
           <div className="flex">
-            <div className="rounded-full h-12 w-12 overflow-hidden">
+            <div className="rounded-full h-12 w-12  overflow-hidden">
               <Image width={100} height={100} src="/logo.jpg" alt="logo" />
             </div>
             <div className="flex-shrink-0 flex items-center">
@@ -445,39 +192,45 @@ export default function Navbar() {
                 Sri Lanka Vista
               </Link>
             </div>
-            <div className="lg:flex hidden ms-12 gap-4 text-sm items-center">
-              {mainNavItems.map((item) => (
-                <Link
-                  key={item.href}
-                  className="hover:text-primary rounded-full  border-1 px-4 py-1 bg-j-secondary/60 transition-colors  hover:bg-j-secondary-hover font-semibold"
-                  href={item.href}
-                  id={item.href}
-                >
-                  {item.title}
-                </Link>
-              ))}
+            <div className="lg:flex hidden  ms-5 gap-4 text-sm  items-center">
+              {mainnavitem.map((item) => {
+                return (
+                  <Link
+                    key={item.href}
+                    className="hover:text-j-primary bg-j-primary/20 rounded-full px-3 py-1 font-semibold"
+                    href={item.href}
+                    id={item.href}
+                  >
+                    {item.title}
+                  </Link>
+                );
+              })}
             </div>
           </div>
 
-          {/* Auth, Currency, Language, Theme - Desktop */}
-          <div className="hidden lg:flex items-center space-x-3">
-            <div className="flex gap-2 justify-center items-center">
+          {/*  Auth, Currency, Language, Theme */}
+          <div className="hidden md:flex items-center space-x-3">
+            <div className="flex gap-2 justify-center  items-center">
               <Button variant="ghost" className="bg-white/80 backdrop-blur-sm">
                 List my property
               </Button>
               <Button variant="ghost" className="bg-white/80 backdrop-blur-sm">
                 <ShoppingCart className="h-5 w-5 mr-1" />
               </Button>
-              <button className="cursor-pointer text-[16px] hover:text-foreground/70">
+              <button className="cursor-pointer text-[16px] hover:text-j-text-small">
+                {" "}
                 En
               </button>
-              <button className="cursor-pointer text-[17px] -mt-[1px] hover:text-foreground/70">
-                த
+              <button className="cursor-pointer text-[17px] -mt-[1px]  hover:text-j-text-small">
+                {" "}
+                த{" "}
               </button>
-              <button className="cursor-pointer text-[18px] hover:text-foreground/70">
+              <button className="cursor-pointer text-[18px]  hover:text-j-text-small">
+                {" "}
                 සි
               </button>
-              <CurrencyLanguageDialog />
+              <LanguageDialog />
+              <CurrencyDialog />
             </div>
             {/* Auth Links */}
             <Link href="/login">
@@ -492,220 +245,239 @@ export default function Navbar() {
                 Sign Up
               </Button>
             </Link>
-            <Link href="/customer-care">
+            <Link href="/register">
               <Button size="sm" className="gap-1 bg-j-primary-hover">
                 <Headphones size={16} />
               </Button>
             </Link>
           </div>
 
-          {/* Mobile menu Sheet trigger */}
-          <div className="lg:hidden flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-primary text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
-                0
-              </span>
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? (
+                <X className="h-6 w-6" />
+              ) : (
+                <Menu className="h-6 w-6" />
+              )}
             </Button>
-
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" aria-label="Open menu">
-                  <Menu className="h-6 w-6" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent
-                side="left"
-                className="w-full sm:max-w-md overflow-y-auto pb-20"
-              >
-                <SheetHeader className="border-b pb-4 mb-4">
-                  <SheetTitle className="flex items-center gap-2">
-                    <div className="rounded-full h-8 w-8 overflow-hidden">
-                      <Image
-                        width={32}
-                        height={32}
-                        src="/logo.jpg"
-                        alt="logo"
-                      />
-                    </div>
-                    <span className="text-xl font-bold text-primary">
-                      Sri Lanka Vista
-                    </span>
-                  </SheetTitle>
-                </SheetHeader>
-
-                {/* Main Navigation Items */}
-                <div className="space-y-1 mb-4">
-                  {mainNavItems.map((item) => (
-                    <SheetClose asChild key={item.href}>
-                      <Link
-                        href={item.href}
-                        className="flex items-center gap-3 py-2 px-3 rounded-md hover:bg-accent"
-                      >
-                        {item.icon}
-                        <span className="font-medium">{item.title}</span>
-                      </Link>
-                    </SheetClose>
-                  ))}
-                </div>
-
-                <Separator className="my-4" />
-
-                {/* Nested Accordion Navigation */}
-                <Accordion type="multiple" className="w-full">
-                  {navigationItems.map((item) =>
-                    item.isDropdown ? (
-                      <AccordionItem value={item.id} key={item.id}>
-                        <AccordionTrigger className="py-2 px-3 hover:bg-accent hover:no-underline rounded-md">
-                          <div className="flex items-center gap-3">
-                            {item.icon}
-                            <span className="font-medium">{item.title}</span>
-                          </div>
-                        </AccordionTrigger>
-                        <AccordionContent className="pl-4">
-                          {item.children.map((child, childIndex) =>
-                            child.isGroup ? (
-                              <div key={childIndex} className="pb-3">
-                                <h4 className="text-sm font-medium text-foreground/70 py-2 px-2">
-                                  {child.title}
-                                </h4>
-                                <div className="space-y-1">
-                                  {child.items.map((subItem) => (
-                                    <SheetClose asChild key={subItem.href}>
-                                      <Link
-                                        href={subItem.href}
-                                        className="flex items-center gap-2 py-1.5 px-2 rounded-md hover:bg-accent text-sm"
-                                      >
-                                        {subItem.icon}
-                                        <span>{subItem.title}</span>
-                                      </Link>
-                                    </SheetClose>
-                                  ))}
-                                </div>
-                              </div>
-                            ) : (
-                              <SheetClose asChild key={child.href}>
-                                <Link
-                                  href={child.href}
-                                  className="flex items-center gap-2 py-2 px-2 rounded-md hover:bg-accent text-sm"
-                                >
-                                  {child.icon}
-                                  <span>{child.title}</span>
-                                </Link>
-                              </SheetClose>
-                            )
-                          )}
-                        </AccordionContent>
-                      </AccordionItem>
-                    ) : (
-                      <SheetClose asChild key={item.href}>
-                        <Link
-                          href={item.href}
-                          className="flex items-center gap-3 py-2 px-3 rounded-md hover:bg-accent"
-                        >
-                          {item.icon}
-                          <span className="font-medium">{item.title}</span>
-                        </Link>
-                      </SheetClose>
-                    )
-                  )}
-                </Accordion>
-
-                <Separator className="my-4" />
-
-                {/* Language Switcher */}
-                <div className="px-3 py-3">
-                  <h4 className="text-sm font-medium text-foreground/70 mb-2">
-                    Language
-                  </h4>
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm" className="flex-1">
-                      English
-                    </Button>
-                    <Button variant="outline" size="sm" className="flex-1">
-                      සිංහල
-                    </Button>
-                    <Button variant="outline" size="sm" className="flex-1">
-                      தமிழ்
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Currency Switcher */}
-                <div className="px-3 py-3">
-                  <h4 className="text-sm font-medium text-foreground/70 mb-2">
-                    Currency
-                  </h4>
-                  <div className="grid grid-cols-2 gap-2">
-                    <Button variant="outline" size="sm">
-                      USD
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      LKR
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      EUR
-                    </Button>
-                    <Button variant="outline" size="sm">
-                      GBP
-                    </Button>
-                  </div>
-                </div>
-
-                <Separator className="my-4" />
-
-                {/* Auth Buttons */}
-                <div className="px-3 py-3 space-y-3">
-                  <SheetClose asChild>
-                    <Link href="/list-property">
-                      <Button
-                        variant="outline"
-                        className="w-full justify-start gap-2"
-                      >
-                        <Building size={16} />
-                        List my property
-                      </Button>
-                    </Link>
-                  </SheetClose>
-
-                  <SheetClose asChild>
-                    <Link href="/login">
-                      <Button
-                        variant="outline"
-                        className="w-full justify-start gap-2"
-                      >
-                        <Users size={16} />
-                        Login
-                      </Button>
-                    </Link>
-                  </SheetClose>
-
-                  <SheetClose asChild>
-                    <Link href="/register">
-                      <Button className="w-full justify-start gap-2">
-                        <PenBoxIcon size={16} />
-                        Sign Up
-                      </Button>
-                    </Link>
-                  </SheetClose>
-
-                  <SheetClose asChild>
-                    <Link href="/support">
-                      <Button
-                        variant="outline"
-                        className="w-full justify-start gap-2"
-                      >
-                        <Headphones size={16} />
-                        Contact Support
-                      </Button>
-                    </Link>
-                  </SheetClose>
-                </div>
-              </SheetContent>
-            </Sheet>
           </div>
         </div>
       </div>
+
+      {/* Mobile menu */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-background border-t border-border overflow-y-auto max-h-[80vh]">
+          <div className="px-2 pt-2 pb-3 space-y-1">
+            <Link
+              href="/hotels-apartments"
+              className="block px-3 py-2 rounded-md text-foreground/80 hover:text-foreground hover:bg-accent"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Hotels & Apartments
+            </Link>
+            <Link
+              href="/homestays"
+              className="block px-3 py-2 rounded-md text-foreground/80 hover:text-foreground hover:bg-accent"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Homestays
+            </Link>
+
+            {/* Transport collapsible section */}
+            <div className="border-t border-border pt-1">
+              <p className="px-3 py-2 text-sm font-medium text-foreground">
+                Transport
+              </p>
+              <div className="pl-4 space-y-1">
+                {transportOptions.map((option) => (
+                  <Link
+                    key={option.title}
+                    href={`/transport/${option.href}`}
+                    className="block px-3 py-1.5 rounded-md text-sm text-foreground/80 hover:text-foreground hover:bg-accent"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {option.title}
+                  </Link>
+                ))}
+              </div>
+            </div>
+
+            <Link
+              href="/activities"
+              className="block px-3 py-2 rounded-md text-foreground/80 hover:text-foreground hover:bg-accent"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Activities
+            </Link>
+
+            {/* Food & Beverage collapsible section */}
+            <div className="border-t border-border pt-1">
+              <p className="px-3 py-2 text-sm font-medium text-foreground">
+                Food & Beverage
+              </p>
+
+              {/* Dietary Preferences section */}
+              <div className="pl-4 mb-2">
+                <p className="px-3 py-1 text-xs font-medium text-foreground/70">
+                  Dietary Preference
+                </p>
+                <div className="pl-2 space-y-1">
+                  {dietaryPreferences.map((option) => (
+                    <Link
+                      key={option}
+                      href={`/food-beverage/dietary/${option}`}
+                      className="block px-3 py-1.5 rounded-md text-xs text-foreground/80 hover:text-foreground hover:bg-accent"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {option}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Cuisine Based section */}
+              <div className="pl-4 mb-2">
+                <p className="px-3 py-1 text-xs font-medium text-foreground/70">
+                  Cuisine Based
+                </p>
+                <div className="pl-2 space-y-1">
+                  {cuisineTypes.map((option) => (
+                    <Link
+                      key={option}
+                      href={`/food-beverage/cuisine/${option
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]/g, "-")}`}
+                      className="block px-3 py-1.5 rounded-md text-xs text-foreground/80 hover:text-foreground hover:bg-accent"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {option}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Specialty Restaurant section */}
+              <div className="pl-4 mb-2">
+                <p className="px-3 py-1 text-xs font-medium text-foreground/70">
+                  Specialty Restaurant
+                </p>
+                <div className="pl-2 space-y-1">
+                  {specialtyRestaurants.map((option) => (
+                    <Link
+                      key={option}
+                      href={`/food-beverage/specialty/${option
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]/g, "-")}`}
+                      className="block px-3 py-1.5 rounded-md text-xs text-foreground/80 hover:text-foreground hover:bg-accent"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {option}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile dropdowns */}
+            <div className="flex flex-col space-y-2 pt-2 border-t border-border">
+              {/* Currency and Language as simple buttons with popups in mobile */}
+              <div className="px-3 py-2">
+                <p className="text-sm font-medium text-foreground/70 mb-2">
+                  Currency
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Button variant="outline" size="sm">
+                    USD
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    LKR
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    EUR
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    GBP
+                  </Button>
+                </div>
+              </div>
+
+              <div className="px-3 py-2">
+                <p className="text-sm font-medium text-foreground/70 mb-2">
+                  Language
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  <Button variant="outline" size="sm">
+                    English
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    Sinhala
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    Tamil
+                  </Button>
+                </div>
+              </div>
+
+              {/* Theme toggle for mobile */}
+              {/* <div className="px-3 py-2">
+                <p className="text-sm font-medium text-foreground/70 mb-2">
+                  Theme
+                </p>
+                <ThemeToggle />
+              </div> */}
+            </div>
+
+            <div className="border-t border-border pt-4 pb-3 flex flex-col space-y-2 px-3">
+              <Link href="/login" onClick={() => setIsMenuOpen(false)}>
+                <Button
+                  variant="outline"
+                  className="w-full justify-start gap-2"
+                >
+                  <Users size={16} />
+                  Login
+                </Button>
+              </Link>
+              <Link href="/register" onClick={() => setIsMenuOpen(false)}>
+                <Button className="w-full justify-start gap-2">
+                  <PenBoxIcon size={16} />
+                  Sign Up
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }
+
+const ListItem = React.forwardRef(
+  ({ className, title, children, ...props }, ref) => {
+    return (
+      <li>
+        <NavigationMenuLink asChild>
+          <a
+            ref={ref}
+            className={cn(
+              "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+              className
+            )}
+            {...props}
+          >
+            <div className="text-sm font-medium leading-none">{title}</div>
+            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+              {children}
+            </p>
+          </a>
+        </NavigationMenuLink>
+      </li>
+    );
+  }
+);
+ListItem.displayName = "ListItem";
