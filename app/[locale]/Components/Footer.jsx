@@ -3,8 +3,10 @@ import Link from "next/link";
 import PrivacyToggle from "./PrivacyChoiceSelector";
 
 import privacy from "@/public/privacy.svg";
-import CurrencyLanguageDialog from "./CurrencyLangModel";
+
 import { Facebook, Instagram, Twitter, Youtube } from "lucide-react";
+import LanguageDialog from "./LangModel";
+import CurrencyDialog from "./CurrencyModel";
 export default function Footer() {
   return (
     <footer className="bg-gray-800 text-gray-200 pt-12 pb-8">
@@ -304,7 +306,8 @@ export default function Footer() {
             {/* Language selector and social icons */}
             <div className="flex gap-3 items-center mt-4 sm:mt-0">
               <div>English</div>
-              <CurrencyLanguageDialog />
+              <LanguageDialog />
+              <CurrencyDialog />
               <div className="flex gap-3">
                 <Facebook
                   size={18}

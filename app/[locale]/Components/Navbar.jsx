@@ -63,9 +63,10 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import CurrencyLanguageDialog from "./CurrencyLangModel";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
+import LanguageDialog from "./LangModel";
+import CurrencyDialog from "./CurrencyModel";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -477,7 +478,8 @@ export default function Navbar() {
               <button className="cursor-pointer text-[18px] hover:text-foreground/70">
                 සි
               </button>
-              <CurrencyLanguageDialog />
+              <LanguageDialog />
+              <CurrencyDialog />{" "}
             </div>
             {/* Auth Links */}
             <Link href="/login">
