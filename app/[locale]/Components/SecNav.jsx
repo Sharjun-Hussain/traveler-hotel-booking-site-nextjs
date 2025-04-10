@@ -454,7 +454,7 @@ const SecNav = ({ classnames }) => {
   };
   return (
     <div
-      className={`hidden md:flex fixed left-0 z-120 right-0 bg-white  pointer-events-none ${classnames} `}
+      className={`hidden md:flex fixed left-0 z-120 right-0 bg-white ${classnames} `}
     >
       <div className="max-w-screen-xl mx-auto">
         <NavigationMenu className="relative">
