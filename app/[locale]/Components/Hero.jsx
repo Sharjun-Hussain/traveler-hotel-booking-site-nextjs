@@ -14,11 +14,11 @@ export default function HeroSection() {
   return (
     <div className="relative h-screen w-full justify-center flex  ">
       <div className="container mx-auto m-0 p-0">
-        <div className="hidden md:block md:absolute z-[6] bg-gradient-to-b from-white  to-transparent  h-[20%] top-0 left-0 right-0  pointer-events-none"></div>
+        <div className="hidden md:block md:absolute z-[6] bg-gradient-to-b from-white  to-transparent  h-[30%] top-0 left-0 right-0  pointer-events-none"></div>
         {/* <div className="hidden md:block md:absolute z-[6] bg-gradient-to-b from-trasparent to-white h-[20%] bottom-0 left-0 right-0 pointer-events-none"></div> */}
         <div className="absolute z-20 left-0 right-0">
           {/* <Navbar /> */}
-          <SecNav />
+          <SecNav classnames="" />
           <MobileNav />
         </div>
         {/* Video Background */}

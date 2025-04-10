@@ -40,7 +40,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 
-const SecNav = () => {
+const SecNav = ({ classnames }) => {
   const mainNavItems = [
     {
       title: "Transport",
@@ -453,7 +453,9 @@ const SecNav = () => {
     ],
   };
   return (
-    <div className="hidden md:flex   ">
+    <div
+      className={`hidden md:flex fixed left-0 z-120 right-0 bg-white  pointer-events-none ${classnames} `}
+    >
       <div className="max-w-screen-xl mx-auto">
         <NavigationMenu className="relative">
           <NavigationMenuList className=" container flex justify-center wrap lg:scale-100 md:scale-80 space-x-1">
