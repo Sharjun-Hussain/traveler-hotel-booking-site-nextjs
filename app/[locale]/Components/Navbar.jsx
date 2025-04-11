@@ -446,7 +446,7 @@ export default function Navbar() {
                 Sri Lanka Vista
               </Link>
             </div>
-            <div className="lg:flex hidden ms-12 gap-4 text-sm items-center">
+            <div className="lg:flex hidden xl:ms-12 lg:ms-6 gap-4 text-sm items-center">
               {mainNavItems.map((item) => (
                 <Link
                   key={item.href}

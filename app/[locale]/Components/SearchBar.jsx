@@ -18,11 +18,18 @@ import CustomGuestSelector from "./PassengerPicker";
 import { MultiSelect } from "@/components/ui/MultipleSelector";
 import { Cat, Dog, Fish, Rabbit, Turtle } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { addDays } from "date-fns";
 
 export default function SearchBar() {
   const [searchType, setSearchType] = useState("hotels");
   const [selectedFoodType, setselectedFoodType] = useState([]);
   const router = useRouter();
+
+  const handleDatesChange = ({ checkIn, checkOut }) => {
+    console.log("Check-in:", checkIn);
+    console.log("Check-out:", checkOut);
+    // Update your state or perform actions with the selected dates
+  };
 
   const handleSearchClick = () => {
     const routes = {
@@ -91,8 +98,8 @@ export default function SearchBar() {
 
           {/* Search Forms */}
           <TabsContent value="hotels" className="lg:mt-6 ">
-            <div className="grid grid-cols-1  sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6  gap-3 sm:gap-4">
-              <div className="sm:col-span-1 md:col-span-1  lg:col-span-1 xl:col-span-1">
+            <div className="grid grid-cols-1  sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-8  gap-3 sm:gap-4">
+              <div className="sm:col-span-1 md:col-span-1  lg:col-span-1 xl:col-span-2">
                 <div className="p-2 bg-white border shadow rounded-md transition-shadow">
                   <Label className="text-xs sm:text-sm mb-1 block">
                     Travellor Type
@@ -123,7 +130,7 @@ export default function SearchBar() {
                   </Select>
                 </div>
               </div>
-              <div className="sm:col-span-1   md:col-span-1  lg:col-span-1 xl:col-span-1">
+              <div className="sm:col-span-1   md:col-span-1  lg:col-span-1 xl:col-span-2">
                 <div className="p-2 bg-white border shadow rounded-md transition-shadow">
                   <Label className="text-xs sm:text-sm mb-1 block">
                     Destination / Hotel
@@ -135,14 +142,22 @@ export default function SearchBar() {
                   />
                 </div>
               </div>
-              <div className="lg:col-span-1 md:col-span-1 sm:col-span-1 xl:col-span-1">
+              <div className="lg:col-span-1 md:col-span-1 sm:col-span-1 xl:col-span-2">
                 <div className="p-2 bg-white border shadow rounded-md transition-shadow">
                   <CustomGuestSelector />
                 </div>
               </div>
 
-              <div className="sm:col-span-3 lg:col-span-3 xl:col-span-3">
-                <ModernDatepicker className="absolute z-100" />
+              <div className="sm:col-span-3 lg:col-span-1 xl:col-span-2">
+                <ModernDatepicker
+                  onDatesChange={({ checkIn, checkOut }) =>
+                    console.log(checkIn, checkOut)
+                  }
+                  minStay={2}
+                  className="my-custom-class"
+                  // initialCheckIn={new Date()}
+                  // initialCheckOut={addDays(new Date(), 3)}
+                />
               </div>
             </div>
           </TabsContent>

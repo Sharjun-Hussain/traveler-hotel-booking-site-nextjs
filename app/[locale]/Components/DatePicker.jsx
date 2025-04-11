@@ -1,6 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
-import { format, addDays } from "date-fns";
-import { CalendarDays, ArrowRight } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import {
+  format,
+  addDays,
+  isSameDay,
+  startOfMonth,
+  endOfMonth,
+  addMonths,
+  isWithinInterval,
+} from "date-fns";
+import { CalendarDays, ArrowRight, X } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
 import {
   Popover,
@@ -9,174 +17,170 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useMediaQuery } from "@/hooks/use-media-query";
 
-const ModernDatepicker = ({ type = "hotel", props }) => {
-  const [checkInDate, setCheckInDate] = useState(new Date());
-  const [checkOutDate, setCheckOutDate] = useState(addDays(new Date(), 1));
-  const [openPicker, setOpenPicker] = useState(null);
+const DatePicker = ({
+  onDatesChange,
+  minStay = 1,
+  className,
+  initialCheckIn,
+  initialCheckOut,
+}) => {
+  const [open, setOpen] = useState(false);
+  const [checkInDate, setCheckInDate] = useState(initialCheckIn || null);
+  const [checkOutDate, setCheckOutDate] = useState(initialCheckOut || null);
+  const [hoveredDate, setHoveredDate] = useState(null);
+  const [currentMonth, setCurrentMonth] = useState(startOfMonth(new Date()));
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
-  // Format date for display
-  const formatDate = (date) => format(date, "EEE, MMM d");
-  const formatDateLong = (date) => format(date, "EEEE, MMMM d, yyyy");
+  const handleDateSelect = (date) => {
+    if (!checkInDate || (checkInDate && checkOutDate)) {
+      setCheckInDate(date);
+      setCheckOutDate(null);
+      if (!isDesktop) setCurrentMonth(startOfMonth(date));
+    } else {
+      if (date > checkInDate) {
+        setCheckOutDate(date);
+        setOpen(false);
+      } else {
+        setCheckInDate(date);
+        setCheckOutDate(null);
+      }
+    }
+  };
 
-  // Ensure checkout date is after checkin date
   useEffect(() => {
-    if (checkOutDate <= checkInDate) {
-      setCheckOutDate(addDays(checkInDate, 1));
+    if (checkInDate && checkOutDate) {
+      onDatesChange?.({ checkIn: checkInDate, checkOut: checkOutDate });
     }
   }, [checkInDate, checkOutDate]);
 
-  // Calculate stay duration
-  if (type !== "transport") {
-    var stayDuration = () => {
-      const diffTime = Math.abs(checkOutDate - checkInDate);
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      return diffDays === 1 ? "1 night" : `${diffDays} nights`;
-    };
-  }
+  const getDateStatus = (date) => {
+    if (isSameDay(date, checkInDate)) return "start";
+    if (checkOutDate && isSameDay(date, checkOutDate)) return "end";
+    if (
+      checkInDate &&
+      checkOutDate &&
+      isWithinInterval(date, { start: checkInDate, end: checkOutDate })
+    )
+      return "in-range";
+    if (
+      hoveredDate &&
+      checkInDate &&
+      !checkOutDate &&
+      isWithinInterval(date, { start: checkInDate, end: hoveredDate })
+    )
+      return "hovered-range";
+    return "";
+  };
+
+  const displayedMonths = isDesktop
+    ? [currentMonth, addMonths(currentMonth, 1)]
+    : [currentMonth];
 
   return (
-    <div {...props}>
-      {/* Mobile Design (stacked) */}
-      <div className="md:hidden flex flex-col gap-4 w-full">
-        {/* Check-in Date Picker */}
-        <Popover>
-          <PopoverTrigger asChild>
-            <div className="flex items-center justify-between cursor-pointer p-4 rounded-lg shadow-sm w-full hover:border-blue-400 transition-colors bg-white dark:bg-zinc-800">
-              <div className="flex flex-col">
-                <span className="text-gray-500 dark:text-gray-300 text-xs font-medium mb-1">
-                  CHECK-IN
-                </span>
-                <span className="text-gray-900 dark:text-white font-semibold">
-                  {formatDate(checkInDate)}
-                </span>
-              </div>
-              <CalendarDays className="w-5 h-5 text-gray-500 dark:text-white" />
-            </div>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0 z-50" align="start">
-            <Calendar
-              mode="single"
-              selected={checkInDate}
-              onSelect={(date) => date && setCheckInDate(date)}
-              disabled={(date) => date < new Date()}
-              initialFocus
-            />
-          </PopoverContent>
-        </Popover>
-
-        {/* Check-out Date Picker */}
-        <Popover>
-          <PopoverTrigger asChild>
-            <div className="flex items-center justify-between cursor-pointer border p-4 rounded-lg shadow-sm w-full hover:border-blue-400 transition-colors bg-white dark:bg-zinc-800">
-              <div className="flex flex-col">
-                <span className="text-gray-500 dark:text-gray-300 text-xs font-medium mb-1">
-                  CHECK-OUT
-                </span>
-                <span className="text-gray-900 dark:text-white font-semibold">
-                  {formatDate(checkOutDate)}
-                </span>
-              </div>
-              <CalendarDays className="w-5 h-5 text-gray-500 dark:text-white" />
-            </div>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0 z-50" align="end">
-            <Calendar
-              mode="single"
-              selected={checkOutDate}
-              onSelect={(date) => date && setCheckOutDate(date)}
-              disabled={(date) => date <= checkInDate}
-              initialFocus
-            />
-          </PopoverContent>
-        </Popover>
-      </div>
-
-      {/* Desktop Design (combined elegant selector) */}
-      <div className="hidden md:block relative">
-        <Popover>
-          <PopoverTrigger asChild>
-            <div className="flex items-center justify-between cursor-pointer border shadow p-2 rounded-md w-full transition-shadow bg-white dark:bg-zinc-800">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="flex flex-col my-1 mb-2 justify-between">
-                    <span className="text-black font-medium dark:text-gray-300 text-sm mb-1 ">
-                      Check-in
-                    </span>
-                    <span className="text-gray-900  dark:text-white text-md font-bold">
-                      {formatDateLong(checkInDate)}
-                    </span>
-                  </div>
-
-                  <CalendarDays className="w-5 h-5 text-gray-500" />
-                </div>
-
-                <ArrowRight className="text-gray-400" />
-
-                <div className="flex items-center gap-3">
-                  <div className="flex flex-col my-1 mb-2 justify-between">
-                    <span className="text-black font-medium dark:text-gray-300 text-sm mb-1 ">
-                      Check-out
-                    </span>
-                    <span className="text-gray-900  dark:text-white text-md font-bold">
-                      {formatDateLong(checkOutDate)}
-                    </span>
-                  </div>
-
-                  <CalendarDays className="w-5 h-5 text-gray-500" />
-                </div>
-              </div>
-
-              <div className="flex gap-1">
-                <span className="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-sm font-medium dark:bg-blue-900 dark:text-blue-200">
-                  {type != "transport" && stayDuration()}
-                </span>
-              </div>
-            </div>
-          </PopoverTrigger>
-          <PopoverContent
-            className="w-auto p-0 z-50"
-            align="center"
-            side="top"
-            sideOffset={8}
-            avoidCollisions={false}
+    <div className={cn("w-full", className)}>
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className="w-full flex flex-col items-start justify-start text-left h-20"
           >
-            <div className="flex flex-col sm:flex-row  p-4 gap-4 sm:gap-8">
-              <div>
-                <h3 className="font-medium text-gray-700 dark:text-gray-200 mb-2">
-                  Check-in date
-                </h3>
-                <Calendar
-                  mode="single"
-                  selected={checkInDate}
-                  onSelect={(date) => date && setCheckInDate(date)}
-                  disabled={(date) => date < new Date()}
-                  initialFocus
-                />
+            <div>Select Date</div>
+            <div className="flex justify-between   w-full text-sm">
+              <div className="flex  justify-between w-[90%]  items-center gap-2">
+                <CalendarDays size={42} />
+                {checkInDate
+                  ? format(checkInDate, "eee, MMM d")
+                  : "Check-in-date"}
+                <div>—</div>
+                {checkOutDate
+                  ? format(checkOutDate, "eee, MMM d")
+                  : "Check-out-date"}
               </div>
-              <div>
-                <h3 className="font-medium text-gray-700 dark:text-gray-200 mb-2">
-                  Check-out date
-                </h3>
-                <Calendar
-                  mode="single"
-                  selected={checkOutDate}
-                  onSelect={(date) => date && setCheckOutDate(date)}
-                  disabled={(date) => date <= checkInDate}
-                  initialFocus
-                />
-              </div>
+              {/* {checkInDate && checkOutDate && (
+                <span className="ml-4 text-sm text-muted-foreground">
+                  {Math.ceil(
+                    (checkOutDate - checkInDate) / (1000 * 60 * 60 * 24)
+                  )}{" "}
+                  nights
+                </span>
+              )} */}
             </div>
-            {/* <div className="p-4 border-t">
-              <Button className="w-full" onClick={() => document.body.click()}>
-                Apply
+          </Button>
+        </PopoverTrigger>
+
+        <PopoverContent className="w-auto p-0" align="start">
+          <div className="flex flex-col p-4">
+            <div className="flex gap-4">
+              {displayedMonths.map((month, index) => (
+                <div key={index} className="flex flex-col gap-2">
+                  <div className="flex justify-between items-center px-4">
+                    <h3 className="font-semibold">
+                      {format(month, "MMMM yyyy")}
+                    </h3>
+                    <div className="flex gap-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setCurrentMonth(addMonths(month, -1))}
+                        disabled={isDesktop && index !== 0}
+                      >
+                        ←
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setCurrentMonth(addMonths(month, 1))}
+                        disabled={isDesktop && index !== 1}
+                      >
+                        →
+                      </Button>
+                    </div>
+                  </div>
+                  <Calendar
+                    month={month}
+                    mode="range"
+                    selected={{ from: checkInDate, to: checkOutDate }}
+                    onDayClick={handleDateSelect}
+                    onDayMouseEnter={setHoveredDate}
+                    onDayMouseLeave={() => setHoveredDate(null)}
+                    disabled={(date) => date < new Date()}
+                    className="border-0"
+                    dayClassName={(date) => {
+                      const status = getDateStatus(date);
+                      return cn(
+                        "h-9 w-9 rounded-full hover:bg-primary/90",
+                        status === "start" &&
+                          "bg-primary text-white hover:bg-primary",
+                        status === "end" &&
+                          "bg-primary text-white hover:bg-primary",
+                        status === "in-range" && "bg-primary/20",
+                        status === "hovered-range" && "bg-primary/10"
+                      );
+                    }}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div className="flex justify-between items-center mt-4 px-4">
+              <Button
+                variant="ghost"
+                onClick={() => {
+                  setCheckInDate(null);
+                  setCheckOutDate(null);
+                }}
+              >
+                <X className="mr-2 h-4 w-4" /> Clear
               </Button>
-            </div> */}
-          </PopoverContent>
-        </Popover>
-      </div>
+              <Button onClick={() => setOpen(false)}>Done</Button>
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>
     </div>
   );
 };
 
-export default ModernDatepicker;
+export default DatePicker;
