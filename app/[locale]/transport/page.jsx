@@ -5,6 +5,13 @@ import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import { Card, CardContent } from "@/components/ui/card";
 import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -14,7 +21,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Slider } from "@/components/ui/slider";
+
 import {
   Popover,
   PopoverContent,
@@ -36,6 +43,9 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import CustomGuestSelector from "../Components/PassengerPicker";
+import SecNav from "../Components/SecNav";
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
 
 // Mock data for transportation options
 const transportData = [
@@ -147,6 +157,24 @@ const TransportPage = () => {
     transportType: "all",
   });
   const [priceRange, setPriceRange] = useState([0, 50]);
+  const [lastscrollY, setlastscrollY] = useState(0);
+  const [isfixed, setisfixed] = useState(false);
+
+  useEffect(() => {
+    const handlescroll = () => {
+      const currentscrollY = window.scrollY;
+
+      if (currentscrollY > 50 && currentscrollY < lastscrollY) {
+        setisfixed(true);
+      } else {
+        setisfixed(false);
+      }
+      setlastscrollY(currentscrollY);
+    };
+
+    window.addEventListener("scroll", handlescroll);
+    return () => window.removeEventListener("scroll", handlescroll);
+  }, [lastscrollY]);
 
   // Filter options
   const vehicleTypes = ["Car", "Bus", "Train"];
@@ -263,53 +291,55 @@ const TransportPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-zinc-950 transition-colors duration-200">
-      <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen bg-white w-full dark:bg-zinc-950 transition-colors duration-200 pt-14">
+      <SecNav classnames="shadow-sm" />
+      <div className=" mt-16 transition-all duration-300">
         {/* Header with Theme Toggle */}
 
         {/* Search Form */}
-        <Card className="mb-8 dark:bg-zinc-900">
-          <CardContent className="">
-            <Tabs defaultValue="oneway" className="w-full mt-4">
-              <TabsList className="mb-4">
-                <TabsTrigger value="oneway">One-way</TabsTrigger>
-                <TabsTrigger value="roundtrip">Round-trip</TabsTrigger>
-              </TabsList>
 
-              <TabsContent value="oneway" className="space-y-4">
+        <div
+          className={`fixed transition-all hidden lg:grid duration-300 ease-in-out  bg-j-primary py-6 dark:bg-blue-950     ${
+            isfixed
+              ? " top-30  left-0 right-0 w-full shadow-md z-52 duration-300 ease-in-out transition-all  "
+              : "relative"
+          }`}
+        >
+          <div className="  max-w-7xl mx-auto ">
+            <Card className="py-4 ">
+              <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-4">
                   {/* Transport Type */}
-                  <div className="space-y-2">
-                    <Label>Transport Type</Label>
-                    <Select
-                      value={searchParams.transportType}
-                      onValueChange={(value) =>
-                        setSearchParams({
-                          ...searchParams,
-                          transportType: value,
-                        })
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select transport" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Types</SelectItem>
-                        <SelectItem value="Car">Car</SelectItem>
-                        <SelectItem value="Bus">Bus</SelectItem>
-                        <SelectItem value="Train">Train</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
+                  {/* <div className="space-y-2">
+                <Label>Transport Type</Label>
+                <Select
+                  value={searchParams.transportType}
+                  onValueChange={(value) =>
+                    setSearchParams({
+                      ...searchParams,
+                      transportType: value,
+                    })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select transport" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Types</SelectItem>
+                    <SelectItem value="Car">Car</SelectItem>
+                    <SelectItem value="Bus">Bus</SelectItem>
+                    <SelectItem value="Train">Train</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div> */}
 
                   {/* From */}
                   <div className="space-y-2">
-                    <Label>From</Label>
                     <div className="flex items-center relative">
                       <MapPin className="absolute left-3 h-4 w-4 text-gray-500" />
                       <Input
                         className="pl-10"
-                        placeholder="From"
+                        placeholder="City / Service Provider"
                         value={searchParams.from}
                         onChange={(e) =>
                           setSearchParams({
@@ -322,27 +352,26 @@ const TransportPage = () => {
                   </div>
 
                   {/* To */}
-                  <div className="space-y-2">
-                    <Label>To</Label>
-                    <div className="flex items-center relative">
-                      <MapPin className="absolute left-3 h-4 w-4 text-gray-500" />
-                      <Input
-                        className="pl-10"
-                        placeholder="To"
-                        value={searchParams.to}
-                        onChange={(e) =>
-                          setSearchParams({
-                            ...searchParams,
-                            to: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  </div>
+                  {/* <div className="space-y-2">
+                <Label>To</Label>
+                <div className="flex items-center relative">
+                  <MapPin className="absolute left-3 h-4 w-4 text-gray-500" />
+                  <Input
+                    className="pl-10"
+                    placeholder="To"
+                    value={searchParams.to}
+                    onChange={(e) =>
+                      setSearchParams({
+                        ...searchParams,
+                        to: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </div> */}
 
                   {/* Date */}
                   <div className="space-y-2">
-                    <Label>Date</Label>
                     <Popover>
                       <PopoverTrigger asChild>
                         <Button
@@ -364,131 +393,246 @@ const TransportPage = () => {
                     </Popover>
                   </div>
                   <div>
-                    <CustomGuestSelector type="transport" />
+                    <CustomGuestSelector type="transport" showlabel={false} />
                   </div>
-                  <Button
-                    className="w-full md:w-auto mt-4"
-                    onClick={handleSearch}
-                  >
+                  <Button className="w-full md:w-auto " onClick={handleSearch}>
                     Search Transport
                   </Button>
                 </div>
-              </TabsContent>
-
-              <TabsContent value="roundtrip">
-                <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                  {/* Transport Type */}
-                  <div className="space-y-2">
-                    <Label>Transport Type</Label>
-                    <Select
-                      value={searchParams.transportType}
-                      onValueChange={(value) =>
-                        setSearchParams({
-                          ...searchParams,
-                          transportType: value,
-                        })
-                      }
-                    >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select transport" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">All Types</SelectItem>
-                        <SelectItem value="Car">Car</SelectItem>
-                        <SelectItem value="Bus">Bus</SelectItem>
-                        <SelectItem value="Train">Train</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {/* From */}
-                  <div className="space-y-2">
-                    <Label>From</Label>
-                    <div className="flex items-center relative">
-                      <MapPin className="absolute left-3 h-4 w-4 text-gray-500" />
-                      <Input
-                        className="pl-10"
-                        placeholder="From"
-                        value={searchParams.from}
-                        onChange={(e) =>
-                          setSearchParams({
-                            ...searchParams,
-                            from: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  </div>
-
-                  {/* To */}
-                  <div className="space-y-2">
-                    <Label>To</Label>
-                    <div className="flex items-center relative">
-                      <MapPin className="absolute left-3 h-4 w-4 text-gray-500" />
-                      <Input
-                        className="pl-10"
-                        placeholder="To"
-                        value={searchParams.to}
-                        onChange={(e) =>
-                          setSearchParams({
-                            ...searchParams,
-                            to: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  </div>
-
-                  {/* Date */}
-                  <div className="space-y-2">
-                    <Label>Date</Label>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className="w-full justify-start text-left font-normal"
-                        >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {date ? format(date, "PPP") : "Pick a date"}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
-                        <Calendar
-                          mode="single"
-                          selected={date}
-                          onSelect={setDate}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </div>
-                  <div>
-                    <CustomGuestSelector type="transport" />
-                  </div>
-                </div>
-
-                <Button
-                  className="w-full md:w-auto mt-4"
-                  onClick={handleSearch}
-                >
-                  Search Transport
-                </Button>
-              </TabsContent>
-            </Tabs>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
 
         {/* Main Content Area with Filters and Listings */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="grid mx-4 grid-cols-1 lg:grid-cols-4 gap-8 lg:mt-8">
           {/* Filters Sidebar */}
-          <div className="lg:col-span-1">
+
+          <div className="lg:block hidden lg:col-span-1">
             <Card className="dark:bg-zinc-900">
               <CardContent className="pt-6">
                 <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
                   <Filter className="h-5 w-5" /> Filters
                 </h2>
 
+                {/* Active Filters Display */}
+                {activeFilters.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {activeFilters.map((filter, index) => (
+                      <Badge
+                        key={index}
+                        variant="secondary"
+                        className="flex items-center gap-1"
+                      >
+                        {filter.value}
+                        <X
+                          className="h-3 w-3 ml-1 cursor-pointer"
+                          onClick={() =>
+                            removeFilter(filter.type, filter.value)
+                          }
+                        />
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+
                 {/* Price Range */}
+                <div className="mb-6">
+                  <h3 className="font-medium mb-2">Price Range</h3>
+                  <div className="px-2">
+                    <Slider
+                      range
+                      min={0}
+                      max={50}
+                      value={priceRange}
+                      onChange={setPriceRange}
+                      trackStyle={[{ backgroundColor: "#017E7F" }]}
+                      handleStyle={[
+                        { borderColor: "#017E7F", backgroundColor: "white" },
+                        { borderColor: "#017E7F", backgroundColor: "white" },
+                      ]}
+                    />
+                    <div className="flex justify-between mt-2 text-sm text-gray-600 dark:text-gray-400">
+                      <span>${priceRange[0]}</span>
+                      <span>${priceRange[1]}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Vehicle Type Filter */}
+                {/* <div className="mb-6">
+                  <h3 className="font-medium mb-2">Vehicle Type</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {vehicleTypes.map((type) => (
+                      <Button
+                        key={type}
+                        variant="outline"
+                        size="sm"
+                        className={`flex items-center gap-2 ${
+                          activeFilters.some(
+                            (f) => f.type === "vehicle" && f.value === type
+                          )
+                            ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          if (
+                            activeFilters.some(
+                              (f) => f.type === "vehicle" && f.value === type
+                            )
+                          ) {
+                            removeFilter("vehicle", type);
+                          } else {
+                            addFilter("vehicle", type);
+                          }
+                        }}
+                      >
+                        {type === "Car" && <Car className="h-4 w-4" />}
+                        {type === "Bus" && <Bus className="h-4 w-4" />}
+                        {type === "Train" && <Train className="h-4 w-4" />}
+                        {type}
+                      </Button>
+                    ))}
+                  </div>
+                </div> */}
+
+                {/* Departure Location Filter */}
+                <div className="mb-6">
+                  <h3 className="font-medium mb-2">Pickup Location</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {departureLocations.map((location) => (
+                      <Button
+                        key={location}
+                        variant="outline"
+                        size="sm"
+                        className={`flex items-center gap-2 ${
+                          activeFilters.some(
+                            (f) =>
+                              f.type === "departure" && f.value === location
+                          )
+                            ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          if (
+                            activeFilters.some(
+                              (f) =>
+                                f.type === "departure" && f.value === location
+                            )
+                          ) {
+                            removeFilter("departure", location);
+                          } else {
+                            addFilter("departure", location);
+                          }
+                        }}
+                      >
+                        <MapPin className="h-4 w-4" />
+                        {location}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Arrival Location Filter */}
+                {/* <div className="mb-6">
+                  <h3 className="font-medium mb-2">Drop-off Location</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {arrivalLocations.map((location) => (
+                      <Button
+                        key={location}
+                        variant="outline"
+                        size="sm"
+                        className={`flex items-center gap-2 ${
+                          activeFilters.some(
+                            (f) => f.type === "arrival" && f.value === location
+                          )
+                            ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          if (
+                            activeFilters.some(
+                              (f) =>
+                                f.type === "arrival" && f.value === location
+                            )
+                          ) {
+                            removeFilter("arrival", location);
+                          } else {
+                            addFilter("arrival", location);
+                          }
+                        }}
+                      >
+                        <MapPin className="h-4 w-4" />
+                        {location}
+                      </Button>
+                    ))}
+                  </div>
+                </div> */}
+
+                {/* Reset Filters Button */}
+                <Button
+                  variant="outline"
+                  className="w-full"
+                  onClick={() => {
+                    setActiveFilters([]);
+                    setPriceRange([0, 50]);
+                  }}
+                >
+                  Reset Filters
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Mobile Bottom Sheet Filter */}
+          <div className="lg:hidden fixed bottom-4 left-0 right-0 z-50 flex justify-center">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button className="shadow-lg flex items-center gap-2 bg-primary">
+                  <Filter className="h-4 w-4" />
+                  Filters
+                  {activeFilters.length > 0 && (
+                    <Badge variant="secondary" className="ml-1">
+                      {activeFilters.length}
+                    </Badge>
+                  )}
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="bottom" className="h-[85vh] p-6 rounded-t-xl">
+                <SheetHeader className="mb-4">
+                  <SheetTitle className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Filter className="h-5 w-5" />
+                      Filters
+                    </div>
+                    <Button variant="ghost" size="sm">
+                      Done
+                    </Button>
+                  </SheetTitle>
+                </SheetHeader>
+
+                {/* Active Filters Display (Mobile) */}
+                {activeFilters.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {activeFilters.map((filter, index) => (
+                      <Badge
+                        key={index}
+                        variant="secondary"
+                        className="flex items-center gap-1"
+                      >
+                        {filter.value}
+                        <X
+                          className="h-3 w-3 ml-1 cursor-pointer"
+                          onClick={() =>
+                            removeFilter(filter.type, filter.value)
+                          }
+                        />
+                      </Badge>
+                    ))}
+                  </div>
+                )}
+
+                {/* Price Range (Mobile) */}
                 <div className="mb-6">
                   <h3 className="font-medium mb-2">Price Range</h3>
                   <div className="px-2">
@@ -506,121 +650,117 @@ const TransportPage = () => {
                   </div>
                 </div>
 
-                {/* Vehicle Type Filter */}
+                {/* Vehicle Type Filter (Mobile) */}
                 <div className="mb-6">
                   <h3 className="font-medium mb-2">Vehicle Type</h3>
-                  <div className=" flex items-center gap-2">
+                  <div className="flex flex-wrap gap-2">
                     {vehicleTypes.map((type) => (
-                      <div key={type} className="flex  items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className={` gap-2  ${
+                      <Button
+                        key={type}
+                        variant="outline"
+                        size="sm"
+                        className={`flex items-center gap-2 ${
+                          activeFilters.some(
+                            (f) => f.type === "vehicle" && f.value === type
+                          )
+                            ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          if (
                             activeFilters.some(
                               (f) => f.type === "vehicle" && f.value === type
                             )
-                              ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
-                              : ""
-                          }`}
-                          onClick={() => {
-                            if (
-                              activeFilters.some(
-                                (f) => f.type === "vehicle" && f.value === type
-                              )
-                            ) {
-                              removeFilter("vehicle", type);
-                            } else {
-                              addFilter("vehicle", type);
-                            }
-                          }}
-                        >
-                          {type === "Car" && <Car className="h-4 w-4" />}
-                          {type === "Bus" && <Bus className="h-4 w-4" />}
-                          {type === "Train" && <Train className="h-4 w-4" />}
-                          {type}
-                        </Button>
-                      </div>
+                          ) {
+                            removeFilter("vehicle", type);
+                          } else {
+                            addFilter("vehicle", type);
+                          }
+                        }}
+                      >
+                        {type === "Car" && <Car className="h-4 w-4" />}
+                        {type === "Bus" && <Bus className="h-4 w-4" />}
+                        {type === "Train" && <Train className="h-4 w-4" />}
+                        {type}
+                      </Button>
                     ))}
                   </div>
                 </div>
 
-                {/* Departure Location Filter */}
+                {/* Departure Location Filter (Mobile) */}
                 <div className="mb-6">
                   <h3 className="font-medium mb-2">Pickup Location</h3>
-                  <div className=" flex  flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2">
                     {departureLocations.map((location) => (
-                      <div key={location} className="">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className={`flex items-center gap-2  ${
+                      <Button
+                        key={location}
+                        variant="outline"
+                        size="sm"
+                        className={`flex items-center gap-2 ${
+                          activeFilters.some(
+                            (f) =>
+                              f.type === "departure" && f.value === location
+                          )
+                            ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          if (
                             activeFilters.some(
                               (f) =>
                                 f.type === "departure" && f.value === location
                             )
-                              ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
-                              : ""
-                          }`}
-                          onClick={() => {
-                            if (
-                              activeFilters.some(
-                                (f) =>
-                                  f.type === "departure" && f.value === location
-                              )
-                            ) {
-                              removeFilter("departure", location);
-                            } else {
-                              addFilter("departure", location);
-                            }
-                          }}
-                        >
-                          <MapPin className="h-4 w-4" />
-                          {location}
-                        </Button>
-                      </div>
+                          ) {
+                            removeFilter("departure", location);
+                          } else {
+                            addFilter("departure", location);
+                          }
+                        }}
+                      >
+                        <MapPin className="h-4 w-4" />
+                        {location}
+                      </Button>
                     ))}
                   </div>
                 </div>
 
-                {/* Arrival Location Filter */}
+                {/* Arrival Location Filter (Mobile) */}
                 <div className="mb-6">
                   <h3 className="font-medium mb-2">Drop-off Location</h3>
                   <div className="flex flex-wrap gap-2">
                     {arrivalLocations.map((location) => (
-                      <div key={location} className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className={`flex items-center gap-2 dark:bg-zinc-700  ${
+                      <Button
+                        key={location}
+                        variant="outline"
+                        size="sm"
+                        className={`flex items-center gap-2 ${
+                          activeFilters.some(
+                            (f) => f.type === "arrival" && f.value === location
+                          )
+                            ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
+                            : ""
+                        }`}
+                        onClick={() => {
+                          if (
                             activeFilters.some(
                               (f) =>
                                 f.type === "arrival" && f.value === location
                             )
-                              ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
-                              : ""
-                          }`}
-                          onClick={() => {
-                            if (
-                              activeFilters.some(
-                                (f) =>
-                                  f.type === "arrival" && f.value === location
-                              )
-                            ) {
-                              removeFilter("arrival", location);
-                            } else {
-                              addFilter("arrival", location);
-                            }
-                          }}
-                        >
-                          <MapPin className="h-4 w-4" />
-                          {location}
-                        </Button>
-                      </div>
+                          ) {
+                            removeFilter("arrival", location);
+                          } else {
+                            addFilter("arrival", location);
+                          }
+                        }}
+                      >
+                        <MapPin className="h-4 w-4" />
+                        {location}
+                      </Button>
                     ))}
                   </div>
                 </div>
 
-                {/* Reset Filters Button */}
+                {/* Reset Filters Button (Mobile) */}
                 <Button
                   variant="outline"
                   className="w-full"
@@ -631,8 +771,8 @@ const TransportPage = () => {
                 >
                   Reset Filters
                 </Button>
-              </CardContent>
-            </Card>
+              </SheetContent>
+            </Sheet>
           </div>
 
           {/* Transport Listings */}
@@ -640,7 +780,7 @@ const TransportPage = () => {
             {/* Sort Options */}
             <div className="flex justify-between items-center mb-4">
               <div>
-                <span className="text-gray-600 dark:text-gray-400">
+                <span className=" lg:text-2xl text- font-bold ">
                   {filteredData.length} transport options found
                 </span>
               </div>
@@ -700,60 +840,63 @@ const TransportPage = () => {
             <div className="space-y-4">
               {filteredData.length > 0 ? (
                 filteredData.map((transport) => (
-                  <Card
-                    key={transport.id}
-                    className="overflow-hidden dark:bg-zinc-900"
-                  >
-                    <div className="flex flex-col md:flex-row">
-                      <div className="md:w-1/4">
-                        <img
-                          src={transport.image}
-                          alt={transport.name}
-                          className="h-full w-full object-contain"
-                        />
-                      </div>
-                      <div className="p-4 md:p-6 md:w-3/4">
-                        <div className="flex flex-col md:flex-row justify-between">
-                          <div>
-                            <div className="flex items-center gap-2 mb-2">
-                              {transport.type === "Car" && (
-                                <Car className="h-5 w-5 text-blue-500" />
-                              )}
-                              {transport.type === "Bus" && (
-                                <Bus className="h-5 w-5 text-green-500" />
-                              )}
-                              {transport.type === "Train" && (
-                                <Train className="h-5 w-5 text-red-500" />
-                              )}
-                              <h3 className="text-lg font-bold">
-                                {transport.name}
-                              </h3>
-                              <Badge variant="outline">{transport.type}</Badge>
-                            </div>
-                            <p className="text-gray-600 dark:text-gray-400 mb-2">
-                              by {transport.provider}
-                            </p>
-                            <div className="mb-4">
-                              <span className="text-yellow-500">★</span>
-                              <span className="font-bold">
-                                {transport.rating}
-                              </span>
-                              <span className="text-gray-500 dark:text-gray-400">
-                                ({transport.reviews} reviews)
-                              </span>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                              ${transport.price}
-                            </div>
-                            <p className="text-gray-500 dark:text-gray-400 text-sm">
-                              per K/M
-                            </p>
-                          </div>
+                  <div className="group relative w-full inline-block p-0.5 rounded-2xl overflow-hidden border-transparent hover:border-transparent transition-all duration-300">
+                    <Card
+                      key={transport.id}
+                      className="overflow-hidden relative z-10 p-0 m-0 dark:bg-zinc-900"
+                    >
+                      <div className="flex flex-col md:flex-row">
+                        <div className="md:w-1/4">
+                          <img
+                            src={transport.image}
+                            alt={transport.name}
+                            className="h-full w-full object-contain"
+                          />
                         </div>
+                        <div className="p-4 md:p-6 md:w-3/4">
+                          <div className="flex flex-col md:flex-row justify-between">
+                            <div>
+                              <div className="flex items-center gap-2 mb-2">
+                                {transport.type === "Car" && (
+                                  <Car className="h-5 w-5 text-blue-500" />
+                                )}
+                                {transport.type === "Bus" && (
+                                  <Bus className="h-5 w-5 text-green-500" />
+                                )}
+                                {transport.type === "Train" && (
+                                  <Train className="h-5 w-5 text-red-500" />
+                                )}
+                                <h3 className="text-lg font-bold">
+                                  {transport.name}
+                                </h3>
+                                <Badge variant="outline">
+                                  {transport.type}
+                                </Badge>
+                              </div>
+                              <p className="text-gray-600 dark:text-gray-400 mb-2">
+                                by {transport.provider}
+                              </p>
+                              <div className="mb-4">
+                                <span className="text-yellow-500">★</span>
+                                <span className="font-bold">
+                                  {transport.rating}
+                                </span>
+                                <span className="text-gray-500 dark:text-gray-400">
+                                  ({transport.reviews} reviews)
+                                </span>
+                              </div>
+                            </div>
+                            <div className="text-right">
+                              <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                                ${transport.price}
+                              </div>
+                              <p className="text-gray-500 dark:text-gray-400 text-sm">
+                                per K/M
+                              </p>
+                            </div>
+                          </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                           <div>
                             <div className="flex items-center gap-2">
                               <div className="text-gray-600 dark:text-gray-400">
@@ -786,22 +929,24 @@ const TransportPage = () => {
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </div> */}
 
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {transport.features.map((feature, index) => (
-                            <Badge key={index} variant="secondary">
-                              {feature}
-                            </Badge>
-                          ))}
-                        </div>
+                          <div className="flex flex-wrap gap-2 mb-4">
+                            {transport.features.map((feature, index) => (
+                              <Badge key={index} variant="secondary">
+                                {feature}
+                              </Badge>
+                            ))}
+                          </div>
 
-                        {/* <div className="flex justify-end">
+                          {/* <div className="flex justify-end">
                           <Button>Select</Button>
                         </div> */}
+                        </div>
                       </div>
-                    </div>
-                  </Card>
+                    </Card>
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 transition-opacity duration-300" />
+                  </div>
                 ))
               ) : (
                 <div className="text-center py-12 border rounded-lg bg-gray-50 dark:bg-zinc-900 dark:border-zinc-700">

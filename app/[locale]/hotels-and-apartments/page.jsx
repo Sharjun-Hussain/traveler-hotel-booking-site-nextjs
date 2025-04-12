@@ -103,7 +103,7 @@ export default function HotelsListingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 w-full mx-auto  dark:bg-zinc-900/90 pt-14">
+    <div className="min-h-screen bg-gray-50 w-full mx-auto duration-300  dark:bg-zinc-900/90 pt-14">
       <SecNav classnames="shadow-sm" />
       <div className="mt-14">
         {/* Search Bar */}
