@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Popover,
   PopoverContent,
@@ -8,12 +8,27 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { ChevronDown } from "lucide-react";
 
-const CustomGuestSelector = ({ showlabel = true, type = "hotel" }) => {
+const CustomGuestSelector = ({
+  showlabel = true,
+  type = "hotel",
+  onSelectData,
+}) => {
   const [adults, setAdults] = useState(2);
   const [Infants, setInfants] = useState(0);
   const [children, setChildren] = useState(0);
   const [rooms, setRooms] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (onSelectData) {
+      onSelectData({
+        adults,
+        children,
+        rooms,
+        Infants,
+      });
+    }
+  }, [adults, children, rooms, Infants]);
 
   const increment = (setter, value, max = 10) => {
     if (value < max) setter(value + 1);

@@ -275,7 +275,7 @@ export default function HotelDetails() {
   };
 
   return (
-    <div className="bg-white min-h-screen">
+    <div className="bg-white mt-14">
       <Head>
         <title>{hotelData.name} | Luxury Stay</title>
         <meta name="description" content={hotelData.description} />

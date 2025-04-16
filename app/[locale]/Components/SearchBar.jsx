@@ -19,17 +19,31 @@ import { MultiSelect } from "@/components/ui/MultipleSelector";
 import { Cat, Dog, Fish, Rabbit, Turtle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { addDays } from "date-fns";
+import { z } from "zod";
+import { FormProvider, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function SearchBar() {
   const [searchType, setSearchType] = useState("hotels");
   const [selectedFoodType, setselectedFoodType] = useState([]);
+
   const router = useRouter();
 
-  const handleDatesChange = ({ checkIn, checkOut }) => {
-    console.log("Check-in:", checkIn);
-    console.log("Check-out:", checkOut);
-    // Update your state or perform actions with the selected dates
+  const handleDataFromGuestSelector = (data) => {
+    console.log("Guest Selector Data:", data);
+    setDataFromGuestSelector(data);
+    // Handle the data as needed
   };
+
+  const foodtype = [
+    {
+      value: "specialty-restaurant",
+      label: "Specialty Restaurant",
+      icon: Turtle,
+    },
+    { value: "cuisine-based", label: "Cuisine Based", icon: Cat },
+    { value: "dietary-preference", label: "Dietary Preference", icon: Dog },
+  ];
 
   const handleSearchClick = () => {
     const routes = {
@@ -44,15 +58,64 @@ export default function SearchBar() {
     router.push(route);
   };
 
-  const foodtype = [
-    {
-      value: "specialty-restaurant",
-      label: "Specialty Restaurant",
-      icon: Turtle,
+  const HotelsSchema = z.object({
+    travelorType: z.string().min(4, "Travelor type is required!"),
+    DestinationOrHotel: z.string().min(4, "Destination or hotel is required!"),
+    GuestsAndRooms: z.object({
+      adults: z.number().min(1, "At least one adult is required!"),
+      children: z.number(),
+      rooms: z.number().min(1, "At least one room is required!"),
+      Infants: z.number(),
+    }),
+    dates: z
+      .object({
+        checkIn: z
+          .date()
+          .min(new Date(), { message: "Check-in date must be in the future" }),
+        checkOut: z
+          .date()
+          .min(new Date(), { message: "Check-out date must be in the future" }),
+      })
+      .refine((data) => data.checkOut > data.checkIn, {
+        message: "Check-out date must be after check-in date",
+        path: ["checkOut"],
+      }),
+  });
+
+  const methods = useForm({
+    resolver: zodResolver(HotelsSchema),
+    defaultValues: {
+      travelorType: "Budget-Tourer-Backpacker",
+      DestinationOrHotel: "Colombo",
+      GuestsAndRooms: {
+        adults: 1,
+        children: 0,
+        rooms: 1,
+        Infants: 0,
+      },
+      dates: {
+        checkIn: new Date(),
+        checkOut: addDays(new Date(), 3),
+      },
     },
-    { value: "cuisine-based", label: "Cuisine Based", icon: Cat },
-    { value: "dietary-preference", label: "Dietary Preference", icon: Dog },
-  ];
+  });
+  const { setValue, watch } = methods;
+
+  const handleDatesChange = ({ checkIn, checkOut }) => {
+    setValue("dates.checkIn", checkIn);
+    setValue("dates.checkOut", checkOut);
+  };
+
+  const handleGuestChange = (data) => {
+    setValue("GuestsAndRooms.adults", data.adults);
+    setValue("GuestsAndRooms.children", data.children);
+    setValue("GuestsAndRooms.rooms", data.rooms);
+    setValue("GuestsAndRooms.Infants", data.Infants);
+  };
+  const onSubmit = (data) => {
+    alert("form Submitted");
+    console.log(data);
+  };
 
   return (
     <Card className="w-full relative max-w-7xl bg-background/95 backdrop-blur-sm border-none p-0  shadow-lg">
@@ -98,68 +161,87 @@ export default function SearchBar() {
 
           {/* Search Forms */}
           <TabsContent value="hotels" className="lg:mt-6 ">
-            <div className="grid grid-cols-1  sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-8  gap-3 sm:gap-4">
-              <div className="sm:col-span-1 md:col-span-1  lg:col-span-1 xl:col-span-2">
-                <div className="p-2 bg-white border shadow rounded-md transition-shadow">
-                  <Label className="text-xs sm:text-sm mb-1 block">
-                    Travellor Type
-                  </Label>
-                  <Select defaultValue="1a0c">
-                    <SelectTrigger className="text-sm ">
-                      <SelectValue placeholder="Select guests" />
-                    </SelectTrigger>
-                    <SelectContent
-                      className="w-[200px] max-w-full"
-                      position="popper"
-                      sideOffset={4}
-                    >
-                      <SelectItem value="1a0c">
-                        Budget Tourer/Backpacker
-                      </SelectItem>
-                      <SelectItem value="Business Traveler">
-                        Business Traveler
-                      </SelectItem>
-                      <SelectItem value="Couple">Couple</SelectItem>
-                      <SelectItem value="2a0c">Digital Nomad</SelectItem>
-                      <SelectItem value="2a0c">Family</SelectItem>
-                      <SelectItem value="2a0c">Group</SelectItem>
-                      <SelectItem value="2a0c">Honeymooners</SelectItem>
-                      <SelectItem value="2a0c">Researcher/Student</SelectItem>
-                      <SelectItem value="2a0c">Solo Female</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <div className="sm:col-span-1   md:col-span-1  lg:col-span-1 xl:col-span-2">
-                <div className="p-2 bg-white border shadow rounded-md transition-shadow">
-                  <Label className="text-xs sm:text-sm mb-1 block">
-                    Destination / Hotel
-                  </Label>
-                  <Input
-                    type="text"
-                    placeholder="Where are you going?"
-                    className="text-sm "
-                  />
-                </div>
-              </div>
-              <div className="lg:col-span-1 md:col-span-1 sm:col-span-1 xl:col-span-2">
-                <div className="p-2 bg-white border shadow rounded-md transition-shadow">
-                  <CustomGuestSelector />
-                </div>
-              </div>
+            <FormProvider {...methods}>
+              <form onSubmit={methods.handleSubmit(onSubmit)}>
+                <div className="grid grid-cols-1  sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-8  gap-3 sm:gap-4">
+                  <div className="sm:col-span-1 md:col-span-1  lg:col-span-1 xl:col-span-2">
+                    <div className="p-2 bg-white border shadow rounded-md transition-shadow">
+                      <Label className="text-xs sm:text-sm mb-1 block">
+                        Travellor Type
+                      </Label>
+                      <Select
+                        {...methods.register("travelorType")}
+                        defaultValue="Budget-Tourer-Backpacker"
+                      >
+                        <SelectTrigger className="text-sm ">
+                          <SelectValue placeholder="Select guests" />
+                        </SelectTrigger>
+                        <SelectContent
+                          className="w-[200px] max-w-full"
+                          position="popper"
+                          sideOffset={4}
+                        >
+                          <SelectItem value="Budget-Tourer-Backpacker">
+                            Budget Tourer/Backpacker
+                          </SelectItem>
+                          <SelectItem value="Business Traveler">
+                            Business Traveler
+                          </SelectItem>
+                          <SelectItem value="Couple">Couple</SelectItem>
+                          <SelectItem value="Digital-Nomad">
+                            Digital Nomad
+                          </SelectItem>
+                          <SelectItem value="Family">Family</SelectItem>
+                          <SelectItem value="Group">Group</SelectItem>
+                          <SelectItem value="Honeymooners">
+                            Honeymooners
+                          </SelectItem>
+                          <SelectItem value="Researcher-Student">
+                            Researcher/Student
+                          </SelectItem>
+                          <SelectItem value="Solo-Female">
+                            Solo Female
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                  <div className="sm:col-span-1   md:col-span-1  lg:col-span-1 xl:col-span-2">
+                    <div className="p-2 bg-white border shadow rounded-md transition-shadow">
+                      <Label className="text-xs sm:text-sm mb-1 block">
+                        Destination / Hotel
+                      </Label>
+                      <Input
+                        {...methods.register("DestinationOrHotel")}
+                        type="text"
+                        placeholder="Where are you going?"
+                        className="text-sm "
+                      />
+                    </div>
+                  </div>
+                  <div className="lg:col-span-1 md:col-span-1 sm:col-span-1 xl:col-span-2">
+                    <div className="p-2 bg-white border shadow rounded-md transition-shadow">
+                      <CustomGuestSelector onSelectData={handleGuestChange} />
+                    </div>
+                  </div>
 
-              <div className="sm:col-span-3 lg:col-span-1 xl:col-span-2">
-                <ModernDatepicker
-                  onDatesChange={({ checkIn, checkOut }) =>
-                    console.log(checkIn, checkOut)
-                  }
-                  minStay={2}
-                  className="my-custom-class"
-                  // initialCheckIn={new Date()}
-                  // initialCheckOut={addDays(new Date(), 3)}
-                />
-              </div>
-            </div>
+                  <div className="sm:col-span-3 lg:col-span-1 xl:col-span-2">
+                    <ModernDatepicker
+                      onDatesChange={handleDatesChange}
+                      minStay={2}
+                      className="my-custom-class"
+                      initialCheckIn={watch("dates.checkIn")}
+                      initialCheckOut={watch("dates.checkOut")}
+                    />
+                  </div>
+                  <div className="sm:col-span-3 lg:col-span-3 md:grid-cols-3 xl:col-span-8">
+                    <Button type="submit" className="w-full text-sm">
+                      Search
+                    </Button>
+                  </div>
+                </div>
+              </form>
+            </FormProvider>
           </TabsContent>
 
           <TabsContent value="homestay" className="lg:mt-6">
@@ -319,9 +401,9 @@ export default function SearchBar() {
 
           {/* Search Button */}
           <div className="mt-4 sm:mt-6">
-            <Button onClick={handleSearchClick} className="w-full text-sm">
+            {/* <Button onClick={handleSearchClick} className="w-full text-sm">
               Search
-            </Button>
+            </Button> */}
           </div>
         </Tabs>
       </CardContent>
