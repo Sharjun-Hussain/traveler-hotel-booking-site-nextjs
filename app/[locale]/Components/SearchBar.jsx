@@ -84,20 +84,20 @@ export default function SearchBar() {
 
   const methods = useForm({
     resolver: zodResolver(HotelsSchema),
-    defaultValues: {
-      travelorType: "Budget-Tourer-Backpacker",
-      DestinationOrHotel: "Colombo",
-      GuestsAndRooms: {
-        adults: 1,
-        children: 0,
-        rooms: 1,
-        Infants: 0,
-      },
-      dates: {
-        checkIn: new Date(),
-        checkOut: addDays(new Date(), 3),
-      },
-    },
+    // defaultValues: {
+    //   travelorType: "Budget-Tourer-Backpacker",
+    //   DestinationOrHotel: "Colombo",
+    //   GuestsAndRooms: {
+    //     adults: 1,
+    //     children: 0,
+    //     rooms: 1,
+    //     Infants: 0,
+    //   },
+    //   dates: {
+    //     checkIn: new Date(),
+    //     checkOut: addDays(new Date(), 3),
+    //   },
+    // },
   });
   const { setValue, watch } = methods;
 
@@ -212,10 +212,16 @@ export default function SearchBar() {
                         Destination / Hotel
                       </Label>
                       <Input
-                        {...methods.register("DestinationOrHotel")}
+                        {...methods.register("DestinationOrHotel", {
+                          required: "This field is required", // or minLength: 1
+                        })}
                         type="text"
                         placeholder="Where are you going?"
-                        className="text-sm "
+                        className={`text-sm border ${
+                          methods.formState.errors.DestinationOrHotel
+                            ? "border-red-300"
+                            : "border-gray-300"
+                        } `}
                       />
                     </div>
                   </div>
@@ -235,7 +241,13 @@ export default function SearchBar() {
                     />
                   </div>
                   <div className="sm:col-span-3 lg:col-span-3 md:grid-cols-3 xl:col-span-8">
-                    <Button type="submit" className="w-full text-sm">
+                    <Button
+                      // disabled={
+                      //   !methods.formState.isDirty || methods.formState.isValid
+                      // }
+                      type="submit"
+                      className="w-full text-sm"
+                    >
                       Search
                     </Button>
                   </div>
