@@ -67,6 +67,7 @@ import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import LanguageDialog from "./LangModel";
 import CurrencyDialog from "./CurrencyModel";
+import HostRegistrationWizard from "@/app/List-Your_property/Registration";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -463,9 +464,7 @@ export default function Navbar() {
           {/* Auth, Currency, Language, Theme - Desktop */}
           <div className="hidden lg:flex items-center space-x-3">
             <div className="flex gap-2 justify-center items-center">
-              <Button variant="ghost" className="bg-white/80 backdrop-blur-sm">
-                List my property
-              </Button>
+              <HostRegistrationWizard />
               <Button variant="ghost" className="bg-white/80 backdrop-blur-sm">
                 <ShoppingCart className="h-5 w-5 mr-1" />
               </Button>

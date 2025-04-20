@@ -36,7 +36,7 @@ export default function RoomsTab({ rooms, handleRoomClick }) {
                   <div className="flex justify-between">
                     <h3 className="text-xl font-bold mb-1">{room.name}</h3>
                     <div className="text-right">
-                      <div className="text-lg font-bold text-blue-600">
+                      <div className="text-lg font-bold text-j-primary">
                         ${room.discountPrice || room.price}
                         <span className="text-sm font-normal text-gray-600">
                           {" "}
@@ -78,12 +78,14 @@ export default function RoomsTab({ rooms, handleRoomClick }) {
                   </div>
                   <p className="text-gray-700 mb-3">{room.description}</p>
 
-                  <Button
-                    onClick={() => handleRoomClick(room)}
-                    className="w-full md:w-auto bg-blue-600 hover:bg-blue-700"
-                  >
-                    Select Room
-                  </Button>
+                  <div className="flex mr-auto">
+                    <Button
+                      onClick={() => handleRoomClick(room)}
+                      className="w-full md:w-auto bg-j-primary hover:bg-j-secondary ml-auto"
+                    >
+                      Select Room
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

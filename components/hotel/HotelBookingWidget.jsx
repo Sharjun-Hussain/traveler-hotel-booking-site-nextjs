@@ -31,7 +31,7 @@ export default function HotelBookingWidget({
           <div>
             {selectedRoom?.discountPrice ? (
               <>
-                <span className="text-2xl font-bold text-blue-600">
+                <span className="text-2xl font-bold text-j-primary">
                   ${selectedRoom.discountPrice}
                 </span>
                 <span className="text-sm text-gray-600 ml-1">/ night</span>
@@ -259,7 +259,7 @@ export default function HotelBookingWidget({
             <h4 className="font-medium">Selected room</h4>
             <button
               onClick={() => setSelectedRoom(null)}
-              className="text-blue-600 text-sm"
+              className="text-j-primary text-sm"
             >
               Change
             </button>
@@ -337,7 +337,7 @@ export default function HotelBookingWidget({
           }
           className={`w-full py-3 px-4 rounded-lg text-white font-medium ${
             selectedRoom && selectedDates.checkIn && selectedDates.checkOut
-              ? "bg-blue-600 hover:bg-blue-700"
+              ? "bg-j-primary hover:bg-j-secondary"
               : "bg-gray-400 cursor-not-allowed"
           }`}
         >
