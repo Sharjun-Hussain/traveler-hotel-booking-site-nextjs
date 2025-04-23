@@ -27,7 +27,7 @@ import DynamicIcon from "@/components/DynamicIcon";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-export default function OverviewTab({ hotelData }) {
+export default function OverviewTab({ hotelData, handleRoomClick }) {
   const [expandedAmenities, setExpandedAmenities] = useState(false);
   const [showRoomDetails, setShowRoomDetails] = useState({});
 

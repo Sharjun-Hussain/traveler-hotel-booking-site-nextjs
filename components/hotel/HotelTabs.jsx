@@ -17,30 +17,27 @@ export default function HotelTabs({
     <div className={`${className}`}>
       <div className="border-b mb-6">
         <div className="flex space-x-8">
-          {[
-            "Overview",
-            "Rooms",
-            "Facilities",
-            "Location",
-            "Reviews",
-            "Policies",
-          ].map((tab) => (
-            <button
-              key={tab}
-              className={`pb-4 px-1 font-medium ${
-                activeTab === tab.toLowerCase()
-                  ? "text-blue-600 border-b-2 border-blue-600"
-                  : "text-gray-600 hover:text-gray-800"
-              }`}
-              onClick={() => setActiveTab(tab.toLowerCase())}
-            >
-              {tab}
-            </button>
-          ))}
+          {["Overview", "Facilities", "Location", "Reviews", "Policies"].map(
+            (tab) => (
+              <button
+                key={tab}
+                className={`pb-4 px-1 font-medium ${
+                  activeTab === tab.toLowerCase()
+                    ? "text-blue-600 border-b-2 border-blue-600"
+                    : "text-gray-600 hover:text-gray-800"
+                }`}
+                onClick={() => setActiveTab(tab.toLowerCase())}
+              >
+                {tab}
+              </button>
+            )
+          )}
         </div>
       </div>
 
-      {activeTab === "overview" && <OverviewTab hotelData={hotelData} />}
+      {activeTab === "overview" && (
+        <OverviewTab hotelData={hotelData} handleRoomClick={handleRoomClick} />
+      )}
       {activeTab === "rooms" && (
         <RoomsTab rooms={hotelData.rooms} handleRoomClick={handleRoomClick} />
       )}
