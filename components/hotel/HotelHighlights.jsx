@@ -3,7 +3,7 @@ import { Award, ThumbsUp, DollarSign } from "lucide-react";
 export default function HotelHighlights() {
   return (
     <div className=" border border-blue-100 bg-j-primary/10  rounded-lg p-4 mb-6">
-      <h2 className="font-bold text-lg mb-3">Property highlights</h2>
+      {/* <h2 className="font-bold text-lg mb-3">Property highlights</h2> */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="flex items-start">
           <div className="bg-j-secondary/20 p-2 rounded-full mr-3">

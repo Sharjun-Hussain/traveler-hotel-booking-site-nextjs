@@ -48,11 +48,11 @@ export default function HotelBookingWidget({
                     hotelData.price}
                 </span>
                 <span className="text-sm text-gray-600 ml-1">/ night</span>
-                {hotelData.discountPrice && (
+                {/* {hotelData.discountPrice && (
                   <div className="text-sm text-gray-500 line-through">
                     ${hotelData.price}
                   </div>
-                )}
+                )} */}
               </>
             )}
           </div>
@@ -75,7 +75,7 @@ export default function HotelBookingWidget({
       </div>
 
       {/* Date Picker */}
-      <div className="p-4 border-b">
+      <div className="px-4 pt-2 ">
         <label className="block font-medium mb-2">Your stay</label>
         <div className="grid grid-cols-2 gap-2">
           <Popover>
@@ -128,7 +128,7 @@ export default function HotelBookingWidget({
       </div>
 
       {/* Guest Selector */}
-      <div className="p-4 border-b">
+      <div className="px-4 py-2 ">
         <label className="block font-medium mb-2">Guests</label>
         <Popover>
           <PopoverTrigger asChild>
@@ -254,7 +254,7 @@ export default function HotelBookingWidget({
 
       {/* Selected Room */}
       {selectedRoom && (
-        <div className="p-4 border-b">
+        <div className="px-4 py-2">
           <div className="flex justify-between items-center mb-2">
             <h4 className="font-medium">Selected room</h4>
             <button
@@ -285,9 +285,9 @@ export default function HotelBookingWidget({
       )}
 
       {/* Price Breakdown */}
-      <div className="p-4 border-b">
+      <div className="px-4 py-1 ">
         <h4 className="font-medium mb-3">Price details</h4>
-        <div className="space-y-2">
+        <div className="space-y-1">
           <div className="flex justify-between">
             <span className="text-gray-600">
               $
@@ -321,7 +321,7 @@ export default function HotelBookingWidget({
             </span>
           </div>
         </div>
-        <Separator className="my-3" />
+        <Separator className="my-1" />
         <div className="flex justify-between font-bold">
           <span>Total</span>
           <span>${totalPrice() + serviceFee()}</span>
@@ -354,7 +354,7 @@ export default function HotelBookingWidget({
               : ""}
           </p>
         )}
-        <div className="mt-4 text-sm text-gray-600 text-center">
+        <div className="mt-1 text-sm text-gray-600 text-center">
           No payment required at this time
         </div>
       </div>
