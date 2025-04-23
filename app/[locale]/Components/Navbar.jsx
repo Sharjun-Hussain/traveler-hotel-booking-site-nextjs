@@ -451,7 +451,7 @@ export default function Navbar() {
               {mainNavItems.map((item) => (
                 <Link
                   key={item.href}
-                  className="hover:text-primary rounded-full  border-1 px-4 py-1 bg-j-secondary/60 transition-colors  hover:bg-j-secondary-hover font-semibold"
+                  className=" rounded-full  border-1 px-4 py-1 bg-j-primary text-white transition-colors  hover:bg-j-primary-hover font-semibold"
                   href={item.href}
                   id={item.href}
                 >

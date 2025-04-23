@@ -48,6 +48,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
+import axios from "axios";
 
 export default function HostRegistrationWizard() {
   const [step, setStep] = useState(1);
@@ -153,12 +154,50 @@ export default function HostRegistrationWizard() {
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
 
-  const handleSubmit = (e) => {
+  //   const handleSubmit = (e) => {
+  //     e.preventDefault();
+  //     // Handle form submission - API call would go here
+  //     console.log("Form submitted:", formData);
+  //     // You would typically send this data to your backend
+  //     setStep(step + 1); // Go to success screen
+  //   };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission - API call would go here
-    console.log("Form submitted:", formData);
-    // You would typically send this data to your backend
-    setStep(step + 1); // Go to success screen
+
+    try {
+      const response = await axios.post(
+        "http://192.168.1.11:3000/api/v1/merchants/register",
+        {
+          businessName: "Dream Homes",
+          businessRegistrationNumber: "REG123456",
+          businessType: "hotel",
+          email: "merchant@example.com",
+          password: "securePassword123",
+          isSriLankan: true,
+          nicNumber: "123456789V",
+          passportNumber: "",
+          address: "123 Galle Road",
+          city: "Colombo",
+          country: "Sri Lanka",
+          phoneNumber: "+94712345678",
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Registration successful:", response.data);
+      setStep(step + 1);
+    } catch (error) {
+      console.error(
+        "Registration failed:",
+        error.response ? error.response.data : error.message
+      );
+      // You might want to add error handling UI here
+    }
   };
 
   const renderStep = () => {
@@ -913,7 +952,7 @@ export default function HostRegistrationWizard() {
     <div>
       <Sheet>
         <SheetTrigger asChild>
-          <Button className="bg-gradient-to-r from-j-primary to-j-secondary  text-white px-6 py-2 rounded-md font-medium flex items-center gap-2">
+          <Button className="  px-6 py-2 rounded-md font-medium flex items-center gap-2">
             <Building size={18} />
             List Your Property
           </Button>

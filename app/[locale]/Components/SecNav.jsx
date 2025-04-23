@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import {
   Home,
@@ -39,8 +39,17 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
+import axios from "axios";
 
 const SecNav = ({ classnames }) => {
+  // useEffect(() => {
+  //   const fetchSecNavItems = async () => {
+  //     const secnavitems = await axios.get("http://192.168.1.11:9797/");
+  //   };
+
+  //   fetchSecNavItems();
+  // }, []);
+
   const mainNavItems = [
     {
       title: "Transport",
@@ -464,9 +473,11 @@ const SecNav = ({ classnames }) => {
                 {item.isDropdown ? (
                   <>
                     <NavigationMenuTrigger className="h-16 px-4 font-normal">
-                      <div className="flex flex-col items-center justify-center space-y-1">
+                      <div className="flex flex-col items-center justify-center space-y-1 text-j-primary">
                         {item.icon}
-                        <span className="text-xs">{item.title}</span>
+                        <span className="text-xs text-black font-semibold">
+                          {item.title}
+                        </span>
                       </div>
                     </NavigationMenuTrigger>
 
