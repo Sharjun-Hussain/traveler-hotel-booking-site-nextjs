@@ -227,7 +227,10 @@ export default function SearchBar() {
                   </div>
                   <div className="lg:col-span-1 md:col-span-1 sm:col-span-1 xl:col-span-2">
                     <div className="p-2 bg-white border shadow rounded-md transition-shadow">
-                      <CustomGuestSelector onSelectData={handleGuestChange} />
+                      <CustomGuestSelector
+                        type="general"
+                        onSelectData={handleGuestChange}
+                      />
                     </div>
                   </div>
 

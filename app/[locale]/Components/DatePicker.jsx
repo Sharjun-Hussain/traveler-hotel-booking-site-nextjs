@@ -41,7 +41,7 @@ const DatePicker = ({
     } else {
       if (date > checkInDate) {
         setCheckOutDate(date);
-        setOpen(false);
+        // setOpen(false);
       } else {
         setCheckInDate(date);
         setCheckOutDate(null);

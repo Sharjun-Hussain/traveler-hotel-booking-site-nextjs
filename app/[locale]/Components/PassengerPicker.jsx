@@ -50,6 +50,11 @@ const CustomGuestSelector = ({
       if (Infants >= 0)
         parts.push(`${Infants} Infant${Infants !== 1 ? "s" : ""}`);
     }
+    if (type == "general") {
+      if (rooms > 0) parts.push(`${rooms} Room${rooms !== 1 ? "s" : ""}`);
+      if (Infants >= 0)
+        parts.push(`${Infants} Infant${Infants !== 1 ? "s" : ""}`);
+    }
 
     return parts.join(", ");
   };
@@ -136,65 +141,67 @@ const CustomGuestSelector = ({
             </div>
 
             {/* Rooms selector (only for hotels) */}
-            {type === "hotel" && (
-              <div className="flex items-center justify-between">
-                <Label className="font-medium">Rooms</Label>
-                <div className="flex items-center">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="h-8 w-8 rounded-full"
-                    onClick={() => decrement(setRooms, rooms, 1)}
-                    disabled={rooms <= 1}
-                  >
-                    <span className="text-lg font-normal">-</span>
-                  </Button>
-                  <span className="w-10 text-center">{rooms}</span>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="h-8 w-8 rounded-full"
-                    onClick={() => increment(setRooms, rooms)}
-                  >
-                    <span className="text-lg font-normal">+</span>
-                  </Button>
+            {type === "hotel" ||
+              (type === "general" && (
+                <div className="flex items-center justify-between">
+                  <Label className="font-medium">Rooms</Label>
+                  <div className="flex items-center">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8 rounded-full"
+                      onClick={() => decrement(setRooms, rooms, 1)}
+                      disabled={rooms <= 1}
+                    >
+                      <span className="text-lg font-normal">-</span>
+                    </Button>
+                    <span className="w-10 text-center">{rooms}</span>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8 rounded-full"
+                      onClick={() => increment(setRooms, rooms)}
+                    >
+                      <span className="text-lg font-normal">+</span>
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            )}
+              ))}
 
             {/* Transport type (only for transport) */}
-            {type === "transport" && (
-              <div className="flex items-center justify-between">
-                <Label className="">
-                  <div className="flex flex-col gap-1 font-medium">
-                    Adults{" "}
-                    <span className="text-j-text-small-2 text-xs">
-                      Ages 0 - 2
-                    </span>
+            {type === "transport" ||
+              (type === "general" && (
+                <div className="flex items-center justify-between">
+                  <Label className="">
+                    <div className="flex flex-col gap-1 font-medium">
+                      Adults{" "}
+                      <span className="text-j-text-small-2 text-xs">
+                        Ages 0 - 2
+                      </span>
+                    </div>
+                  </Label>
+                  <div className="flex items-center">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8 rounded-full"
+                      onClick={() => decrement(setInfants, Infants, 0)}
+                      disabled={Infants <= 0}
+                    >
+                      <span className="text-lg font-bold">-</span>
+                    </Button>
+                    <span className="w-10 text-center">{Infants}</span>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8 rounded-full"
+                      onClick={() => increment(setInfants, Infants)}
+                    >
+                      <span className="text-lg font-bold">+</span>
+                    </Button>
                   </div>
-                </Label>
-                <div className="flex items-center">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="h-8 w-8 rounded-full"
-                    onClick={() => decrement(setInfants, Infants, 0)}
-                    disabled={Infants <= 0}
-                  >
-                    <span className="text-lg font-bold">-</span>
-                  </Button>
-                  <span className="w-10 text-center">{Infants}</span>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    className="h-8 w-8 rounded-full"
-                    onClick={() => increment(setInfants, Infants)}
-                  >
-                    <span className="text-lg font-bold">+</span>
-                  </Button>
                 </div>
-              </div>
-            )}
+              ))}
 
             <Button className="w-full mt-2" onClick={() => setIsOpen(false)}>
               Apply
