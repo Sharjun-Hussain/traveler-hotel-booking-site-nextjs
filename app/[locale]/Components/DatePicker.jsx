@@ -84,10 +84,10 @@ const DatePicker = ({
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className="w-full flex flex-col items-start justify-start text-left h-20"
+            className="w-full flex flex-col items-start justify-start text-left h-23"
           >
             <div>Select Date</div>
-            <div className="flex justify-between   w-full text-sm">
+            <div className="flex justify-between items-center lg:mt-2  w-full text-sm">
               <div className="flex  justify-between w-[90%]  items-center gap-2">
                 <CalendarDays size={42} />
                 {checkInDate

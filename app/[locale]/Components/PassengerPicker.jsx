@@ -68,7 +68,7 @@ const CustomGuestSelector = ({
         <PopoverTrigger asChild>
           <Button
             variant="outline"
-            className="w-full justify-between bg-transparent text-left font-normal text-sm border"
+            className="w-full h-12 justify-between bg-transparent text-left font-normal text-sm border"
           >
             <span className="truncate">{getSummaryText()}</span>
             <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />

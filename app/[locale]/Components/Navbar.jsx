@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import {
   Menu,
@@ -71,6 +71,16 @@ import HostRegistrationWizard from "@/app/List-Your_property/Registration";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // useEffect(() => {
+  //   const fetchTransportTypes = async () => {
+  //     const response = await fetch(`${process.env.BACKEND_URL}/api/v1/admin/transport-types`, {
+  //       headers: {
+
+  //      }
+  //    })
+  //  }
+  // }, [])
 
   const mainNavItems = [
     {

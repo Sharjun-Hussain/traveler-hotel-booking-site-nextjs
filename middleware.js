@@ -1,24 +1,38 @@
 // middleware.ts
+import { NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
 
-export default createMiddleware({
-  // A list of all locales that are supported
+const intlMiddleware = createMiddleware({
   locales: ["en", "ta", "si"],
-
-  // The default locale to use when visiting a non-localized path
   defaultLocale: "en",
-
-  // Use pathname routing for explicit language selection in URLs
   localePrefix: "always",
 });
 
+const protectedRoutes = ["/dashboard", "/profile", "/bookings", "/settings"];
+
+export function middleware(req) {
+  const res = intlMiddleware(req);
+  const { pathname } = req.nextUrl;
+  const locale = req.nextUrl.locale || "en";
+
+  const token = req.cookies.get("access_token")?.value;
+
+  // Check if user is trying to access a protected route
+  const isProtected = protectedRoutes.some((route) =>
+    pathname.startsWith(`/${locale}${route}`)
+  );
+
+  if (isProtected && !token) {
+    const loginUrl = new URL(`/${locale}/login`, req.url);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  return res;
+}
+
 export const config = {
-  // Match all pathnames except for
-  // - API routes
-  // - Static files (like favicon.ico)
-  // - etc.
   matcher: [
-    // Match all routes EXCEPT public routes
+    // Match everything except public paths
     "/((?!api|_next|.*\\..*|login|signup|forgot-password|reset-password).*)",
   ],
 };

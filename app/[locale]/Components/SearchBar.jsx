@@ -25,15 +25,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function SearchBar() {
   const [searchType, setSearchType] = useState("hotels");
-  const [selectedFoodType, setselectedFoodType] = useState([]);
-
+  const [selectedFoodType, setSelectedFoodType] = useState([]);
   const router = useRouter();
-
-  const handleDataFromGuestSelector = (data) => {
-    console.log("Guest Selector Data:", data);
-    setDataFromGuestSelector(data);
-    // Handle the data as needed
-  };
 
   const foodtype = [
     {
@@ -53,9 +46,7 @@ export default function SearchBar() {
       transport: "/transport",
       food: "/food-beverages",
     };
-
-    const route = routes[searchType];
-    router.push(route);
+    router.push(routes[searchType]);
   };
 
   const HotelsSchema = z.object({
@@ -84,21 +75,8 @@ export default function SearchBar() {
 
   const methods = useForm({
     resolver: zodResolver(HotelsSchema),
-    // defaultValues: {
-    //   travelorType: "Budget-Tourer-Backpacker",
-    //   DestinationOrHotel: "Colombo",
-    //   GuestsAndRooms: {
-    //     adults: 1,
-    //     children: 0,
-    //     rooms: 1,
-    //     Infants: 0,
-    //   },
-    //   dates: {
-    //     checkIn: new Date(),
-    //     checkOut: addDays(new Date(), 3),
-    //   },
-    // },
   });
+
   const { setValue, watch } = methods;
 
   const handleDatesChange = ({ checkIn, checkOut }) => {
@@ -112,121 +90,109 @@ export default function SearchBar() {
     setValue("GuestsAndRooms.rooms", data.rooms);
     setValue("GuestsAndRooms.Infants", data.Infants);
   };
+
   const onSubmit = (data) => {
-    alert("form Submitted");
     console.log(data);
+    handleSearchClick();
   };
 
   return (
-    <Card className="w-full relative max-w-7xl bg-background/95 backdrop-blur-sm border-none p-0  shadow-lg">
-      <CardContent className="p-3 sm:p-6 rounded-lg">
-        {/* Search Type Tabs */}
+    <Card className="w-full max-w-7xl bg-white/95 backdrop-blur-sm border border-gray-200 rounded-xl shadow-lg overflow-hidden">
+      <CardContent className="p-4 sm:p-6 pb-0 sm:pb-0">
+        {/* Search Type Tabs - Improved for mobile */}
         <Tabs
           defaultValue="hotels"
           onValueChange={setSearchType}
           className="w-full"
         >
-          <TabsList className="flex justify-around w-full gap-2  overflow-x-auto mb-4 lg:m-0 sm:mb-6">
-            <TabsTrigger
-              value="hotels"
-              className="text-xs sm:text-sm whitespace-nowrap"
-            >
-              Hotels & Apartments
-            </TabsTrigger>
-            <TabsTrigger
-              value="homestay"
-              className="text-xs sm:text-sm whitespace-nowrap"
-            >
-              Homestays
-            </TabsTrigger>
-            <TabsTrigger
-              value="activities"
-              className="text-xs sm:text-sm whitespace-nowrap"
-            >
-              Activities
-            </TabsTrigger>
-            <TabsTrigger
-              value="transport"
-              className="text-xs sm:text-sm whitespace-nowrap"
-            >
-              Transport
-            </TabsTrigger>
-            <TabsTrigger
-              value="food"
-              className="text-xs sm:text-sm whitespace-nowrap"
-            >
-              Food & Beverages
-            </TabsTrigger>
-          </TabsList>
+          <div className="relative mb-4 sm:mb-6">
+            <TabsList className="flex space-x-1 w-full overflow-x-auto pb-2 sm:pb-0 hide-scrollbar">
+              {[
+                { value: "hotels", label: "Hotels & Apartments" },
+                { value: "homestay", label: "Homestays" },
+                { value: "activities", label: "Activities" },
+                { value: "transport", label: "Transport" },
+                { value: "food", label: "Food & Beverages" },
+              ].map((tab) => (
+                <TabsTrigger
+                  key={tab.value}
+                  value={tab.value}
+                  className={`px-3 py-2 text-xs sm:text-sm font-medium rounded-lg whitespace-nowrap transition-colors ${
+                    searchType === tab.value
+                      ? "bg-primary text-white shadow-sm"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  }`}
+                >
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-100 rounded-full sm:hidden"></div>
+          </div>
 
           {/* Search Forms */}
-          <TabsContent value="hotels" className="lg:mt-6 ">
+          <TabsContent value="hotels" className="mt-0">
             <FormProvider {...methods}>
               <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <div className="grid grid-cols-1  sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-8  gap-3 sm:gap-4">
-                  <div className="sm:col-span-1 md:col-span-1  lg:col-span-1 xl:col-span-2">
-                    <div className="p-2 bg-white border shadow rounded-md transition-shadow">
-                      <Label className="text-xs sm:text-sm mb-1 block">
-                        Travellor Type
-                      </Label>
-                      <Select
-                        {...methods.register("travelorType")}
-                        defaultValue="Budget-Tourer-Backpacker"
-                      >
-                        <SelectTrigger className="text-sm ">
-                          <SelectValue placeholder="Select guests" />
-                        </SelectTrigger>
-                        <SelectContent
-                          className="w-[200px] max-w-full"
-                          position="popper"
-                          sideOffset={4}
-                        >
-                          <SelectItem value="Budget-Tourer-Backpacker">
-                            Budget Tourer/Backpacker
-                          </SelectItem>
-                          <SelectItem value="Business Traveler">
-                            Business Traveler
-                          </SelectItem>
-                          <SelectItem value="Couple">Couple</SelectItem>
-                          <SelectItem value="Digital-Nomad">
-                            Digital Nomad
-                          </SelectItem>
-                          <SelectItem value="Family">Family</SelectItem>
-                          <SelectItem value="Group">Group</SelectItem>
-                          <SelectItem value="Honeymooners">
-                            Honeymooners
-                          </SelectItem>
-                          <SelectItem value="Researcher-Student">
-                            Researcher/Student
-                          </SelectItem>
-                          <SelectItem value="Solo-Female">
-                            Solo Female
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                  {/* Traveler Type */}
+                  <div className="space-y-1 bg-white rounded-md p-2 shadow-sm">
+                    <Label className="text-sm font-medium text-gray-700">
+                      Traveler Type
+                    </Label>
+                    <Select
+                      {...methods.register("travelorType")}
+                      defaultValue="Budget-Tourer-Backpacker"
+                    >
+                      <SelectTrigger className="h-12 text-sm bg-white border-gray-300 hover:border-gray-400">
+                        <SelectValue placeholder="Select type" />
+                      </SelectTrigger>
+                      <SelectContent className="w-[var(--radix-select-trigger-width)] max-w-full">
+                        <SelectItem value="Budget-Tourer-Backpacker">
+                          Budget Tourer/Backpacker
+                        </SelectItem>
+                        <SelectItem value="Business Traveler">
+                          Business Traveler
+                        </SelectItem>
+                        <SelectItem value="Couple">Couple</SelectItem>
+                        <SelectItem value="Digital-Nomad">
+                          Digital Nomad
+                        </SelectItem>
+                        <SelectItem value="Family">Family</SelectItem>
+                        <SelectItem value="Group">Group</SelectItem>
+                        <SelectItem value="Honeymooners">
+                          Honeymooners
+                        </SelectItem>
+                        <SelectItem value="Researcher-Student">
+                          Researcher/Student
+                        </SelectItem>
+                        <SelectItem value="Solo-Female">Solo Female</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
-                  <div className="sm:col-span-1   md:col-span-1  lg:col-span-1 xl:col-span-2">
-                    <div className="p-2 bg-white border shadow rounded-md transition-shadow">
-                      <Label className="text-xs sm:text-sm mb-1 block">
-                        Destination / Hotel
-                      </Label>
-                      <Input
-                        {...methods.register("DestinationOrHotel", {
-                          required: "This field is required", // or minLength: 1
-                        })}
-                        type="text"
-                        placeholder="Where are you going?"
-                        className={`text-sm border ${
-                          methods.formState.errors.DestinationOrHotel
-                            ? "border-red-300"
-                            : "border-gray-300"
-                        } `}
-                      />
-                    </div>
+
+                  {/* Destination */}
+                  <div className="space-y-1 bg-white rounded-md p-2 shadow-sm">
+                    <Label className="text-sm font-medium text-gray-700">
+                      Destination / Hotel
+                    </Label>
+                    <Input
+                      {...methods.register("DestinationOrHotel", {
+                        required: "This field is required",
+                      })}
+                      type="text"
+                      placeholder="Where are you going?"
+                      className={`h-12 text-sm ${
+                        methods.formState.errors.DestinationOrHotel
+                          ? "border-red-300 focus:ring-red-200"
+                          : "border-gray-300 focus:ring-primary-200"
+                      } focus:ring-2`}
+                    />
                   </div>
-                  <div className="lg:col-span-1 md:col-span-1 sm:col-span-1 xl:col-span-2">
-                    <div className="p-2 bg-white border shadow rounded-md transition-shadow">
+
+                  {/* Guests */}
+                  <div className="space-y-1 bg-white rounded-md p-2 shadow-sm">
+                    <div className="h-12">
                       <CustomGuestSelector
                         type="general"
                         onSelectData={handleGuestChange}
@@ -234,24 +200,25 @@ export default function SearchBar() {
                     </div>
                   </div>
 
-                  <div className="sm:col-span-3 lg:col-span-1 xl:col-span-2">
-                    <ModernDatepicker
-                      onDatesChange={handleDatesChange}
-                      minStay={2}
-                      className="my-custom-class"
-                      initialCheckIn={watch("dates.checkIn")}
-                      initialCheckOut={watch("dates.checkOut")}
-                    />
+                  {/* Dates */}
+                  <div className="space-y-1">
+                    <div className="h-12">
+                      <ModernDatepicker
+                        onDatesChange={handleDatesChange}
+                        minStay={2}
+                        initialCheckIn={watch("dates.checkIn")}
+                        initialCheckOut={watch("dates.checkOut")}
+                      />
+                    </div>
                   </div>
-                  <div className="sm:col-span-3 lg:col-span-3 md:grid-cols-3 xl:col-span-8">
+
+                  {/* Search Button */}
+                  <div className="sm:col-span-2 lg:col-span-4 mt-1">
                     <Button
-                      // disabled={
-                      //   !methods.formState.isDirty || methods.formState.isValid
-                      // }
                       type="submit"
-                      className="w-full text-sm"
+                      className="w-full h-12 text-sm font-medium bg-j-primary hover:bg-primary-600 focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                     >
-                      Search
+                      Search Hotels
                     </Button>
                   </div>
                 </div>
@@ -259,169 +226,254 @@ export default function SearchBar() {
             </FormProvider>
           </TabsContent>
 
-          <TabsContent value="homestay" className="lg:mt-6">
-            <div className="grid grid-cols-1  sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6  gap-3 sm:gap-4">
-              <div className="sm:col-span-1 md:col-span-1  lg:col-span-1 xl:col-span-1">
-                <div className="p-2 bg-white border shadow rounded-md transition-shadow">
-                  <Label className="text-xs sm:text-sm mb-1 block">
-                    Travellor Type
-                  </Label>
-                  <Select defaultValue="1a0c">
-                    <SelectTrigger className="text-sm">
-                      <SelectValue placeholder="Select guests" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1a0c">
-                        Budget Tourer/Backpacker
-                      </SelectItem>
-                      <SelectItem value="Business Traveler">
-                        Business Traveler
-                      </SelectItem>
-                      <SelectItem value="Couple">Couple</SelectItem>
-                      <SelectItem value="2a0c">Digital Nomad</SelectItem>
-                      <SelectItem value="2a0c">Family</SelectItem>
-                      <SelectItem value="2a0c">Group</SelectItem>
-                      <SelectItem value="2a0c">Honeymooners</SelectItem>
-                      <SelectItem value="2a0c">Researcher/Student</SelectItem>
-                      <SelectItem value="2a0c">Solo Female</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              <div className="sm:col-span-1   md:col-span-1  lg:col-span-1 xl:col-span-1">
-                <div className="p-2 bg-white border shadow rounded-md transition-shadow">
-                  <Label className="text-xs sm:text-sm mb-1 block">
-                    Destination
-                  </Label>
-                  <Input
-                    type="text"
-                    placeholder="Where are you going?"
-                    className="text-sm "
-                  />
-                </div>
-              </div>
-              <div className="lg:col-span-1 md:col-span-1 sm:col-span-1 xl:col-span-1">
-                <div className="p-2 bg-white border shadow rounded-md transition-shadow">
-                  <CustomGuestSelector />
-                </div>
-              </div>
+          <TabsContent value="homestay" className="mt-0">
+            <FormProvider {...methods}>
+              <form onSubmit={methods.handleSubmit(onSubmit)}>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+                  {/* Traveler Type */}
+                  <div className="space-y-1 bg-white rounded-md p-2 shadow-sm">
+                    <Label className="text-sm font-medium text-gray-700">
+                      Traveler Type
+                    </Label>
+                    <Select
+                      {...methods.register("travelorType")}
+                      defaultValue="Budget-Tourer-Backpacker"
+                    >
+                      <SelectTrigger className="h-12 text-sm bg-white border-gray-300 hover:border-gray-400">
+                        <SelectValue placeholder="Select type" />
+                      </SelectTrigger>
+                      <SelectContent className="w-[var(--radix-select-trigger-width)] max-w-full">
+                        <SelectItem value="Budget-Tourer-Backpacker">
+                          Budget Tourer/Backpacker
+                        </SelectItem>
+                        <SelectItem value="Business Traveler">
+                          Business Traveler
+                        </SelectItem>
+                        <SelectItem value="Couple">Couple</SelectItem>
+                        <SelectItem value="Digital-Nomad">
+                          Digital Nomad
+                        </SelectItem>
+                        <SelectItem value="Family">Family</SelectItem>
+                        <SelectItem value="Group">Group</SelectItem>
+                        <SelectItem value="Honeymooners">
+                          Honeymooners
+                        </SelectItem>
+                        <SelectItem value="Researcher-Student">
+                          Researcher/Student
+                        </SelectItem>
+                        <SelectItem value="Solo-Female">Solo Female</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-              <div className="sm:col-span-3 lg:col-span-3 xl:col-span-3">
-                <ModernDatepicker className="absolute z-100" />
-              </div>
-            </div>
+                  {/* Destination */}
+                  <div className="space-y-1 bg-white rounded-md p-2 shadow-sm">
+                    <Label className="text-sm font-medium text-gray-700">
+                      Destination / Hotel
+                    </Label>
+                    <Input
+                      {...methods.register("DestinationOrHotel", {
+                        required: "This field is required",
+                      })}
+                      type="text"
+                      placeholder="Where are you going?"
+                      className={`h-12 text-sm ${
+                        methods.formState.errors.DestinationOrHotel
+                          ? "border-red-300 focus:ring-red-200"
+                          : "border-gray-300 focus:ring-primary-200"
+                      } focus:ring-2`}
+                    />
+                  </div>
+
+                  {/* Guests */}
+                  <div className="space-y-1 bg-white rounded-md p-2 shadow-sm">
+                    <div className="h-12">
+                      <CustomGuestSelector
+                        type="general"
+                        onSelectData={handleGuestChange}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Dates */}
+                  <div className="space-y-1">
+                    <div className="h-12">
+                      <ModernDatepicker
+                        onDatesChange={handleDatesChange}
+                        minStay={2}
+                        initialCheckIn={watch("dates.checkIn")}
+                        initialCheckOut={watch("dates.checkOut")}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Search Button */}
+                  <div className="sm:col-span-2 lg:col-span-4 mt-1">
+                    <Button
+                      type="submit"
+                      className="w-full h-12 text-sm font-medium bg-j-primary hover:bg-primary-600 focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                    >
+                      Search HomeStays
+                    </Button>
+                  </div>
+                </div>
+              </form>
+            </FormProvider>
           </TabsContent>
 
-          <TabsContent value="activities" className="lg:mt-6">
-            <div className="flex  gap-3 sm:gap-4">
-              <div className="flex-1">
-                <Label className="text-xs sm:text-sm mb-1 block">
+          <TabsContent value="activities" className="mt-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <div className="sm:col-span-2 space-y-1">
+                <Label className="text-xs font-medium text-gray-700">
                   Activity
                 </Label>
                 <Input
                   type="text"
-                  placeholder="Search by city or activity?"
-                  className="text-sm"
+                  placeholder="Search by city or activity"
+                  className="h-12 text-sm border-gray-300 focus:ring-primary-200 focus:ring-2"
                 />
+              </div>
+
+              <div className="space-y-1">
+                <Label className="text-xs font-medium text-gray-700">
+                  Date
+                </Label>
+                <div className="h-12">
+                  <ModernDatepicker type="single" />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <Label className="text-xs font-medium text-gray-700">
+                  Guests
+                </Label>
+                <div className="h-12">
+                  <CustomGuestSelector type="activities" />
+                </div>
+              </div>
+
+              <div className="sm:col-span-2 lg:col-span-4 mt-2">
+                <Button
+                  onClick={handleSearchClick}
+                  className="w-full h-12 text-sm font-medium bg-primary hover:bg-primary-600"
+                >
+                  Search Activities
+                </Button>
               </div>
             </div>
           </TabsContent>
 
-          <TabsContent value="transport" className="lg:mt-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-3 sm:gap-4">
-              <div className="sm:col-span-2 lg:col-span-2  ">
-                <Label className="text-xs sm:text-sm mb-1 block">
+          <TabsContent value="transport" className="mt-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <div className="sm:col-span-2 space-y-1">
+                <Label className="text-xs font-medium text-gray-700">
                   Service Provider / City
                 </Label>
                 <Input
                   type="text"
                   placeholder="Uber or Colombo"
-                  className="text-sm"
+                  className="h-12 text-sm border-gray-300 focus:ring-primary-200 focus:ring-2"
                 />
               </div>
-              {/* <div className="sm:col-span-2 lg:col-span-1">
-                <Label className="text-xs sm:text-sm mb-1 block">To</Label>
-                <Input
-                  type="text"
-                  placeholder="Where to?"
-                  className="text-sm"
-                />
-              </div> */}
-              {/* <div className="sm:col-span-2 lg:col-span-1">
-                <CustomGuestSelector type="transport" />
+
+              <div className="space-y-1">
+                <Label className="text-xs font-medium text-gray-700">
+                  Date
+                </Label>
+                <div className="h-12">
+                  <ModernDatepicker type="single" />
+                </div>
               </div>
-              <div className="lg:col-span-3">
-                <ModernDatepicker type="transport" />
-              </div> */}
+
+              <div className="space-y-1">
+                <Label className="text-xs font-medium text-gray-700">
+                  Passengers
+                </Label>
+                <div className="h-12">
+                  <CustomGuestSelector type="transport" />
+                </div>
+              </div>
+
+              <div className="sm:col-span-2 lg:col-span-4 mt-2">
+                <Button
+                  onClick={handleSearchClick}
+                  className="w-full h-12 text-sm font-medium bg-primary hover:bg-primary-600"
+                >
+                  Search Transport
+                </Button>
+              </div>
             </div>
           </TabsContent>
 
-          <TabsContent value="food" className="lg:mt-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              <div>
-                <Label className="text-xs sm:text-sm mb-1 block">
+          <TabsContent value="food" className="mt-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <div className="space-y-1">
+                <Label className="text-xs font-medium text-gray-700">
                   Location
                 </Label>
                 <Input
                   type="text"
                   placeholder="Where are you dining?"
-                  className="text-sm"
+                  className="h-12 text-sm border-gray-300 focus:ring-primary-200 focus:ring-2"
                 />
               </div>
 
-              <div>
-                <Label className="text-xs sm:text-sm mb-1 block">
+              <div className="space-y-1">
+                <Label className="text-xs font-medium text-gray-700">
                   Cuisine Type
                 </Label>
-                {/* <Select defaultValue="all">
-                  <SelectTrigger className="text-sm">
-                    <SelectValue placeholder="Select cuisine" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Cuisines</SelectItem>
-                    <SelectItem value="local">Local</SelectItem>
-                    <SelectItem value="italian">Italian</SelectItem>
-                    <SelectItem value="asian">Asian</SelectItem>
-                    <SelectItem value="seafood">Seafood</SelectItem>
-                  </SelectContent>
-                </Select> */}
                 <MultiSelect
                   options={foodtype}
-                  onValueChange={setselectedFoodType}
+                  onValueChange={setSelectedFoodType}
                   defaultValue={selectedFoodType}
                   placeholder="Select Food Type"
                   variant="inverted"
                   animation={2}
                   maxCount={3}
+                  className="h-12"
                 />
               </div>
-              {/* <div>
-                <Label className="text-xs sm:text-sm mb-1 block">
+
+              <div className="space-y-1">
+                <Label className="text-xs font-medium text-gray-700">
+                  Date & Time
+                </Label>
+                <div className="h-12">
+                  <ModernDatepicker type="datetime" />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <Label className="text-xs font-medium text-gray-700">
                   Party Size
                 </Label>
-                <Select defaultValue="2p">
-                  <SelectTrigger className="text-sm">
-                    <SelectValue placeholder="Select party size" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1p">1 Person</SelectItem>
-                    <SelectItem value="2p">2 People</SelectItem>
-                    <SelectItem value="4p">3-4 People</SelectItem>
-                    <SelectItem value="5p">5+ People</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div> */}
+                <div className="h-12">
+                  <CustomGuestSelector type="food" />
+                </div>
+              </div>
+
+              <div className="sm:col-span-2 lg:col-span-4 mt-2">
+                <Button
+                  onClick={handleSearchClick}
+                  className="w-full h-12 text-sm font-medium bg-primary hover:bg-primary-600"
+                >
+                  Search Restaurants
+                </Button>
+              </div>
             </div>
           </TabsContent>
-
-          {/* Search Button */}
-          <div className="mt-4 sm:mt-6">
-            {/* <Button onClick={handleSearchClick} className="w-full text-sm">
-              Search
-            </Button> */}
-          </div>
         </Tabs>
       </CardContent>
+
+      <style jsx>{`
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
     </Card>
   );
 }
