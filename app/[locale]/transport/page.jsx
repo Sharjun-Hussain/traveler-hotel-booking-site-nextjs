@@ -51,163 +51,9 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import axios from "axios";
 
-// Mock data for transportation options
-
-const transportData = [
-  {
-    id: "transport_001",
-    title: "Colombo to Kandy - AC Tourist Bus",
-    images: ["https://images.unsplash.com/photo-1593797636365-2e6fce6c6712"],
-    transportType: "Bus",
-    vistaVerified: true,
-    operatorName: "Sri Lanka Tourist Coaches",
-    pricePerKmUSD: "0.12",
-    amenities: [
-      { type: "Air Conditioned", available: true },
-      { type: "Passenger Capacity", value: "45" },
-      { type: "Luggage Space", value: "Large" },
-    ],
-    reviews: {
-      vistaReview: {
-        rating: 4.6,
-        text: "Reliable transport with good comfort and ventilation.",
-      },
-      travelerReviews: [],
-    },
-    contactDetails: {
-      phone: "011-2345678",
-      email: "contact@touristcoaches.lk",
-      website: "https://www.srilankatouristcoaches.lk",
-    },
-    description:
-      "Spacious AC bus ideal for group and long-distance travel. Operated by licensed transport providers.",
-    location: {
-      departureCity: "Colombo",
-      arrivalCity: "Kandy",
-      coordinates: {
-        lat: 7.2906,
-        lng: 80.6337,
-      },
-    },
-    type: "Transport",
-  },
-  {
-    id: "transport_002",
-    title: "Kandy to Nuwara Eliya - Luxury Train",
-    images: ["https://images.unsplash.com/photo-1555685818-3258bca28f99"],
-    transportType: "Train",
-    vistaVerified: true,
-    operatorName: "Sri Lanka Railways",
-    pricePerKmUSD: "0.15",
-    amenities: [
-      { type: "Air Conditioned", available: true },
-      { type: "Passenger Capacity", value: "80" },
-      { type: "Luggage Space", value: "Medium" },
-    ],
-    reviews: {
-      vistaReview: {
-        rating: 4.7,
-        text: "A scenic and comfortable way to travel through the hill country.",
-      },
-      travelerReviews: [],
-    },
-    contactDetails: {
-      phone: "071-2345678",
-      email: "info@srilankatrailways.lk",
-      website: "https://www.srilankatrailways.lk",
-    },
-    description:
-      "Enjoy a picturesque train ride through tea plantations and mountain landscapes in this luxury coach.",
-    location: {
-      departureCity: "Kandy",
-      arrivalCity: "Nuwara Eliya",
-      coordinates: {
-        lat: 6.9333,
-        lng: 80.7833,
-      },
-    },
-    type: "Transport",
-  },
-  {
-    id: "transport_003",
-    title: "Colombo to Galle - Private Taxi",
-    images: ["https://images.unsplash.com/photo-1576568276570-232b52d014c3"],
-    transportType: "Taxi",
-    vistaVerified: false,
-    operatorName: "Galle Taxis",
-    pricePerKmUSD: "0.20",
-    amenities: [
-      { type: "Air Conditioned", available: true },
-      { type: "Passenger Capacity", value: "4" },
-      { type: "Luggage Space", value: "Small" },
-    ],
-    reviews: {
-      vistaReview: {
-        rating: 4.5,
-        text: "Comfortable ride, but a bit pricey.",
-      },
-      travelerReviews: [],
-    },
-    contactDetails: {
-      phone: "076-3456789",
-      email: "galle.taxis@sl.com",
-      website: "https://www.galletaxi.lk",
-    },
-    description:
-      "Private and comfortable ride from Colombo to Galle. Ideal for small groups or solo travelers.",
-    location: {
-      departureCity: "Colombo",
-      arrivalCity: "Galle",
-      coordinates: {
-        lat: 6.0483,
-        lng: 80.22,
-      },
-    },
-    type: "Transport",
-  },
-  {
-    id: "transport_004",
-    title: "Colombo to Negombo - Airport Shuttle",
-    images: ["https://images.unsplash.com/photo-1568605112-9a3b8d9eaf0f"],
-    transportType: "Shuttle",
-    vistaVerified: true,
-    operatorName: "Negombo Airport Express",
-    pricePerKmUSD: "0.08",
-    amenities: [
-      { type: "Air Conditioned", available: true },
-      { type: "Passenger Capacity", value: "20" },
-      { type: "Luggage Space", value: "Large" },
-    ],
-    reviews: {
-      vistaReview: {
-        rating: 4.8,
-        text: "Convenient and fast shuttle service to the airport.",
-      },
-      travelerReviews: [],
-    },
-    contactDetails: {
-      phone: "011-8765432",
-      email: "info@negomboairportexpress.lk",
-      website: "https://www.negomboairportexpress.lk",
-    },
-    description:
-      "Reliable shuttle service that picks you up from Colombo and drops you at Bandaranaike International Airport.",
-    location: {
-      departureCity: "Colombo",
-      arrivalCity: "Negombo",
-      coordinates: {
-        lat: 7.2091,
-        lng: 79.9742,
-      },
-    },
-    type: "Transport",
-  },
-];
-
 const TransportPage = () => {
   const [mounted, setMounted] = useState(false);
   const [date, setDate] = useState(new Date());
-  const [filteredData, setFilteredData] = useState(transportData);
   const [activeFilters, setActiveFilters] = useState([]);
   const [sortOption, setSortOption] = useState("price-low");
   const [searchParams, setSearchParams] = useState({
@@ -215,9 +61,12 @@ const TransportPage = () => {
     to: "",
     transportType: "all",
   });
-  const [priceRange, setPriceRange] = useState([0, 0.5]);
+  const [priceRange, setPriceRange] = useState([0, 50]);
   const [lastscrollY, setlastscrollY] = useState(0);
   const [isfixed, setisfixed] = useState(false);
+  const [transportData, setTransportData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
     const handlescroll = () => {
@@ -235,40 +84,78 @@ const TransportPage = () => {
     return () => window.removeEventListener("scroll", handlescroll);
   }, [lastscrollY]);
 
+  const transformTransportData = (apiData) => {
+    return apiData.map((item) => ({
+      id: `transport_${item.id}`,
+      title: item.title,
+      images: item.images.map((img) => img.imageUrl),
+      transportType: item.transportType.name,
+      vistaVerified: item.vistaVerified,
+      operatorName: item.operatorName,
+      pricePerKmUSD: item.pricePerKmUSD,
+      amenities: item.amenities.map((amenity) => ({
+        type: amenity.name,
+        available: amenity.TransportAmenity.isAvailable,
+        value: amenity.TransportAmenity.notes || null,
+      })),
+      reviews: {
+        vistaReview: {
+          rating: 4.5,
+          text: "Good service",
+        },
+        travelerReviews: [],
+      },
+      contactDetails: {
+        phone: item.phone,
+        email: item.email || "",
+        website: item.website || "",
+      },
+      description: item.description || "No description available",
+      location: {
+        departureCity: item.departureCity,
+        arrivalCity: item.arrivalCity,
+        coordinates: {
+          lat: parseFloat(item.latitude),
+          lng: parseFloat(item.longitude),
+        },
+      },
+      type: "Transport",
+    }));
+  };
+
   useEffect(() => {
     const fetchTransportData = async () => {
-      await axios.get(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/admin/transports`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/customer/list/transports`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+        );
+        const transformedData = transformTransportData(response.data.data);
+        setTransportData(transformedData);
+        setFilteredData(transformedData);
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchTransportData();
   }, []);
-
-  // Filter options
-  const vehicleTypes = ["Bus", "Train", "Taxi", "Shuttle"];
-  const departureLocations = [
-    ...new Set(transportData.map((item) => item.location.departureCity)),
-  ];
-  const arrivalLocations = [
-    ...new Set(transportData.map((item) => item.location.arrivalCity)),
-  ];
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    // Apply filters and sorting
     let results = [...transportData];
 
-    // Apply search params
     if (searchParams.from) {
       results = results.filter((item) =>
         item.location.departureCity
@@ -287,39 +174,43 @@ const TransportPage = () => {
 
     if (searchParams.transportType !== "all") {
       results = results.filter(
-        (item) => item.transportType === searchParams.transportType
+        (item) =>
+          item.transportType.toLowerCase() ===
+          searchParams.transportType.toLowerCase()
       );
     }
 
-    // Apply active filters
     if (activeFilters.length > 0) {
       results = results.filter((item) => {
-        for (const filter of activeFilters) {
-          if (filter.type === "vehicle" && item.transportType !== filter.value)
-            return false;
-          if (
-            filter.type === "departure" &&
-            item.location.departureCity !== filter.value
-          )
-            return false;
-          if (
-            filter.type === "arrival" &&
-            item.location.arrivalCity !== filter.value
-          )
-            return false;
-        }
-        return true;
+        return activeFilters.every((filter) => {
+          if (filter.type === "vehicle") {
+            return (
+              item.transportType.toLowerCase() === filter.value.toLowerCase()
+            );
+          }
+          if (filter.type === "departure") {
+            return (
+              item.location.departureCity.toLowerCase() ===
+              filter.value.toLowerCase()
+            );
+          }
+          if (filter.type === "arrival") {
+            return (
+              item.location.arrivalCity.toLowerCase() ===
+              filter.value.toLowerCase()
+            );
+          }
+          return true;
+        });
       });
     }
 
-    // Apply price range filter
     results = results.filter(
       (item) =>
         parseFloat(item.pricePerKmUSD) >= priceRange[0] &&
         parseFloat(item.pricePerKmUSD) <= priceRange[1]
     );
 
-    // Apply sorting
     switch (sortOption) {
       case "price-low":
         results.sort(
@@ -341,7 +232,7 @@ const TransportPage = () => {
     }
 
     setFilteredData(results);
-  }, [searchParams, activeFilters, sortOption, priceRange]);
+  }, [searchParams, activeFilters, sortOption, priceRange, transportData]);
 
   const addFilter = (type, value) => {
     if (
@@ -362,20 +253,23 @@ const TransportPage = () => {
   };
 
   const handleSearch = () => {
-    // Just use the current search params state, filters will be applied automatically via useEffect
     console.log("Searching with parameters:", searchParams);
   };
 
   const getTransportIcon = (type) => {
-    switch (type) {
-      case "Bus":
+    switch (type.toLowerCase()) {
+      case "bus":
         return <Bus className="h-4 w-4" />;
-      case "Train":
+      case "train":
         return <Train className="h-4 w-4" />;
-      case "Taxi":
+      case "cars":
         return <Car className="h-4 w-4" />;
-      case "Shuttle":
+      case "shuttle":
         return <Shrub className="h-4 w-4" />;
+      case "plane":
+        return <Plane className="h-4 w-4" />;
+      case "ship":
+        return <Ship className="h-4 w-4" />;
       default:
         return <Car className="h-4 w-4" />;
     }
@@ -385,14 +279,20 @@ const TransportPage = () => {
     return null;
   }
 
+  const vehicleTypes = [
+    ...new Set(transportData.map((item) => item.transportType)),
+  ];
+  const departureLocations = [
+    ...new Set(transportData.map((item) => item.location.departureCity)),
+  ];
+  const arrivalLocations = [
+    ...new Set(transportData.map((item) => item.location.arrivalCity)),
+  ];
+
   return (
     <div className="min-h-screen bg-white w-full dark:bg-zinc-950 transition-colors duration-200 pt-14">
       <SecNav classnames="shadow-sm" />
       <div className=" mt-16 transition-all duration-300">
-        {/* Header with Theme Toggle */}
-
-        {/* Search Form */}
-
         <div
           className={`fixed transition-all hidden lg:grid duration-300 ease-in-out  bg-j-primary py-6 dark:bg-blue-950     ${
             isfixed
@@ -404,7 +304,6 @@ const TransportPage = () => {
             <Card className="py-4 mx-12 ">
               <CardContent>
                 <div className=" flex gap-4">
-                  {/* From */}
                   <div className="space-y-2 w-full ">
                     <div className="flex items-center relative w-[60%]">
                       <MapPin className="absolute left-3 h-4 w-4 text-gray-500" />
@@ -421,50 +320,6 @@ const TransportPage = () => {
                       />
                     </div>
                   </div>
-
-                  {/* To */}
-                  {/* <div className="space-y-2">
-                    <div className="flex items-center relative">
-                      <MapPin className="absolute left-3 h-4 w-4 text-gray-500" />
-                      <Input
-                        className="pl-10"
-                        placeholder="Arrival City"
-                        value={searchParams.to}
-                        onChange={(e) =>
-                          setSearchParams({
-                            ...searchParams,
-                            to: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  </div> */}
-
-                  {/* Date */}
-                  {/* <div className="space-y-2">
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          variant="outline"
-                          className="w-full justify-start text-left font-normal"
-                        >
-                          <CalendarIcon className="mr-2 h-4 w-4" />
-                          {date ? format(date, "PPP") : "Pick a date"}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
-                        <Calendar
-                          mode="single"
-                          selected={date}
-                          onSelect={setDate}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </div> */}
-                  {/* <div>
-                    <CustomGuestSelector type="transport" showlabel={false} />
-                  </div> */}
                   <Button className="w-full md:w-auto " onClick={handleSearch}>
                     Search Transport
                   </Button>
@@ -474,10 +329,7 @@ const TransportPage = () => {
           </div>
         </div>
 
-        {/* Main Content Area with Filters and Listings */}
         <div className="grid mx-4 grid-cols-1 lg:grid-cols-4 gap-8 lg:mt-8">
-          {/* Filters Sidebar */}
-
           <div className="lg:block hidden lg:col-span-1">
             <Card className="dark:bg-zinc-900">
               <CardContent className="pt-6">
@@ -485,7 +337,6 @@ const TransportPage = () => {
                   <Filter className="h-5 w-5" /> Filters
                 </h2>
 
-                {/* Active Filters Display */}
                 {activeFilters.length > 0 && (
                   <div className="flex flex-wrap gap-2 mb-4">
                     {activeFilters.map((filter, index) => (
@@ -506,15 +357,14 @@ const TransportPage = () => {
                   </div>
                 )}
 
-                {/* Price Range */}
                 <div className="mb-6">
                   <h3 className="font-medium mb-2">Price Range (per km)</h3>
                   <div className="px-2">
                     <Slider
                       range
                       min={0}
-                      max={0.5}
-                      step={0.01}
+                      max={50}
+                      step={0.1}
                       value={priceRange}
                       onChange={setPriceRange}
                       trackStyle={[{ backgroundColor: "#017E7F" }]}
@@ -530,7 +380,6 @@ const TransportPage = () => {
                   </div>
                 </div>
 
-                {/* Vehicle Type Filter */}
                 <div className="mb-6">
                   <h3 className="font-medium mb-2">Vehicle Type</h3>
                   <div className="flex flex-wrap gap-2">
@@ -565,7 +414,6 @@ const TransportPage = () => {
                   </div>
                 </div>
 
-                {/* Departure Location Filter */}
                 <div className="mb-6">
                   <h3 className="font-medium mb-2">Departure City</h3>
                   <div className="flex flex-wrap gap-2">
@@ -602,7 +450,6 @@ const TransportPage = () => {
                   </div>
                 </div>
 
-                {/* Arrival Location Filter */}
                 <div className="mb-6">
                   <h3 className="font-medium mb-2">Arrival City</h3>
                   <div className="flex flex-wrap gap-2">
@@ -638,13 +485,12 @@ const TransportPage = () => {
                   </div>
                 </div>
 
-                {/* Reset Filters Button */}
                 <Button
                   variant="outline"
                   className="w-full"
                   onClick={() => {
                     setActiveFilters([]);
-                    setPriceRange([0, 0.5]);
+                    setPriceRange([0, 50]);
                   }}
                 >
                   Reset Filters
@@ -653,7 +499,6 @@ const TransportPage = () => {
             </Card>
           </div>
 
-          {/* Mobile Bottom Sheet Filter */}
           <div className="lg:hidden fixed bottom-4 left-0 right-0 z-50 flex justify-center">
             <Sheet>
               <SheetTrigger asChild>
@@ -680,7 +525,6 @@ const TransportPage = () => {
                   </SheetTitle>
                 </SheetHeader>
 
-                {/* Active Filters Display (Mobile) */}
                 {activeFilters.length > 0 && (
                   <div className="flex flex-wrap gap-2 mb-4">
                     {activeFilters.map((filter, index) => (
@@ -701,15 +545,14 @@ const TransportPage = () => {
                   </div>
                 )}
 
-                {/* Price Range (Mobile) */}
                 <div className="mb-6">
                   <h3 className="font-medium mb-2">Price Range (per km)</h3>
                   <div className="px-2">
                     <Slider
                       range
                       min={0}
-                      max={0.5}
-                      step={0.01}
+                      max={50}
+                      step={0.1}
                       value={priceRange}
                       onChange={setPriceRange}
                     />
@@ -720,7 +563,6 @@ const TransportPage = () => {
                   </div>
                 </div>
 
-                {/* Vehicle Type Filter (Mobile) */}
                 <div className="mb-6">
                   <h3 className="font-medium mb-2">Vehicle Type</h3>
                   <div className="flex flex-wrap gap-2">
@@ -755,7 +597,6 @@ const TransportPage = () => {
                   </div>
                 </div>
 
-                {/* Departure Location Filter (Mobile) */}
                 <div className="mb-6">
                   <h3 className="font-medium mb-2">Departure City</h3>
                   <div className="flex flex-wrap gap-2">
@@ -792,7 +633,6 @@ const TransportPage = () => {
                   </div>
                 </div>
 
-                {/* Arrival Location Filter (Mobile) */}
                 <div className="mb-6">
                   <h3 className="font-medium mb-2">Arrival City</h3>
                   <div className="flex flex-wrap gap-2">
@@ -828,13 +668,12 @@ const TransportPage = () => {
                   </div>
                 </div>
 
-                {/* Reset Filters Button (Mobile) */}
                 <Button
                   variant="outline"
                   className="w-full"
                   onClick={() => {
                     setActiveFilters([]);
-                    setPriceRange([0, 0.5]);
+                    setPriceRange([0, 50]);
                   }}
                 >
                   Reset Filters
@@ -843,9 +682,7 @@ const TransportPage = () => {
             </Sheet>
           </div>
 
-          {/* Transport Listings */}
           <div className="lg:col-span-3">
-            {/* Sort Options */}
             <div className="flex justify-between items-center mb-4">
               <div>
                 <span className=" lg:text-2xl text- font-bold ">
@@ -864,7 +701,6 @@ const TransportPage = () => {
               </Select>
             </div>
 
-            {/* Active Filters Display */}
             {activeFilters.length > 0 && (
               <div className="flex flex-wrap gap-2 mb-4">
                 {activeFilters.map((filter, index) => (
@@ -896,9 +732,12 @@ const TransportPage = () => {
               </div>
             )}
 
-            {/* Transport Cards */}
             <div className="space-y-4">
-              {filteredData.length > 0 ? (
+              {loading ? (
+                <div className="text-center py-12">
+                  <p>Loading transport options...</p>
+                </div>
+              ) : filteredData.length > 0 ? (
                 filteredData.map((transport) => (
                   <div
                     key={transport.id}
@@ -945,8 +784,12 @@ const TransportPage = () => {
                               </div>
                             </div>
                             <div className="text-right">
-                              <div className="bg-green-500"></div>
-                              {/* <Button className="mt-2">View Details</Button> */}
+                              <div className="text-xl font-bold">
+                                ${transport.pricePerKmUSD}{" "}
+                                <span className="text-sm font-normal">
+                                  / km
+                                </span>
+                              </div>
                             </div>
                           </div>
 
@@ -998,7 +841,7 @@ const TransportPage = () => {
                     variant="link"
                     onClick={() => {
                       setActiveFilters([]);
-                      setPriceRange([0, 0.5]);
+                      setPriceRange([0, 50]);
                       setSearchParams({
                         from: "",
                         to: "",

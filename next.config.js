@@ -37,6 +37,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "placehold.co",
       },
+      {
+        protocol: "https",
+        hostname: "slvista.s3.eu-north-1.amazonaws.com",
+      },
     ],
   },
 };
