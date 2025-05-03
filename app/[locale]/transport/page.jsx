@@ -40,6 +40,7 @@ import {
   Shrub,
   Plane,
   Ship,
+  Phone,
 } from "lucide-react";
 import { format } from "date-fns";
 import { Badge } from "@/components/ui/badge";
@@ -752,8 +753,8 @@ const TransportPage = () => {
                             className="h-full w-full object-cover"
                           />
                         </div>
-                        <div className="p-4 md:p-6 md:w-3/4">
-                          <div className="flex flex-col md:flex-row justify-between">
+                        <div className="p-4 md:ps-6 md:py-6 md:w-3/4 ">
+                          <div className="flex flex-col md:flex-row justify-between h-full">
                             <div>
                               <div className="flex items-center gap-2 mb-2">
                                 {getTransportIcon(transport.transportType)}
@@ -783,12 +784,28 @@ const TransportPage = () => {
                                 </span>
                               </div>
                             </div>
-                            <div className="text-right">
+                            <div className="flex  flex-col text-right justify-between h-full  ">
                               <div className="text-xl font-bold">
                                 ${transport.pricePerKmUSD}{" "}
                                 <span className="text-sm font-normal">
                                   / km
                                 </span>
+                              </div>
+                              <div className="text-end justify-end items-end">
+                                {transport.contactDetails.phone && (
+                                  <div className=" flex items-center font-bold cursor-pointer hover:bg-j-light gap-1 px-4 py-2 bg-j-primary/20  rounded-full">
+                                    <span>
+                                      <Phone size={16} />
+                                    </span>{" "}
+                                    {transport.contactDetails.phone}
+                                  </div>
+                                )}
+                                {transport.contactDetails.website && (
+                                  <div>{transport.contactDetails.website}</div>
+                                )}
+                                {transport.contactDetails.email && (
+                                  <div>{transport.contactDetails.email}</div>
+                                )}
                               </div>
                             </div>
                           </div>
