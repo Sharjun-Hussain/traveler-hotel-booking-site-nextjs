@@ -62,7 +62,7 @@ const TransportPage = () => {
     to: "",
     transportType: "all",
   });
-  const [priceRange, setPriceRange] = useState([0, 50]);
+  const [priceRange, setPriceRange] = useState([0, 500]);
   const [lastscrollY, setlastscrollY] = useState(0);
   const [isfixed, setisfixed] = useState(false);
   const [transportData, setTransportData] = useState([]);
@@ -139,6 +139,7 @@ const TransportPage = () => {
         );
         const transformedData = transformTransportData(response.data.data);
         setTransportData(transformedData);
+
         setFilteredData(transformedData);
       } catch (e) {
         console.log(e);
@@ -152,6 +153,7 @@ const TransportPage = () => {
 
   useEffect(() => {
     setMounted(true);
+    alert(transportData.length);
   }, []);
 
   useEffect(() => {

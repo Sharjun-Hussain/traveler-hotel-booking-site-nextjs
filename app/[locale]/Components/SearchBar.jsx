@@ -323,7 +323,7 @@ export default function SearchBar() {
 
           <TabsContent value="activities" className="mt-0">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              <div className="sm:col-span-2 space-y-1">
+              <div className="sm:col-span-2 md:col-span-4 space-y-1">
                 <Label className="text-xs font-medium text-gray-700">
                   Activity
                 </Label>
@@ -334,28 +334,10 @@ export default function SearchBar() {
                 />
               </div>
 
-              <div className="space-y-1">
-                <Label className="text-xs font-medium text-gray-700">
-                  Date
-                </Label>
-                <div className="h-12">
-                  <ModernDatepicker type="single" />
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <Label className="text-xs font-medium text-gray-700">
-                  Guests
-                </Label>
-                <div className="h-12">
-                  <CustomGuestSelector type="activities" />
-                </div>
-              </div>
-
               <div className="sm:col-span-2 lg:col-span-4 mt-2">
                 <Button
                   onClick={handleSearchClick}
-                  className="w-full h-12 text-sm font-medium bg-primary hover:bg-primary-600"
+                  className="w-full h-12 text-sm font-medium bg-j-primary hover:bg-primary-600 focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
                   Search Activities
                 </Button>
@@ -365,7 +347,7 @@ export default function SearchBar() {
 
           <TabsContent value="transport" className="mt-0">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              <div className="sm:col-span-2 space-y-1">
+              <div className="sm:col-span-2 md:col-span-4 space-y-1">
                 <Label className="text-xs font-medium text-gray-700">
                   Service Provider / City
                 </Label>
@@ -376,28 +358,10 @@ export default function SearchBar() {
                 />
               </div>
 
-              <div className="space-y-1">
-                <Label className="text-xs font-medium text-gray-700">
-                  Date
-                </Label>
-                <div className="h-12">
-                  <ModernDatepicker type="single" />
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <Label className="text-xs font-medium text-gray-700">
-                  Passengers
-                </Label>
-                <div className="h-12">
-                  <CustomGuestSelector type="transport" />
-                </div>
-              </div>
-
               <div className="sm:col-span-2 lg:col-span-4 mt-2">
                 <Button
                   onClick={handleSearchClick}
-                  className="w-full h-12 text-sm font-medium bg-primary hover:bg-primary-600"
+                  className="w-full h-12 text-sm font-medium bg-j-primary hover:bg-primary-600 focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
                   Search Transport
                 </Button>
@@ -407,7 +371,7 @@ export default function SearchBar() {
 
           <TabsContent value="food" className="mt-0">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              <div className="space-y-1">
+              <div className="space-y-1 md:col-span-2">
                 <Label className="text-xs font-medium text-gray-700">
                   Location
                 </Label>
@@ -418,7 +382,7 @@ export default function SearchBar() {
                 />
               </div>
 
-              <div className="space-y-1">
+              <div className="space-y-1 md:col-span-2">
                 <Label className="text-xs font-medium text-gray-700">
                   Cuisine Type
                 </Label>
@@ -434,28 +398,11 @@ export default function SearchBar() {
                 />
               </div>
 
-              <div className="space-y-1">
-                <Label className="text-xs font-medium text-gray-700">
-                  Date & Time
-                </Label>
-                <div className="h-12">
-                  <ModernDatepicker type="datetime" />
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <Label className="text-xs font-medium text-gray-700">
-                  Party Size
-                </Label>
-                <div className="h-12">
-                  <CustomGuestSelector type="food" />
-                </div>
-              </div>
-
               <div className="sm:col-span-2 lg:col-span-4 mt-2">
                 <Button
                   onClick={handleSearchClick}
-                  className="w-full h-12 text-sm font-medium bg-primary hover:bg-primary-600"
+                  className="w-full h-12 text-sm font-medium bg-j-primary hover:bg-primary-600 focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
+                  s
                 >
                   Search Restaurants
                 </Button>
