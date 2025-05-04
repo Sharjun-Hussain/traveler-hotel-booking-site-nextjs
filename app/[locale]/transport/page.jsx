@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Sheet,
@@ -53,14 +54,16 @@ import "rc-slider/assets/index.css";
 import axios from "axios";
 
 const TransportPage = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [date, setDate] = useState(new Date());
   const [activeFilters, setActiveFilters] = useState([]);
   const [sortOption, setSortOption] = useState("price-low");
-  const [searchParams, setSearchParams] = useState({
+  const [filters, setFilters] = useState({
     from: "",
     to: "",
-    transportType: "all",
+    transportType: searchParams.get("type") || "all",
   });
   const [priceRange, setPriceRange] = useState([0, 500]);
   const [lastscrollY, setlastscrollY] = useState(0);
@@ -139,8 +142,14 @@ const TransportPage = () => {
         );
         const transformedData = transformTransportData(response.data.data);
         setTransportData(transformedData);
-
         setFilteredData(transformedData);
+
+        // Apply URL filter if present
+        const urlType = searchParams.get("type");
+        if (urlType) {
+          setFilters((prev) => ({ ...prev, transportType: urlType }));
+          addFilter("vehicle", urlType);
+        }
       } catch (e) {
         console.log(e);
       } finally {
@@ -149,37 +158,36 @@ const TransportPage = () => {
     };
 
     fetchTransportData();
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
     setMounted(true);
-    alert(transportData.length);
   }, []);
 
   useEffect(() => {
     let results = [...transportData];
 
-    if (searchParams.from) {
+    if (filters.from) {
       results = results.filter((item) =>
         item.location.departureCity
           .toLowerCase()
-          .includes(searchParams.from.toLowerCase())
+          .includes(filters.from.toLowerCase())
       );
     }
 
-    if (searchParams.to) {
+    if (filters.to) {
       results = results.filter((item) =>
         item.location.arrivalCity
           .toLowerCase()
-          .includes(searchParams.to.toLowerCase())
+          .includes(filters.to.toLowerCase())
       );
     }
 
-    if (searchParams.transportType !== "all") {
+    if (filters.transportType !== "all") {
       results = results.filter(
         (item) =>
           item.transportType.toLowerCase() ===
-          searchParams.transportType.toLowerCase()
+          filters.transportType.toLowerCase()
       );
     }
 
@@ -235,7 +243,7 @@ const TransportPage = () => {
     }
 
     setFilteredData(results);
-  }, [searchParams, activeFilters, sortOption, priceRange, transportData]);
+  }, [filters, activeFilters, sortOption, priceRange, transportData]);
 
   const addFilter = (type, value) => {
     if (
@@ -245,6 +253,11 @@ const TransportPage = () => {
     ) {
       setActiveFilters([...activeFilters, { type, value }]);
     }
+
+    // Update URL if vehicle type filter
+    if (type === "vehicle") {
+      router.push(`/transport?type=${value}`);
+    }
   };
 
   const removeFilter = (type, value) => {
@@ -253,10 +266,15 @@ const TransportPage = () => {
         (filter) => !(filter.type === type && filter.value === value)
       )
     );
+
+    // Update URL if vehicle type filter is removed
+    if (type === "vehicle") {
+      router.push("/transport");
+    }
   };
 
   const handleSearch = () => {
-    console.log("Searching with parameters:", searchParams);
+    console.log("Searching with parameters:", filters);
   };
 
   const getTransportIcon = (type) => {
@@ -313,10 +331,10 @@ const TransportPage = () => {
                       <Input
                         className="pl-10"
                         placeholder="Departure City"
-                        value={searchParams.from}
+                        value={filters.from}
                         onChange={(e) =>
-                          setSearchParams({
-                            ...searchParams,
+                          setFilters({
+                            ...filters,
                             from: e.target.value,
                           })
                         }
@@ -494,6 +512,12 @@ const TransportPage = () => {
                   onClick={() => {
                     setActiveFilters([]);
                     setPriceRange([0, 50]);
+                    setFilters({
+                      from: "",
+                      to: "",
+                      transportType: "all",
+                    });
+                    router.push("/transport");
                   }}
                 >
                   Reset Filters

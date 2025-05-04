@@ -104,63 +104,63 @@ const SecNav = ({ classnames }) => {
   const transportOptions = [
     {
       title: "Bicycles",
-      href: "/transport/bicycles",
+      href: "/transport?type=bicycles",
       icon: <Bike size={16} />,
       description:
         "A two-wheeled, human-powered mode of transport ideal for short distances and eco-friendly travel.",
     },
     {
       title: "Buses",
-      href: "/transport/buses",
+      href: "/transport?type=buses",
       icon: <Bus size={16} />,
       description:
         "Public or private road transport designed to carry multiple passengers efficiently within cities or between locations.",
     },
     {
       title: "Cars",
-      href: "/transport/cars",
+      href: "/transport?type=cars",
       icon: <Car size={16} />,
       description:
         "Personal or rental four-wheeled vehicles offering flexible and comfortable travel options.",
     },
     {
       title: "Ferries/Boats",
-      href: "/transport/ferries-boats",
+      href: "/transport?type=ferries-boats",
       icon: <Anchor size={16} />,
       description:
         "Water-based transport used for crossing rivers, lakes, or short sea routes.",
     },
     {
       title: "Flights",
-      href: "/transport/flights",
+      href: "/transport?type=flights",
       icon: <Plane size={16} />,
       description:
         "Air travel for long-distance and international transportation with commercial or private airlines.",
     },
     {
       title: "Motorcycles/Scooties",
-      href: "/transport/motorcycles-scooties",
+      href: "/transport?type=motorcycles-scooties",
       icon: <BikeIcon size={16} />,
       description:
         "Two-wheeled motorized vehicles ideal for quick urban transport and personal commuting.",
     },
     {
       title: "Tuktuk",
-      href: "/transport/tuktuk",
+      href: "/transport?type=tuktuk",
       icon: <Truck size={16} />,
       description:
         "A three-wheeled auto-rickshaw used as an affordable and quick transport option in many cities.",
     },
     {
       title: "Vans",
-      href: "/transport/vans",
+      href: "/transport?type=vans",
       icon: <TruckIcon size={16} />,
       description:
         "Larger vehicles used for group transport, delivery services, or road trips.",
     },
     {
       title: "Other",
-      href: "/transport/other",
+      href: "/transport?type=other",
       icon: <CompassIcon size={16} />,
       description:
         "Any other mode of transport not listed above, including experimental and emerging technologies.",

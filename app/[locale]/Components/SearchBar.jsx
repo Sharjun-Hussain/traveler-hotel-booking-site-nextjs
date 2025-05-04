@@ -324,7 +324,7 @@ export default function SearchBar() {
           <TabsContent value="activities" className="mt-0">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               <div className="sm:col-span-2 md:col-span-4 space-y-1">
-                <Label className="text-xs font-medium text-gray-700">
+                <Label className="text-sm font-medium text-gray-700">
                   Activity
                 </Label>
                 <Input
@@ -348,7 +348,7 @@ export default function SearchBar() {
           <TabsContent value="transport" className="mt-0">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               <div className="sm:col-span-2 md:col-span-4 space-y-1">
-                <Label className="text-xs font-medium text-gray-700">
+                <Label className="text-sm font-medium text-gray-700">
                   Service Provider / City
                 </Label>
                 <Input
@@ -372,7 +372,7 @@ export default function SearchBar() {
           <TabsContent value="food" className="mt-0">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
               <div className="space-y-1 md:col-span-2">
-                <Label className="text-xs font-medium text-gray-700">
+                <Label className="text-sm font-medium text-gray-700">
                   Location
                 </Label>
                 <Input
@@ -383,7 +383,7 @@ export default function SearchBar() {
               </div>
 
               <div className="space-y-1 md:col-span-2">
-                <Label className="text-xs font-medium text-gray-700">
+                <Label className="text-sm font-medium text-gray-700">
                   Cuisine Type
                 </Label>
                 <MultiSelect
