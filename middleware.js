@@ -1,5 +1,5 @@
 // middleware.ts
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
 
 const intlMiddleware = createMiddleware({
@@ -10,29 +10,43 @@ const intlMiddleware = createMiddleware({
 
 const protectedRoutes = ["/dashboard", "/profile", "/bookings", "/settings"];
 
-export function middleware(req) {
-  const res = intlMiddleware(req);
-  const { pathname } = req.nextUrl;
-  const locale = req.nextUrl.locale || "en";
+export function middleware(request) {
+  // 1. Handle locale persistence
+  const localeCookie = request.cookies.get("NEXT_LOCALE");
+  const { pathname } = request.nextUrl;
+  let response;
 
-  const token = req.cookies.get("access_token")?.value;
+  // 2. Apply next-intl middleware first
+  response = intlMiddleware(request);
 
-  // Check if user is trying to access a protected route
+  // 3. Set/Update locale cookie if needed
+  const detectedLocale = request.nextUrl || "en";
+  console.log(detectedLocale);
+
+  if (!localeCookie || localeCookie.value !== detectedLocale) {
+    response.cookies.set("NEXT_LOCALE", detectedLocale, {
+      path: "/",
+      maxAge: 365 * 24 * 60 * 60, // 1 year
+      sameSite: "lax",
+    });
+  }
+
+  // 4. Handle protected routes (your existing logic)
+  const token = request.cookies.get("access_token")?.value;
   const isProtected = protectedRoutes.some((route) =>
-    pathname.startsWith(`/${locale}${route}`)
+    pathname.startsWith(`/${detectedLocale}${route}`)
   );
 
   if (isProtected && !token) {
-    const loginUrl = new URL(`/${locale}/login`, req.url);
+    const loginUrl = new URL(`/${detectedLocale}/login`, request.url);
     return NextResponse.redirect(loginUrl);
   }
 
-  return res;
+  return response;
 }
 
 export const config = {
   matcher: [
-    // Match everything except public paths
     "/((?!api|_next|.*\\..*|login|signup|forgot-password|reset-password).*)",
   ],
 };

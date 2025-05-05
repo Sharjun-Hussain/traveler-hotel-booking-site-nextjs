@@ -68,19 +68,11 @@ import { Separator } from "@/components/ui/separator";
 import LanguageDialog from "./LangModel";
 import CurrencyDialog from "./CurrencyModel";
 import HostRegistrationWizard from "@/app/List-Your_property/Registration";
+import { usePathname as IntlUsePathname } from "@/i18n/navigation";
+import { Link as IntlLink } from "@/i18n/navigation";
 
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  // useEffect(() => {
-  //   const fetchTransportTypes = async () => {
-  //     const response = await fetch(`${process.env.BACKEND_URL}/api/v1/admin/transport-types`, {
-  //       headers: {
-
-  //      }
-  //    })
-  //  }
-  // }, [])
+  const pathname = IntlUsePathname();
 
   const mainNavItems = [
     {
@@ -479,13 +471,19 @@ export default function Navbar() {
                 <ShoppingCart className="h-5 w-5 mr-1" />
               </Button>
               <button className="cursor-pointer text-[16px] hover:text-foreground/70">
-                En
+                <IntlLink href={pathname} locale="en">
+                  En
+                </IntlLink>
               </button>
               <button className="cursor-pointer text-[17px] -mt-[1px] hover:text-foreground/70">
-                த
+                <IntlLink href={pathname} locale="ta">
+                  த
+                </IntlLink>
               </button>
               <button className="cursor-pointer text-[18px] hover:text-foreground/70">
-                සි
+                <IntlLink href={pathname} locale="si">
+                  සි
+                </IntlLink>
               </button>
               <LanguageDialog />
               <CurrencyDialog />{" "}

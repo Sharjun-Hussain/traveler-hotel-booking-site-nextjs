@@ -11,8 +11,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Check, Globe, Search } from "lucide-react";
+import { usePathname as IntlUsePathname } from "@/i18n/navigation";
+import { Link as IntlLink } from "@/i18n/navigation";
 
 const LanguageDialog = ({ onselect }) => {
+  const pathname = IntlUsePathname();
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const [selectedLanguage, setSelectedLanguage] = useState("English");
   const [isOpen, setIsOpen] = useState(false);
@@ -30,17 +33,17 @@ const LanguageDialog = ({ onselect }) => {
     {
       code: "en",
       name: "English",
-      contryflag: <US title="United States" className="h-3" />,
+      contryflag: <US title="English" className="h-3" />,
     },
     {
       code: "ta",
       name: "Tamil",
-      contryflag: <IN title="United States" className="h-3" />,
+      contryflag: <IN title="Tamil" className="h-3" />,
     },
     {
       code: "si",
       name: "Sinhala",
-      contryflag: <LK title="United States" className="h-3" />,
+      contryflag: <LK title="SInhala" className="h-3" />,
     },
   ];
 
@@ -87,25 +90,30 @@ const LanguageDialog = ({ onselect }) => {
           <div className="mb-4 font-bold">Suggested for you</div>
           <div className="grid grid-cols-3 gap-3">
             {filteredLanguages.map((language) => (
-              <button
+              <IntlLink
+                href={pathname}
+                locale={language.code}
                 key={language.code}
-                className={`flex items-center justify-between px-4 py-2 text-left rounded-lg hover:bg-j-primary/10 transition-colors ${
-                  selectedLanguage === language.name
-                    ? "bg-j-primary-hover/25"
-                    : ""
-                }`}
-                onClick={() => {
-                  setSelectedLanguage(language.name);
-                  setIsOpen(false);
-                }}
               >
-                <span className="flex items-center gap-3">
-                  {language.contryflag} {language.name}
-                </span>
-                {selectedLanguage === language.name && (
-                  <Check className="h-4 w-4 text-j-primary" />
-                )}
-              </button>
+                <button
+                  className={`flex items-center justify-between px-4 py-2 text-left rounded-lg hover:bg-j-primary/10 transition-colors ${
+                    selectedLanguage === language.name
+                      ? "bg-j-primary-hover/25"
+                      : ""
+                  }`}
+                  onClick={() => {
+                    setSelectedLanguage(language.name);
+                    setIsOpen(false);
+                  }}
+                >
+                  <span className="flex items-center gap-3">
+                    {language.contryflag} {language.name}
+                  </span>
+                  {selectedLanguage === language.name && (
+                    <Check className="h-4 w-4 text-j-primary" />
+                  )}
+                </button>
+              </IntlLink>
             ))}
           </div>
         </div>

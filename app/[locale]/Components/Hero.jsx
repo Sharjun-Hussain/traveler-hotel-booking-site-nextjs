@@ -40,13 +40,13 @@ export default function HeroSection() {
         {/* Content - Centered vertically and horizontally */}
         <div className="relative h-full flex flex-col items-center justify-center px-4  mx-auto container">
           {/* <div className="max-w-2xl mmb-6 text-center ">
-          <h1 className="lg:text-3xl text-lg md:text-4xl font-bold j-text-title">
-            Discover the Beauty of Sri Lanka
-          </h1>
-          <p className="text-base hidden lg:flex md:text-lg j-text-small-text ">
-            Explore ancient temples, pristine beaches, and lush tea plantations
-          </p>
-        </div> */}
+            <h1 className="lg:text-3xl text-lg md:text-4xl font-bold j-text-title">
+              {t("title")}
+            </h1>
+            <p className="text-base hidden lg:flex md:text-lg j-text-small-text ">
+              {t("description")}
+            </p>
+          </div> */}
 
           {/* SearchBar Component */}
           <SearchBar />
