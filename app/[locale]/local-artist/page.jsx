@@ -376,17 +376,6 @@ const ArtistsListPage = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Local Artists in Sri Lanka</h1>
-          <Switch
-            checked={theme === "dark"}
-            onCheckedChange={toggleTheme}
-            thumbIcon={
-              theme === "dark" ? (
-                <Moon className="h-3 w-3" />
-              ) : (
-                <Sun className="h-3 w-3" />
-              )
-            }
-          />
         </div>
 
         {/* Main Content */}
