@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp, Calendar, MapPin, User, X, CreditCard, Lock, Info, ShoppingCart } from 'lucide-react';
+import { ChevronDown, ChevronUp, Calendar, MapPin, User, X, CreditCard, Lock, Info, ShoppingCart, Trash2 } from 'lucide-react';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
     Sheet,
@@ -15,6 +15,8 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'sonner';
+
 
 // Sample data for demonstration
 const bookingData = {
@@ -55,6 +57,8 @@ export default function BookingSheet() {
     const [promoCode, setPromoCode] = useState("");
     const [isApplyingPromo, setIsApplyingPromo] = useState(false);
     const [promoApplied, setPromoApplied] = useState(false);
+    const [hasItems, setHasItems] = useState(true); // State to track if cart has items
+
 
     // Format date to readable format
     const formatDate = (dateString) => {
@@ -70,22 +74,76 @@ export default function BookingSheet() {
         setTimeout(() => {
             setIsApplyingPromo(false);
             setPromoApplied(true);
-            // In a real app, you would update the pricing here
+            toast({
+                title: "Promo code applied",
+                description: "Your discount has been applied successfully.",
+                variant: "default",
+            });
         }, 1000);
     };
 
     const handleRemovePromo = () => {
         setPromoApplied(false);
         setPromoCode("");
-        // In a real app, you would revert the pricing changes here
+        toast({
+            title: "Promo code removed",
+            description: "The promo code has been removed from your booking.",
+            variant: "default",
+        });
     };
+
+    const handleClearCart = () => {
+        setHasItems(false);
+        toast({
+            title: "Cart cleared",
+            description: "All items have been removed from your cart.",
+            variant: "default",
+        });
+
+        // In a real app, you would also clear the cart data from state/context/API
+    };
+
+    if (!hasItems) {
+        return (
+            <div className="flex flex-col items-center">
+                <Sheet>
+                    <SheetTrigger asChild>
+                        <Button variant="ghost" className="bg-white/80 backdrop-blur-sm">
+                            <ShoppingCart className="h-5 w-5 mr-1" />
+                        </Button>
+                    </SheetTrigger>
+                    <SheetContent className="w-full sm:max-w-md overflow-y-auto p-0">
+                        <SheetHeader className="bg-j-primary p-4 sm:p-5 text-white sticky top-0 z-10">
+                            <div className="flex justify-between items-center">
+                                <SheetTitle className="text-white text-xl sm:text-2xl font-bold">Your Cart</SheetTitle>
+                                <SheetClose className="rounded-full p-1 hover:bg-red-400 transition-colors">
+                                    <X size={18} />
+                                </SheetClose>
+                            </div>
+                        </SheetHeader>
+                        <div className="flex flex-col items-center justify-center h-[calc(100vh-200px)] p-6 text-center">
+                            <ShoppingCart className="h-12 w-12 text-gray-400 mb-4" />
+                            <h3 className="text-lg font-medium text-gray-900">Your cart is empty</h3>
+                            <p className="mt-1 text-sm text-gray-500">Add properties to your cart to get started</p>
+                            <Button className="mt-6 bg-j-primary hover:bg-j-primary/90">
+                                Browse Properties
+                            </Button>
+                        </div>
+                    </SheetContent>
+                </Sheet>
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col items-center">
-            <Sheet >
+            <Sheet>
                 <SheetTrigger asChild>
-                    <Button variant="ghost" className="bg-white/80  backdrop-blur-sm">
+                    <Button variant="ghost" className="bg-white/80 backdrop-blur-sm relative">
                         <ShoppingCart className="h-5 w-5 mr-1" />
+                        <span className="absolute -top-1 -right-1 bg-j-primary text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                            1
+                        </span>
                     </Button>
                 </SheetTrigger>
                 <SheetContent className="w-full sm:max-w-md overflow-y-auto p-0">
@@ -93,9 +151,20 @@ export default function BookingSheet() {
                     <SheetHeader className="bg-j-primary p-4 sm:p-5 text-white sticky top-0 z-10">
                         <div className="flex justify-between items-center">
                             <SheetTitle className="text-white text-xl sm:text-2xl font-bold">Booking Summary</SheetTitle>
-                            <SheetClose className="rounded-full p-1 hover:bg-red-400 transition-colors">
-                                <X size={18} />
-                            </SheetClose>
+                            <div className="flex items-center gap-2">
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    className="text-white hover:bg-red-400 hover:text-white"
+                                    onClick={handleClearCart}
+                                >
+                                    <Trash2 size={16} className="mr-1" />
+                                    Clear
+                                </Button>
+                                <SheetClose className="rounded-full p-1 hover:bg-red-400 transition-colors">
+                                    <X size={18} />
+                                </SheetClose>
+                            </div>
                         </div>
                         <SheetDescription className="text-blue-100 text-sm">
                             Complete your reservation for an amazing stay in Sri Lanka
@@ -300,7 +369,7 @@ export default function BookingSheet() {
                                                         placeholder="Enter promo code"
                                                         value={promoCode}
                                                         onChange={(e) => setPromoCode(e.target.value)}
-                                                        className="w-full p-2 text-sm border rounded-lg  outline-none"
+                                                        className="w-full p-2 text-sm border rounded-lg outline-none"
                                                         disabled={promoApplied}
                                                     />
                                                     <button
