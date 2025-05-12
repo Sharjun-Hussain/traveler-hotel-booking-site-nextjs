@@ -69,10 +69,10 @@ export default function HostRegistrationWizard() {
     confirmPassword: "",
     phoneNumber: "",
 
-    // Property Details
-    propertyName: "",
-    propertyType: "",
-    propertyDescription: "",
+    // // Property Details
+    // propertyName: "",
+    // propertyType: "",
+    // propertyDescription: "",
 
     // Address
     address: "",
@@ -82,34 +82,34 @@ export default function HostRegistrationWizard() {
     country: "Sri Lanka",
 
     // Amenities
-    amenities: {
-      wifi: false,
-      parking: false,
-      pool: false,
-      airConditioning: false,
-      restaurant: false,
-      spa: false,
-      gym: false,
-      beachAccess: false,
-    },
+    // amenities: {
+    //   wifi: false,
+    //   parking: false,
+    //   pool: false,
+    //   airConditioning: false,
+    //   restaurant: false,
+    //   spa: false,
+    //   gym: false,
+    //   beachAccess: false,
+    // },
 
     // Photos
-    photos: [],
+    // photos: [],
 
     // Pricing
-    basePricePerNight: "",
-    currency: "LKR",
+    // basePricePerNight: "",
+    // currency: "LKR",
 
     // Policies
-    cancellationPolicy: "",
-    checkInTime: "",
-    checkOutTime: "",
+    // cancellationPolicy: "",
+    // checkInTime: "",
+    // checkOutTime: "",
 
     // Bank Info
-    bankName: "",
-    accountNumber: "",
-    accountHolderName: "",
-    branchCode: "",
+    // bankName: "",
+    // accountNumber: "",
+    // accountHolderName: "",
+    // branchCode: "",
 
     // Terms
     acceptTerms: false,
@@ -235,13 +235,8 @@ export default function HostRegistrationWizard() {
                   <SelectValue placeholder="Select business type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="hotel">Hotel</SelectItem>
-                  <SelectItem value="villa">Villa</SelectItem>
-                  <SelectItem value="apartment">Apartment</SelectItem>
-                  <SelectItem value="guesthouse">Guesthouse</SelectItem>
-                  <SelectItem value="bungalow">Bungalow</SelectItem>
-                  <SelectItem value="hostel">Hostel</SelectItem>
-                  <SelectItem value="resort">Resort</SelectItem>
+                  <SelectItem value="hotel">Hotel & Apartment</SelectItem>
+                  <SelectItem value="homestay">Villa</SelectItem>
                   <SelectItem value="other">Other</SelectItem>
                 </SelectContent>
               </Select>

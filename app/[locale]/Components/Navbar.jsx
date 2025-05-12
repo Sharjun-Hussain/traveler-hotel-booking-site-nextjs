@@ -67,9 +67,10 @@ import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import LanguageDialog from "./LangModel";
 import CurrencyDialog from "./CurrencyModel";
-import HostRegistrationWizard from "@/app/List-Your_property/Registration";
+import HostRegistrationWizard from "@/app/list-your-property/Registration";
 import { usePathname as IntlUsePathname } from "@/i18n/navigation";
 import { Link as IntlLink } from "@/i18n/navigation";
+import BookingSheet, { CartSheet, LeftCartSheet } from "@/components/Cart-sheet";
 
 export default function Navbar() {
   const pathname = IntlUsePathname();
@@ -467,9 +468,7 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center space-x-3">
             <div className="flex gap-2 justify-center items-center">
               <HostRegistrationWizard />
-              <Button variant="ghost" className="bg-white/80 backdrop-blur-sm">
-                <ShoppingCart className="h-5 w-5 mr-1" />
-              </Button>
+              <BookingSheet />
               <button className="cursor-pointer text-[16px] hover:text-foreground/70">
                 <IntlLink href={pathname} locale="en">
                   En
@@ -501,10 +500,12 @@ export default function Navbar() {
                 Sign Up
               </Button>
             </Link>
+
             <Link href="/customer-care">
               <Button size="sm" className="gap-1 bg-j-primary-hover">
                 <Headphones size={16} />
               </Button>
+
             </Link>
           </div>
 

@@ -47,6 +47,6 @@ export function middleware(request) {
 
 export const config = {
   matcher: [
-    "/((?!api|_next|.*\\..*|login|signup|forgot-password|reset-password).*)",
+    "/((?!api|_next|.*\\..*|login|signup|forgot-password|reset-password|list-your-property).*)",
   ],
 };
