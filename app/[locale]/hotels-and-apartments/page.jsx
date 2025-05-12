@@ -13,7 +13,6 @@ import {
 import { Input } from "@/components/ui/input";
 import CustomGuestSelector from "../Components/PassengerPicker";
 import SideBarFilter from "../Components/SideBarFilter";
-
 import { Button } from "@/components/ui/button";
 import HotelCard from "../Components/HotelCard";
 import CustomizedSectionWithCarousel from "../Components/CarausalSposored";
@@ -23,7 +22,7 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTrigger } from "@/components
 
 export default function HotelsListingPage() {
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [isfixed, setIsFixed] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [activeBottomSheet, setActiveBottomSheet] = useState(null);
   const searchRef = useRef(null);
@@ -44,19 +43,24 @@ export default function HotelsListingPage() {
     };
   }, [isSearchExpanded]);
 
+  // Scroll handler for sticky behavior
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      if (currentScrollY > 50 && currentScrollY < lastScrollY) {
-        setIsFixed(true);
-      } else {
-        setIsFixed(false);
+      // Only apply sticky behavior on large screens
+      if (window.innerWidth >= 768) {
+        if (currentScrollY > 200) { // Start showing sticky header after scrolling down 200px
+          setIsSticky(true);
+        } else {
+          setIsSticky(false);
+        }
       }
+
       setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
@@ -67,22 +71,6 @@ export default function HotelsListingPage() {
     }
     // Perform search logic here
   };
-
-  useEffect(() => {
-    const handlescroll = () => {
-      const currentscrollY = window.scrollY;
-
-      if (currentscrollY > 50 && currentscrollY < lastScrollY) {
-        setisfixed(true);
-      } else {
-        setisfixed(false);
-      }
-      setLastScrollY(currentscrollY);
-    };
-
-    window.addEventListener("scroll", handlescroll);
-    return () => window.removeEventListener("scroll", handlescroll);
-  }, [lastScrollY]);
 
   const hotels = [
     {
@@ -148,28 +136,23 @@ export default function HotelsListingPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 w-full mx-auto duration-300  dark:bg-zinc-900/90 pt-14">
+    <div className="min-h-screen bg-gray-50 w-full mx-auto duration-300 dark:bg-zinc-900/90 lg:pt-14">
       <SecNav classnames="shadow-sm" />
       <MobileNav />
-      <div className="lg:mt-14">
-        {!isSearchExpanded && (
-          <div className="md:hidden p-4">
-            <button
-              onClick={() => setIsSearchExpanded(true)}
-              className="w-full bg-white dark:bg-zinc-800 rounded-lg shadow p-3 flex items-center gap-2"
-            >
-              <MapPin className="text-gray-400" size={18} />
-              <span className="text-sm font-medium">Where are you going?</span>
-            </button>
-          </div>
-        )}
 
-        {/* Search Bar */}
-        <div
-          className={`${isSearchExpanded ? "fixed inset-0 bg-white dark:bg-zinc-900 z-50 overflow-y-auto" : "hidden md:block"
-            }`}
-        >
-          <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${isSearchExpanded ? "py-4" : "py-2"}`}>
+      {/* Search Bar Container - Modified for sticky behavior */}
+      <div
+        ref={searchRef}
+        className={`
+          transition-all duration-300 ease-in-out  mt-16
+          ${isSticky ?
+            "fixed lg:top-14 left-0 right-0 z-40 bg-j-primary dark:bg-zinc-800 shadow-lg transition-all duration-300" :
+            "relative bg-j-primary-hover dark:bg-blue-950 transition-all duration-300"
+          }
+        `}
+      >
+        <div className={`${isSearchExpanded ? "fixed inset-0 bg-white dark:bg-zinc-900 z-50 overflow-y-auto" : "hidden md:block"}`}>
+          <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${isSearchExpanded ? "py-4" : "py-4"}`}>
             {isSearchExpanded && (
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-bold">Search</h2>
@@ -179,8 +162,14 @@ export default function HotelsListingPage() {
               </div>
             )}
 
-            <form onSubmit={handleSearchSubmit} className="bg-white dark:bg-zinc-800 rounded-lg shadow p-4">
-              <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+            <form
+              onSubmit={handleSearchSubmit}
+              className={`
+                bg-white dark:bg-zinc-800 rounded-lg shadow p-4 
+                ${isSticky ? "border border-gray-200 dark:border-zinc-700" : ""}
+              `}
+            >
+              <div className="grid items-center grid-cols-1 md:grid-cols-6 gap-4">
                 <div className="relative">
                   <MapPin className="absolute left-3 top-3 text-gray-400" size={18} />
                   <Input
@@ -239,20 +228,35 @@ export default function HotelsListingPage() {
             </form>
           </div>
         </div>
+      </div>
 
-        {/* Main Content */}
-        <main className=" mx-auto container px-4 lg:py-8 sm:px-0">
+      {/* Main Content */}
+      <div className={`${isSticky ? "mt-14" : ""}`}>
+        {/* Mobile search trigger button */}
+        {!isSearchExpanded && (
+          <div className="md:hidden p-4">
+            <button
+              onClick={() => setIsSearchExpanded(true)}
+              className="w-full bg-white dark:bg-zinc-800 rounded-lg shadow p-3 flex items-center gap-2"
+            >
+              <MapPin className="text-gray-400" size={18} />
+              <span className="text-sm font-medium">Where are you going?</span>
+            </button>
+          </div>
+        )}
+
+        <main className="mx-auto container px-4 lg:py-8 sm:px-0">
           <div className="flex flex-col md:flex-row gap-8">
             {/* Filters Sidebar */}
             <SideBarFilter className="hidden lg:block" />
 
             {/* Hotels List */}
             <div className="w-full container">
-              <div className=" w-full h-12">
+              <div className="w-full h-12">
                 {/* Mobile Filter Bar */}
                 <div className="md:hidden sticky top-28 z-30 dark:bg-zinc-800 border-b dark:border-zinc-700">
                   <div className="container mx-auto px-4">
-                    <div className="flex justify-between ">
+                    <div className="flex justify-between">
                       <Drawer open={activeBottomSheet === "filter"} onOpenChange={(open) => setActiveBottomSheet(open ? "filter" : null)}>
                         <DrawerTrigger asChild>
                           <button className="flex items-center gap-1 px-3 py-2 text-sm">
@@ -296,14 +300,14 @@ export default function HotelsListingPage() {
                       </Drawer>
 
                       <button className="flex items-center gap-1 px-3 py-2 text-sm">
-                        <Map size={20} />  <span>Map</span>
+                        <Map size={20} /> <span>Map</span>
                       </button>
                     </div>
                   </div>
                 </div>
-
               </div>
-              <div className="flex justify-between items-center">
+
+              <div className="flex justify-between items-start">
                 <h2 className="font-bold text-md lg:text-2xl">
                   4 properties found
                 </h2>
@@ -340,12 +344,10 @@ export default function HotelsListingPage() {
                   destinations={hotels}
                 />
               </div>
-
-              {/* Pagination */}
             </div>
           </div>
         </main>
       </div>
-    </div>
+    </div >
   );
 }
