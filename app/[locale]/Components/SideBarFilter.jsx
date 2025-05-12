@@ -27,7 +27,7 @@ import {
   Check,
 } from "lucide-react";
 
-const SideBarFilter = () => {
+const SideBarFilter = ({ className }) => {
   const [filters, setFilters] = useState({
     priceRange: [0, 1000],
     rating: null,
@@ -106,7 +106,7 @@ const SideBarFilter = () => {
   ].filter(Boolean);
 
   return (
-    <div className="w-80 bg-white shadow-xl rounded-lg p-4 border border-gray-100">
+    <div className={`lg:w-80 w-full lg:bg-white lg:shadow-xl lg:rounded-lg p-4 lg:border lg:border-gray-100 ${className}`}>
       {/* Selected Filters */}
       <div className="mb-6">
         <div className="flex flex-wrap gap-2">

@@ -511,12 +511,7 @@ export default function Navbar() {
 
           {/* Mobile menu Sheet trigger */}
           <div className="lg:hidden flex items-center gap-2">
-            <Button variant="ghost" size="icon" className="relative">
-              <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 bg-primary text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
-                0
-              </span>
-            </Button>
+            <BookingSheet />
 
             <Sheet>
               <SheetTrigger asChild>
