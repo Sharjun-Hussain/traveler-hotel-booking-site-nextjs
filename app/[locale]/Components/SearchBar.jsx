@@ -20,7 +20,7 @@ import { Cat, Dog, Fish, Rabbit, Turtle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { addDays } from "date-fns";
 import { z } from "zod";
-import { FormProvider, useForm } from "react-hook-form";
+import { Controller, FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 export default function SearchBar() {
@@ -75,6 +75,20 @@ export default function SearchBar() {
 
   const methods = useForm({
     resolver: zodResolver(HotelsSchema),
+    defaultValues: {
+      travelorType: "Budget-Tourer-Backpacker",
+      DestinationOrHotel: "",
+      GuestsAndRooms: {
+        adults: 1,
+        children: 0,
+        rooms: 1,
+        Infants: 0
+      },
+      dates: {
+        checkIn: addDays(new Date(), 1),
+        checkOut: addDays(new Date(), 3)
+      }
+    }
   });
 
   const { setValue, watch } = methods;
@@ -91,10 +105,21 @@ export default function SearchBar() {
     setValue("GuestsAndRooms.Infants", data.Infants);
   };
 
-  const onSubmit = (data) => {
-    console.log(data);
-    handleSearchClick();
+
+  const onSubmit = async (data) => {
+    try {
+      console.log("Form data:", data);
+      const isValid = await methods.trigger();
+      if (!isValid) {
+        console.log("Form errors:", methods.formState.errors);
+        return;
+      }
+      await handleSearchClick();
+    } catch (error) {
+      console.error("Submission error:", error);
+    }
   };
+
 
   return (
     <Card className="w-full max-w-7xl bg-white/95 backdrop-blur-sm border border-gray-200 rounded-xl shadow-lg overflow-hidden">
@@ -117,11 +142,10 @@ export default function SearchBar() {
                 <TabsTrigger
                   key={tab.value}
                   value={tab.value}
-                  className={`px-3 py-2 text-xs sm:text-sm font-medium rounded-lg whitespace-nowrap transition-colors ${
-                    searchType === tab.value
-                      ? "bg-primary text-white shadow-sm"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
+                  className={`px-3 py-2 text-xs sm:text-sm font-medium rounded-lg whitespace-nowrap transition-colors ${searchType === tab.value
+                    ? "bg-primary text-white shadow-sm"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
                 >
                   {tab.label}
                 </TabsTrigger>
@@ -135,40 +159,51 @@ export default function SearchBar() {
             <FormProvider {...methods}>
               <form onSubmit={methods.handleSubmit(onSubmit)}>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+
                   {/* Traveler Type */}
+                  {/* Traveler Type - Updated Implementation */}
                   <div className="space-y-1 bg-white rounded-md p-2 shadow-sm">
                     <Label className="text-sm font-medium text-gray-700">
                       Traveler Type
                     </Label>
-                    <Select
-                      {...methods.register("travelorType")}
+                    <Controller
+                      name="travelorType"
+                      control={methods.control}
                       defaultValue="Budget-Tourer-Backpacker"
-                    >
-                      <SelectTrigger className="h-12 text-sm bg-white border-gray-300 hover:border-gray-400">
-                        <SelectValue placeholder="Select type" />
-                      </SelectTrigger>
-                      <SelectContent className="w-[var(--radix-select-trigger-width)] max-w-full">
-                        <SelectItem value="Budget-Tourer-Backpacker">
-                          Budget Tourer/Backpacker
-                        </SelectItem>
-                        <SelectItem value="Business Traveler">
-                          Business Traveler
-                        </SelectItem>
-                        <SelectItem value="Couple">Couple</SelectItem>
-                        <SelectItem value="Digital-Nomad">
-                          Digital Nomad
-                        </SelectItem>
-                        <SelectItem value="Family">Family</SelectItem>
-                        <SelectItem value="Group">Group</SelectItem>
-                        <SelectItem value="Honeymooners">
-                          Honeymooners
-                        </SelectItem>
-                        <SelectItem value="Researcher-Student">
-                          Researcher/Student
-                        </SelectItem>
-                        <SelectItem value="Solo-Female">Solo Female</SelectItem>
-                      </SelectContent>
-                    </Select>
+                      render={({ field }) => (
+                        <Select
+                          value={field.value}
+                          onValueChange={(value) => {
+                            field.onChange(value);
+                          }}
+                        >
+                          <SelectTrigger className="h-12 text-sm bg-white border-gray-300 hover:border-gray-400">
+                            <SelectValue placeholder="Select type" />
+                          </SelectTrigger>
+                          <SelectContent className="w-[var(--radix-select-trigger-width)] max-w-full">
+                            <SelectItem value="Budget-Tourer-Backpacker">
+                              Budget Tourer/Backpacker
+                            </SelectItem>
+                            <SelectItem value="Business Traveler">
+                              Business Traveler
+                            </SelectItem>
+                            <SelectItem value="Couple">Couple</SelectItem>
+                            <SelectItem value="Digital-Nomad">
+                              Digital Nomad
+                            </SelectItem>
+                            <SelectItem value="Family">Family</SelectItem>
+                            <SelectItem value="Group">Group</SelectItem>
+                            <SelectItem value="Honeymooners">
+                              Honeymooners
+                            </SelectItem>
+                            <SelectItem value="Researcher-Student">
+                              Researcher/Student
+                            </SelectItem>
+                            <SelectItem value="Solo-Female">Solo Female</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
                   </div>
 
                   {/* Destination */}
@@ -177,37 +212,56 @@ export default function SearchBar() {
                       Destination / Hotel
                     </Label>
                     <Input
-                      {...methods.register("DestinationOrHotel", {
-                        required: "This field is required",
-                      })}
+                      {...methods.register("DestinationOrHotel")}
                       type="text"
                       placeholder="Where are you going?"
-                      className={`h-12 text-sm ${
-                        methods.formState.errors.DestinationOrHotel
-                          ? "border-red-300 focus:ring-red-200"
-                          : "border-gray-300 focus:ring-primary-200"
-                      } focus:ring-2`}
+                      className={`h-12 text-sm ${methods.formState.errors.DestinationOrHotel
+                        ? "border-red-300 focus:ring-red-200"
+                        : "border-gray-300 focus:ring-primary-200"
+                        } focus:ring-2`}
                     />
                   </div>
+                  {methods.formState.errors.DestinationOrHotel && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {methods.formState.errors.DestinationOrHotel.message}
+                    </p>
+                  )}
 
                   {/* Guests */}
                   <div className="space-y-1 bg-white rounded-md p-2 shadow-sm">
                     <div className="h-12">
-                      <CustomGuestSelector
-                        type="general"
-                        onSelectData={handleGuestChange}
-                      />
+                      <Controller
+                        name="GuestsAndRooms"
+                        control={methods.control}
+                        render={({ field }) => (
+                          <CustomGuestSelector
+                            type="general"
+                            onSelectData={(data) => {
+                              handleGuestChange(data)
+                              field.onChange(data)
+                            }}
+                          />
+                        )} />
                     </div>
                   </div>
 
                   {/* Dates */}
                   <div className="space-y-1">
                     <div className="h-12">
-                      <ModernDatepicker
-                        onDatesChange={handleDatesChange}
-                        minStay={2}
-                        initialCheckIn={watch("dates.checkIn")}
-                        initialCheckOut={watch("dates.checkOut")}
+                      <Controller
+                        name="dates"
+                        control={methods.control}
+                        render={({ field }) => (
+                          <ModernDatepicker
+                            onDatesChange={(dates) => {
+                              handleDatesChange(dates)
+                              field.onChange(dates)
+                            }}
+                            minStay={2}
+                            initialCheckIn={watch("dates.checkIn")}
+                            initialCheckOut={watch("dates.checkOut")}
+                          />
+                        )}
                       />
                     </div>
                   </div>
@@ -277,11 +331,10 @@ export default function SearchBar() {
                       })}
                       type="text"
                       placeholder="Where are you going?"
-                      className={`h-12 text-sm ${
-                        methods.formState.errors.DestinationOrHotel
-                          ? "border-red-300 focus:ring-red-200"
-                          : "border-gray-300 focus:ring-primary-200"
-                      } focus:ring-2`}
+                      className={`h-12 text-sm ${methods.formState.errors.DestinationOrHotel
+                        ? "border-red-300 focus:ring-red-200"
+                        : "border-gray-300 focus:ring-primary-200"
+                        } focus:ring-2`}
                     />
                   </div>
 
