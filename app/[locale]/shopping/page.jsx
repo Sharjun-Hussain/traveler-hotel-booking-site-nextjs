@@ -50,7 +50,11 @@ const ShoppingPage = () => {
   const [activeBottomSheet, setActiveBottomSheet] = useState(null);
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [isfixed, setisfixed] = useState(false);
+  const [SearchLocation, setSearchLocation] = useState("")
+  const [SearchQuery, setSearchQuery] = useState("")
 
+
+  const handleSearch = () => { }
 
 
   // Parse URL params on initial load and when URL changes
@@ -293,6 +297,47 @@ const ShoppingPage = () => {
               </CardContent>
             </Card>
           </div>
+          {isSearchExpanded && (
+            <div className="md:hidden fixed inset-0 z-50 bg-white dark:bg-zinc-900 p-4">
+              <div className="flex items-center gap-2 mb-4">
+                <button onClick={() => setIsSearchExpanded(false)}>
+                  <X size={24} />
+                </button>
+                <h2 className="text-xl font-bold">Search</h2>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">Location</label>
+                  <div className="flex items-center relative">
+                    <MapPin className="absolute left-3 h-4 w-4 text-gray-500" />
+                    <Input
+                      className="pl-10"
+                      placeholder="City or Area"
+                      value={SearchLocation}
+                      onChange={(e) => setSearchLocation(e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-1">Shop or Category</label>
+                  <Input
+                    placeholder="Shop name or category"
+                    value={SearchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+
+                <Button
+                  className="w-full"
+                  onClick={handleSearch}
+                >
+                  Search
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-5 container mx-auto md:gap-8">
           {/* Desktop Filters */}
@@ -607,6 +652,7 @@ const ShoppingPage = () => {
         </div>
       </div>
     </div>
+
   );
 };
 
