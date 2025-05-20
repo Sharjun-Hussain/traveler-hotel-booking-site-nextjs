@@ -49,6 +49,8 @@ const ShoppingPage = () => {
   const [expandedCategories, setExpandedCategories] = useState({});
   const [activeBottomSheet, setActiveBottomSheet] = useState(null);
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const [isfixed, setisfixed] = useState(false);
+
 
 
   // Parse URL params on initial load and when URL changes
@@ -257,10 +259,44 @@ const ShoppingPage = () => {
     <div className="min-h-screen bg-gray-50 md:pt-14">
       <SecNav />
       <MobileNav />
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-5 ">
+      <div className=" py-8">
+        <div
+          className={`fixed transition-all mt-8 hidden lg:grid duration-300 ease-in-out  bg-j-primary py-6 dark:bg-blue-950     ${isfixed
+            ? " top-30  left-0 right-0 w-full shadow-md z-52 duration-300 ease-in-out transition-all  "
+            : "relative"
+            }`}
+        >
+          <div className="  w-full ">
+            <Card className="py-4 mx-12 ">
+              <CardContent>
+                <div className=" flex gap-4">
+                  <div className="space-y-2 w-[80%] ">
+                    <div className="flex items-center relative ">
+                      <MapPin className="absolute left-3 h-4 w-4 text-gray-500" />
+                      <Input
+                        className="pl-10"
+                        placeholder="City, Area or Shop Name"
+                      // value={filters.from}
+                      // onChange={(e) =>
+                      // setFilters({
+                      //   ...filters,
+                      //   from: e.target.value,
+                      // })
+                      // }
+                      />
+                    </div>
+                  </div>
+                  <Button className="w-full md:w-auto flex-1 " >
+                    Search
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-5 container mx-auto md:gap-8">
           {/* Desktop Filters */}
-          <div className="hidden lg:block lg:col-span-1">
+          <div className="hidden lg:block lg:col-span-1 mt-14">
             <Card>
               <CardContent className="pt-6">
                 <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
@@ -417,8 +453,8 @@ const ShoppingPage = () => {
 
 
           {/* Main Content */}
-          <div className="lg:col-span-4 md:mt-14">
-            <div className="flex justify-center md:justify-between items-center mt-2 mb-6">
+          <div className="lg:col-span-4 md:mt-14 container mx-auto">
+            <div className="flex justify-center md:justify-between items-center mt-2 mb-6 md:gap-8">
               <h1 className="lg:text-2xl font-bold">
                 {filteredShops.length}  Shops Found
               </h1>
