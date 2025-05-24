@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
 import Navbar from "./Components/Navbar";
 import Footer from "./Components/Footer";
+import { CurrencyInitializer } from "./Components/currencyInitializer";
 
 // Locales supported by our app
 const locales = ["en", "ta", "si"];
@@ -21,6 +22,7 @@ export default async function LocaleLayout({ children, params }) {
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
       <Navbar />
+      <CurrencyInitializer />
       {children}
       <Footer />
     </NextIntlClientProvider>

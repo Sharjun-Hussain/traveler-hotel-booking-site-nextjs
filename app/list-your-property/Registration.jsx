@@ -532,7 +532,7 @@ export default function HostRegistrationWizard() {
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="wifi"
-                  checked={formData.amenities.wifi}
+                  checked={formData?.amenities?.wifi}
                   onCheckedChange={() => handleAmenityChange("wifi")}
                 />
                 <Label htmlFor="wifi" className="font-normal">
@@ -542,7 +542,7 @@ export default function HostRegistrationWizard() {
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="parking"
-                  checked={formData.amenities.parking}
+                  checked={formData?.amenities?.parking}
                   onCheckedChange={() => handleAmenityChange("parking")}
                 />
                 <Label htmlFor="parking" className="font-normal">
@@ -552,7 +552,7 @@ export default function HostRegistrationWizard() {
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="pool"
-                  checked={formData.amenities.pool}
+                  checked={formData?.amenities?.pool}
                   onCheckedChange={() => handleAmenityChange("pool")}
                 />
                 <Label htmlFor="pool" className="font-normal">
@@ -562,7 +562,7 @@ export default function HostRegistrationWizard() {
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="airConditioning"
-                  checked={formData.amenities.airConditioning}
+                  checked={formData.amenities?.airConditioning}
                   onCheckedChange={() => handleAmenityChange("airConditioning")}
                 />
                 <Label htmlFor="airConditioning" className="font-normal">
@@ -572,7 +572,7 @@ export default function HostRegistrationWizard() {
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="restaurant"
-                  checked={formData.amenities.restaurant}
+                  checked={formData.amenities?.restaurant}
                   onCheckedChange={() => handleAmenityChange("restaurant")}
                 />
                 <Label htmlFor="restaurant" className="font-normal">
@@ -582,7 +582,7 @@ export default function HostRegistrationWizard() {
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="spa"
-                  checked={formData.amenities.spa}
+                  checked={formData.amenities?.spa}
                   onCheckedChange={() => handleAmenityChange("spa")}
                 />
                 <Label htmlFor="spa" className="font-normal">
@@ -592,7 +592,7 @@ export default function HostRegistrationWizard() {
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="gym"
-                  checked={formData.amenities.gym}
+                  checked={formData.amenities?.gym}
                   onCheckedChange={() => handleAmenityChange("gym")}
                 />
                 <Label htmlFor="gym" className="font-normal">
@@ -602,7 +602,7 @@ export default function HostRegistrationWizard() {
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="beachAccess"
-                  checked={formData.amenities.beachAccess}
+                  checked={formData.amenities?.beachAccess}
                   onCheckedChange={() => handleAmenityChange("beachAccess")}
                 />
                 <Label htmlFor="beachAccess" className="font-normal">

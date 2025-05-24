@@ -9,11 +9,15 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Check, Globe, Search } from "lucide-react";
+import { useCurrencyStore } from "@/stores/useCurrencyStore";
 
 const CurrencyDialog = () => {
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const [isOpen, setIsOpen] = useState(false); // State to control dialog visibility
   const [searchQuery, setSearchQuery] = useState("");
+
+  const { currency, setCurrency } = useCurrencyStore()
+
 
   const currencies = [
     { code: "USD", name: "US Dollar ($)", symbol: "$" },
@@ -31,6 +35,7 @@ const CurrencyDialog = () => {
 
   const handleCurrencySelect = (currencyCode) => {
     setSelectedCurrency(currencyCode);
+    setCurrency(currencyCode)
     setIsOpen(false); // Close the dialog after selection
   };
 
@@ -53,9 +58,8 @@ const CurrencyDialog = () => {
           {filteredCurrencies.map((currency) => (
             <button
               key={currency.code}
-              className={`flex items-center justify-between px-4 py-2 text-left rounded-lg hover:bg-gray-100 ${
-                selectedCurrency === currency.code ? "bg-gray-100" : ""
-              }`}
+              className={`flex items-center justify-between px-4 py-2 text-left rounded-lg hover:bg-gray-100 ${selectedCurrency === currency.code ? "bg-gray-100" : ""
+                }`}
               onClick={() => handleCurrencySelect(currency.code)}
             >
               <span>{currency.name}</span>

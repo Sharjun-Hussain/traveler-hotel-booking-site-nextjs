@@ -17,7 +17,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Textarea } from '@/components/ui/textarea';
 
-const PropertyListingDialog = ({open, setOpen}) => {
+const PropertyListingDialog = ({ open, setOpen }) => {
   const [step, setStep] = useState(1);
   const totalSteps = 5;
 
@@ -61,7 +61,7 @@ const PropertyListingDialog = ({open, setOpen}) => {
                 List Your Property
               </DialogTitle>
             </div>
-            
+
             {/* Progress Bar */}
             <div className="mt-4">
               <div className="flex justify-between mb-1 text-xs text-gray-500">
@@ -102,7 +102,7 @@ const PropertyListingDialog = ({open, setOpen}) => {
                 onClick={nextStep}
                 className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-1"
               >
-                {step === totalSteps ? 'Submit Listing' : 'Continue'} 
+                {step === totalSteps ? 'Submit Listing' : 'Continue'}
                 {step !== totalSteps && <ChevronRight className="h-4 w-4" />}
               </Button>
             </div>
@@ -326,12 +326,12 @@ const PhotosAmenities = () => {
 
         <div className="pt-4">
           <Label className="text-sm font-medium text-gray-700 block mb-3">What amenities do you offer?</Label>
-          
+
           <div className="space-y-4">
             <h3 className="font-medium text-gray-700">Popular amenities</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-3">
               {[
-                'Wi-Fi', 'Air conditioning', 'Kitchen', 'Washing machine', 
+                'Wi-Fi', 'Air conditioning', 'Kitchen', 'Washing machine',
                 'Free parking', 'Pool', 'TV', 'Heating',
                 'Hot tub', 'Workspace'
               ].map((amenity) => (

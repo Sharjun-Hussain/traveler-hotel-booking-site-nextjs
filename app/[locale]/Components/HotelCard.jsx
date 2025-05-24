@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useCurrencyStore } from "@/stores/useCurrencyStore";
 
 // Reusable HotelCard component
 const HotelCard = ({
@@ -32,9 +33,11 @@ const HotelCard = ({
   description,
   sponsored = false,
   isFavorite = false,
-  onFavoriteToggle = () => {},
-  onDetailsClick = () => {},
+  onFavoriteToggle = () => { },
+  onDetailsClick = () => { },
 }) => {
+
+  const { formatPrice } = useCurrencyStore();
   // Function to render amenity icon based on type
   const renderAmenityIcon = (type) => {
     switch (type) {
@@ -59,8 +62,8 @@ const HotelCard = ({
         type == "destination"
           ? `/hotels-and-apartments?destination=${id}`
           : type == "hotel"
-          ? `/hotels-and-apartments/hotel/${name}`
-          : "#"
+            ? `/hotels-and-apartments/hotel/${name}`
+            : "#"
       }
     >
       <Card className="max-w-full w-full overflow-hidden shadow-sm hover:shadow-lg transition-shadow duration-300 relative">
@@ -101,9 +104,8 @@ const HotelCard = ({
               className="absolute top-2 right-2 bg-white/80 p-1 rounded-full shadow-md"
             >
               <Heart
-                className={`h-5 w-5 hover:text-red-600 hover:fill-red-700 ${
-                  isFavorite ? "fill-red-500 text-red-500" : "text-black"
-                }`}
+                className={`h-5 w-5 hover:text-red-600 hover:fill-red-700 ${isFavorite ? "fill-red-500 text-red-500" : "text-black"
+                  }`}
               />
             </button>
           )}
@@ -166,8 +168,8 @@ const HotelCard = ({
             <div className="flex justify-between items-center mt-4">
               <div>
                 <span className="font-bold text-xl">
-                  {currency}
-                  {price}
+                  {/* {currency} */}
+                  {/* {price} */} {formatPrice(price)}
                 </span>
                 <span className="text-gray-500 text-sm">{priceUnit}</span>
               </div>
