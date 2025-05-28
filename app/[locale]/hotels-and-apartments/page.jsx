@@ -19,12 +19,14 @@ import CustomizedSectionWithCarousel from "../Components/CarausalSposored";
 import SecNav from "../Components/SecNav";
 import MobileNav from "@/components/ui/MobileNav";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTrigger } from "@/components/ui/drawer";
+import axios from "axios";
 
 export default function HotelsListingPage() {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isSticky, setIsSticky] = useState(false);
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [activeBottomSheet, setActiveBottomSheet] = useState(null);
+  const [FetchedHotels, setFetchedHotels] = useState([])
   const searchRef = useRef(null);
 
   // Close search when clicking outside
@@ -72,68 +74,91 @@ export default function HotelsListingPage() {
     // Perform search logic here
   };
 
-  const hotels = [
-    {
-      id: 1,
-      name: "Shangri-La Colombo",
-      location: "Galle Face, Colombo",
-      rating: 4.8,
-      reviews: 320,
-      price: 220,
-      image:
-        "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/17/18/22/f7/shangri-la-hotel-jakarta.jpg?w=700&h=-1&s=1",
-      amenities: ["Free WiFi", "Pool", "Spa", "Gym", "Seaside View"],
-      distance: "0.5 km from Galle Face Beach",
-    },
-    {
-      id: 2,
-      name: "Cinnamon Grand Colombo",
-      location: "Colombo 03, Sri Lanka",
-      rating: 4.7,
-      reviews: 280,
-      price: 200,
-      image:
-        "https://ik.imgkit.net/3vlqs5axxjf/external/https://media.iceportal.com/50826/photos/8493018_XL.jpg?tr=w-1200%2Cfo-auto",
-      amenities: ["Free WiFi", "Swimming Pool", "Fine Dining", "Bar", "Spa"],
-      distance: "1 km from Colombo City Center",
-    },
-    {
-      id: 3,
-      name: "Heritance Kandalama",
-      location: "Dambulla, Sri Lanka",
-      rating: 4.9,
-      reviews: 400,
-      price: 180,
-      image:
-        "https://cf.bstatic.com/xdata/images/hotel/max1024x768/34687318.jpg?k=76cc5b29b46c9e95814271db622f8ce20030cc266d29818b451242f5c6e955c1&o=&hp=1",
-      amenities: [
-        "Infinity Pool",
-        "Jungle View",
-        "Free WiFi",
-        "Luxury Spa",
-        "Restaurant",
-      ],
-      distance: "5 km from Sigiriya Rock",
-    },
-    {
-      id: 4,
-      name: "Jetwing Lighthouse",
-      location: "Galle, Sri Lanka",
-      rating: 4.6,
-      reviews: 270,
-      price: 190,
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd2e76GDOJ3bb0UZsJKp1CtvpjhJac04w2iQ&s",
-      amenities: [
-        "Beachfront",
-        "Free WiFi",
-        "Swimming Pool",
-        "Spa",
-        "Fine Dining",
-      ],
-      distance: "2 km from Galle Fort",
-    },
-  ];
+  useEffect(() => {
+    const fetchHotels = async () => {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/customer/list/properties`, {
+        headers: {
+
+          "Content-Type": "application/json",
+        }
+      }
+
+      );
+
+      if (response.status === 200) {
+        setFetchedHotels(response.data.data)
+      }
+      else {
+        console.error("Falied to fatch hotels")
+      }
+
+    }
+    fetchHotels()
+  }, [])
+
+
+  // const hotels = [
+  //   {
+  //     id: 1,
+  //     name: "Shangri-La Colombo",
+  //     location: "Galle Face, Colombo",
+  //     rating: 4.8,
+  //     reviews: 320,
+  //     price: 220,
+  //     image:
+  //       "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/17/18/22/f7/shangri-la-hotel-jakarta.jpg?w=700&h=-1&s=1",
+  //     amenities: ["Free WiFi", "Pool", "Spa", "Gym", "Seaside View"],
+  //     distance: "0.5 km from Galle Face Beach",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Cinnamon Grand Colombo",
+  //     location: "Colombo 03, Sri Lanka",
+  //     rating: 4.7,
+  //     reviews: 280,
+  //     price: 200,
+  //     image:
+  //       "https://ik.imgkit.net/3vlqs5axxjf/external/https://media.iceportal.com/50826/photos/8493018_XL.jpg?tr=w-1200%2Cfo-auto",
+  //     amenities: ["Free WiFi", "Swimming Pool", "Fine Dining", "Bar", "Spa"],
+  //     distance: "1 km from Colombo City Center",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Heritance Kandalama",
+  //     location: "Dambulla, Sri Lanka",
+  //     rating: 4.9,
+  //     reviews: 400,
+  //     price: 180,
+  //     image:
+  //       "https://cf.bstatic.com/xdata/images/hotel/max1024x768/34687318.jpg?k=76cc5b29b46c9e95814271db622f8ce20030cc266d29818b451242f5c6e955c1&o=&hp=1",
+  //     amenities: [
+  //       "Infinity Pool",
+  //       "Jungle View",
+  //       "Free WiFi",
+  //       "Luxury Spa",
+  //       "Restaurant",
+  //     ],
+  //     distance: "5 km from Sigiriya Rock",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Jetwing Lighthouse",
+  //     location: "Galle, Sri Lanka",
+  //     rating: 4.6,
+  //     reviews: 270,
+  //     price: 190,
+  //     image:
+  //       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd2e76GDOJ3bb0UZsJKp1CtvpjhJac04w2iQ&s",
+  //     amenities: [
+  //       "Beachfront",
+  //       "Free WiFi",
+  //       "Swimming Pool",
+  //       "Spa",
+  //       "Fine Dining",
+  //     ],
+  //     distance: "2 km from Galle Fort",
+  //   },
+  // ];
 
   return (
     <div className="min-h-screen bg-gray-50 w-full mx-auto duration-300 dark:bg-zinc-900/90 lg:pt-14">
@@ -309,7 +334,7 @@ export default function HotelsListingPage() {
 
               <div className="flex justify-between items-start">
                 <h2 className="font-bold text-md lg:text-2xl">
-                  4 properties found
+                  {FetchedHotels.length} properties found
                 </h2>
                 <div className="flex items-center gap-2">
                   <Select>
@@ -335,13 +360,20 @@ export default function HotelsListingPage() {
                 </div>
               </div>
 
+
+              {FetchedHotels.length === 0 && (
+                <div className="text-center mt-8">
+                  <p className="text-gray-500">No hotels found for your search criteria.</p>
+                </div>
+              )}
+
               {/* Hotel Cards */}
               <div className="">
                 <CustomizedSectionWithCarousel
                   gridItemsToShowBreakpoints={{ sm: 1, md: 2, lg: 3, xl: 4 }}
                   type="hotel"
                   displayMode="grid"
-                  destinations={hotels}
+                  destinations={FetchedHotels}
                 />
               </div>
             </div>
