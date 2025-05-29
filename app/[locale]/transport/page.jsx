@@ -89,50 +89,55 @@ const TransportPage = () => {
   }, [lastscrollY]);
 
   const transformTransportData = (apiData) => {
-    return apiData.map((item) => ({
-      id: `transport_${item.id}`,
-      title: item.title,
-      images: item.images.map((img) => img.imageUrl),
-      transportType: item.transportType.name,
-      vistaVerified: item.vistaVerified,
-      operatorName: item.operatorName,
-      pricePerKmUSD: item.pricePerKmUSD,
-      amenities: item.amenities.map((amenity) => ({
-        type: amenity.name,
-        available: amenity.TransportAmenity.isAvailable,
-        value: amenity.TransportAmenity.notes || null,
-      })),
-      reviews: {
-        vistaReview: {
-          rating: 4.5,
-          text: "Good service",
+    return apiData.map((item) => {
+      const firstImage = item.images?.length > 0 ? item.images[0].imageUrl : "";
+      const firstTransportType = item.transportTypes?.length > 0
+        ? item.transportTypes[0].name
+        : "Unknown";
+
+      return {
+        id: `transport_${item.id}`,
+        title: item.title || "Untitled Transport",
+        images: item.images?.map((img) => img.imageUrl) || [],
+        transportType: firstTransportType,
+        vistaVerified: item.vistaVerified || false,
+        operatorName: item.title || "Unknown Operator",
+        pricePerKmUSD: 0.5, // Default value
+        amenities: [],
+        reviews: {
+          vistaReview: {
+            rating: 4.5,
+            text: "Good service",
+          },
+          travelerReviews: [],
         },
-        travelerReviews: [],
-      },
-      contactDetails: {
-        phone: item.phone,
-        email: item.email || "",
-        website: item.website || "",
-      },
-      description: item.description || "No description available",
-      location: {
-        departureCity: item.departureCity,
-        arrivalCity: item.arrivalCity,
-        coordinates: {
-          lat: parseFloat(item.latitude),
-          lng: parseFloat(item.longitude),
+        contactDetails: {
+          phone: item.phone || "",
+          email: item.email || "",
+          website: item.website || "",
         },
-      },
-      type: "Transport",
-    }));
+        description: item.description || "No description available",
+        location: {
+          departureCity: item.city || "Unknown",
+          arrivalCity: item.city || "Unknown",
+          coordinates: {
+            lat: 0,
+            lng: 0,
+          },
+        },
+        type: "Transport",
+      };
+    });
   };
 
   useEffect(() => {
     const fetchTransportData = async () => {
       setLoading(true);
+      console.log("passed1");
+
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/customer/list/transports`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/customer/list/transport-agencies`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -140,18 +145,29 @@ const TransportPage = () => {
             withCredentials: true,
           }
         );
+        console.log("passed1");
+        console.log(response.data.data);
+
         const transformedData = transformTransportData(response.data.data);
+        console.log("passed1");
+
         setTransportData(transformedData);
         setFilteredData(transformedData);
+        console.log("passed1");
+
 
         // Apply URL filter if present
         const urlType = searchParams.get("type");
+        console.log("passed2");
+
         if (urlType) {
           setFilters((prev) => ({ ...prev, transportType: urlType }));
           addFilter("vehicle", urlType);
+          console.log("passed3");
+
         }
       } catch (e) {
-        console.log(e);
+        console.log("error");
       } finally {
         setLoading(false);
       }
@@ -315,11 +331,10 @@ const TransportPage = () => {
       <SecNav classnames="shadow-sm" />
       <div className=" mt-16 transition-all duration-300">
         <div
-          className={`fixed transition-all hidden lg:grid duration-300 ease-in-out  bg-j-primary py-6 dark:bg-blue-950     ${
-            isfixed
-              ? " top-30  left-0 right-0 w-full shadow-md z-52 duration-300 ease-in-out transition-all  "
-              : "relative"
-          }`}
+          className={`fixed transition-all hidden lg:grid duration-300 ease-in-out  bg-j-primary py-6 dark:bg-blue-950     ${isfixed
+            ? " top-30  left-0 right-0 w-full shadow-md z-52 duration-300 ease-in-out transition-all  "
+            : "relative"
+            }`}
         >
           <div className="  w-full ">
             <Card className="py-4 mx-12 ">
@@ -409,13 +424,12 @@ const TransportPage = () => {
                         key={type}
                         variant="outline"
                         size="sm"
-                        className={`flex items-center gap-2 ${
-                          activeFilters.some(
-                            (f) => f.type === "vehicle" && f.value === type
-                          )
-                            ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
-                            : ""
-                        }`}
+                        className={`flex items-center gap-2 ${activeFilters.some(
+                          (f) => f.type === "vehicle" && f.value === type
+                        )
+                          ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
+                          : ""
+                          }`}
                         onClick={() => {
                           if (
                             activeFilters.some(
@@ -443,14 +457,13 @@ const TransportPage = () => {
                         key={location}
                         variant="outline"
                         size="sm"
-                        className={`flex items-center gap-2 ${
-                          activeFilters.some(
-                            (f) =>
-                              f.type === "departure" && f.value === location
-                          )
-                            ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
-                            : ""
-                        }`}
+                        className={`flex items-center gap-2 ${activeFilters.some(
+                          (f) =>
+                            f.type === "departure" && f.value === location
+                        )
+                          ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
+                          : ""
+                          }`}
                         onClick={() => {
                           if (
                             activeFilters.some(
@@ -479,13 +492,12 @@ const TransportPage = () => {
                         key={location}
                         variant="outline"
                         size="sm"
-                        className={`flex items-center gap-2 ${
-                          activeFilters.some(
-                            (f) => f.type === "arrival" && f.value === location
-                          )
-                            ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
-                            : ""
-                        }`}
+                        className={`flex items-center gap-2 ${activeFilters.some(
+                          (f) => f.type === "arrival" && f.value === location
+                        )
+                          ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
+                          : ""
+                          }`}
                         onClick={() => {
                           if (
                             activeFilters.some(
@@ -598,13 +610,12 @@ const TransportPage = () => {
                         key={type}
                         variant="outline"
                         size="sm"
-                        className={`flex items-center gap-2 ${
-                          activeFilters.some(
-                            (f) => f.type === "vehicle" && f.value === type
-                          )
-                            ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
-                            : ""
-                        }`}
+                        className={`flex items-center gap-2 ${activeFilters.some(
+                          (f) => f.type === "vehicle" && f.value === type
+                        )
+                          ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
+                          : ""
+                          }`}
                         onClick={() => {
                           if (
                             activeFilters.some(
@@ -632,14 +643,13 @@ const TransportPage = () => {
                         key={location}
                         variant="outline"
                         size="sm"
-                        className={`flex items-center gap-2 ${
-                          activeFilters.some(
-                            (f) =>
-                              f.type === "departure" && f.value === location
-                          )
-                            ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
-                            : ""
-                        }`}
+                        className={`flex items-center gap-2 ${activeFilters.some(
+                          (f) =>
+                            f.type === "departure" && f.value === location
+                        )
+                          ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
+                          : ""
+                          }`}
                         onClick={() => {
                           if (
                             activeFilters.some(
@@ -668,13 +678,12 @@ const TransportPage = () => {
                         key={location}
                         variant="outline"
                         size="sm"
-                        className={`flex items-center gap-2 ${
-                          activeFilters.some(
-                            (f) => f.type === "arrival" && f.value === location
-                          )
-                            ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
-                            : ""
-                        }`}
+                        className={`flex items-center gap-2 ${activeFilters.some(
+                          (f) => f.type === "arrival" && f.value === location
+                        )
+                          ? "bg-blue-100 dark:bg-blue-900 border-blue-300 dark:border-blue-700"
+                          : ""
+                          }`}
                         onClick={() => {
                           if (
                             activeFilters.some(
@@ -796,9 +805,12 @@ const TransportPage = () => {
                                   </Badge>
                                 )}
                               </div>
-                              <p className="text-gray-600 dark:text-gray-400 mb-2">
-                                by {transport.operatorName}
+                              <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {transport.description}
                               </p>
+                              {/* <p className="text-gray-600 dark:text-gray-400 mb-2">
+                                by {transport.operatorName}
+                              </p> */}
                               <div className="mb-4">
                                 <span className="text-yellow-500">★</span>
                                 <span className="font-bold">
@@ -810,6 +822,7 @@ const TransportPage = () => {
                                 </span>
                               </div>
                             </div>
+
                             <div className="flex  flex-col text-right justify-between h-full  ">
                               <div className="text-xl font-bold">
                                 ${transport.pricePerKmUSD}{" "}
@@ -836,7 +849,7 @@ const TransportPage = () => {
                             </div>
                           </div>
 
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div>
                               <div className="flex items-center gap-2">
                                 <MapPin className="h-4 w-4 text-gray-500" />
@@ -853,7 +866,7 @@ const TransportPage = () => {
                                 </div>
                               </div>
                             </div>
-                          </div>
+                          </div> */}
 
                           <div className="flex flex-wrap gap-2 mb-4">
                             {transport.amenities.map((amenity, index) => (
@@ -866,9 +879,7 @@ const TransportPage = () => {
                             ))}
                           </div>
 
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
-                            {transport.description}
-                          </p>
+
                         </div>
                       </div>
                     </Card>
