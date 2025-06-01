@@ -52,6 +52,7 @@ import SecNav from "../Components/SecNav";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import axios from "axios";
+import Link from "next/link";
 
 const TransportPage = () => {
   const searchParams = useSearchParams();
@@ -96,7 +97,7 @@ const TransportPage = () => {
         : "Unknown";
 
       return {
-        id: `transport_${item.id}`,
+        id: `${item.id}`,
         title: item.title || "Untitled Transport",
         images: item.images?.map((img) => img.imageUrl) || [],
         transportType: firstTransportType,
@@ -133,8 +134,6 @@ const TransportPage = () => {
   useEffect(() => {
     const fetchTransportData = async () => {
       setLoading(true);
-      console.log("passed1");
-
       try {
         const response = await axios.get(
           `${process.env.NEXT_PUBLIC_API_URL}/api/v1/customer/list/transport-agencies`,
@@ -145,29 +144,26 @@ const TransportPage = () => {
             withCredentials: true,
           }
         );
-        console.log("passed1");
+
         console.log(response.data.data);
 
         const transformedData = transformTransportData(response.data.data);
-        console.log("passed1");
-
         setTransportData(transformedData);
         setFilteredData(transformedData);
-        console.log("passed1");
+
 
 
         // Apply URL filter if present
         const urlType = searchParams.get("type");
-        console.log("passed2");
+
 
         if (urlType) {
           setFilters((prev) => ({ ...prev, transportType: urlType }));
           addFilter("vehicle", urlType);
-          console.log("passed3");
 
         }
       } catch (e) {
-        console.log("error");
+        console.log(e);
       } finally {
         setLoading(false);
       }
@@ -779,77 +775,78 @@ const TransportPage = () => {
                     key={transport.id}
                     className="group relative w-full inline-block p-0.5 rounded-2xl overflow-hidden border-transparent hover:border-transparent transition-all duration-300"
                   >
-                    <Card className="overflow-hidden relative z-10 p-0 m-0 dark:bg-zinc-900">
-                      <div className="flex flex-col md:flex-row">
-                        <div className="md:w-1/4">
-                          <img
-                            src={transport.images[0]}
-                            alt={transport.title}
-                            className="h-full w-full object-cover"
-                          />
-                        </div>
-                        <div className="p-4 md:ps-6 md:py-6 md:w-3/4 ">
-                          <div className="flex flex-col md:flex-row justify-between h-full">
-                            <div>
-                              <div className="flex items-center gap-2 mb-2">
-                                {getTransportIcon(transport.transportType)}
-                                <h3 className="text-lg font-bold">
-                                  {transport.title}
-                                </h3>
-                                {transport.vistaVerified && (
-                                  <Badge
-                                    className="bg-green-400/30"
-                                    variant="success"
-                                  >
-                                    Vista Verified
-                                  </Badge>
-                                )}
-                              </div>
-                              <p className="text-sm text-gray-600 dark:text-gray-400">
-                                {transport.description}
-                              </p>
-                              {/* <p className="text-gray-600 dark:text-gray-400 mb-2">
+                    <Link href={`/transport/${transport.id}`}>
+                      <Card className="overflow-hidden relative z-10 p-0 m-0 dark:bg-zinc-900">
+                        <div className="flex flex-col md:flex-row">
+                          <div className="md:w-1/4">
+                            <img
+                              src={transport.images[0]}
+                              alt={transport.title}
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
+                          <div className="p-4 md:ps-6 md:py-6 md:w-3/4 ">
+                            <div className="flex flex-col md:flex-row justify-between h-full">
+                              <div>
+                                <div className="flex items-center gap-2 mb-2">
+                                  {getTransportIcon(transport.transportType)}
+                                  <h3 className="text-lg font-bold">
+                                    {transport.title}
+                                  </h3>
+                                  {transport.vistaVerified && (
+                                    <Badge
+                                      className="bg-green-400/30"
+                                      variant="success"
+                                    >
+                                      Vista Verified
+                                    </Badge>
+                                  )}
+                                </div>
+                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                  {transport.description}
+                                </p>
+                                {/* <p className="text-gray-600 dark:text-gray-400 mb-2">
                                 by {transport.operatorName}
                               </p> */}
-                              <div className="mb-4">
-                                <span className="text-yellow-500">★</span>
-                                <span className="font-bold">
-                                  {transport.reviews.vistaReview.rating}
-                                </span>
-                                <span className="text-gray-500 dark:text-gray-400">
-                                  {" "}
-                                  ({transport.reviews.vistaReview.text})
-                                </span>
+                                <div className="mb-4">
+                                  <span className="text-yellow-500">★</span>
+                                  <span className="font-bold">
+                                    {transport.reviews.vistaReview.rating}
+                                  </span>
+                                  <span className="text-gray-500 dark:text-gray-400">
+                                    {" "}
+                                    ({transport.reviews.vistaReview.text})
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div className="flex  flex-col text-right justify-between h-full  ">
+                                <div className="text-xl font-bold">
+                                  ${transport.pricePerKmUSD}{" "}
+                                  <span className="text-sm font-normal">
+                                    / km
+                                  </span>
+                                </div>
+                                <div className="text-end justify-end items-end">
+                                  {transport.contactDetails.phone && (
+                                    <div className=" flex items-center font-bold cursor-pointer hover:bg-j-light gap-1 px-4 py-2 bg-j-primary/20  rounded-full">
+                                      <span>
+                                        <Phone size={16} />
+                                      </span>{" "}
+                                      {transport.contactDetails.phone}
+                                    </div>
+                                  )}
+                                  {transport.contactDetails.website && (
+                                    <div>{transport.contactDetails.website}</div>
+                                  )}
+                                  {transport.contactDetails.email && (
+                                    <div>{transport.contactDetails.email}</div>
+                                  )}
+                                </div>
                               </div>
                             </div>
 
-                            <div className="flex  flex-col text-right justify-between h-full  ">
-                              <div className="text-xl font-bold">
-                                ${transport.pricePerKmUSD}{" "}
-                                <span className="text-sm font-normal">
-                                  / km
-                                </span>
-                              </div>
-                              <div className="text-end justify-end items-end">
-                                {transport.contactDetails.phone && (
-                                  <div className=" flex items-center font-bold cursor-pointer hover:bg-j-light gap-1 px-4 py-2 bg-j-primary/20  rounded-full">
-                                    <span>
-                                      <Phone size={16} />
-                                    </span>{" "}
-                                    {transport.contactDetails.phone}
-                                  </div>
-                                )}
-                                {transport.contactDetails.website && (
-                                  <div>{transport.contactDetails.website}</div>
-                                )}
-                                {transport.contactDetails.email && (
-                                  <div>{transport.contactDetails.email}</div>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                             <div>
                               <div className="flex items-center gap-2">
                                 <MapPin className="h-4 w-4 text-gray-500" />
@@ -868,21 +865,22 @@ const TransportPage = () => {
                             </div>
                           </div> */}
 
-                          <div className="flex flex-wrap gap-2 mb-4">
-                            {transport.amenities.map((amenity, index) => (
-                              <Badge key={index} variant="secondary">
-                                {amenity.type}:{" "}
-                                {amenity.available
-                                  ? "Yes"
-                                  : amenity.value || "No"}
-                              </Badge>
-                            ))}
+                            <div className="flex flex-wrap gap-2 mb-4">
+                              {transport.amenities.map((amenity, index) => (
+                                <Badge key={index} variant="secondary">
+                                  {amenity.type}:{" "}
+                                  {amenity.available
+                                    ? "Yes"
+                                    : amenity.value || "No"}
+                                </Badge>
+                              ))}
+                            </div>
+
+
                           </div>
-
-
                         </div>
-                      </div>
-                    </Card>
+                      </Card>
+                    </Link>
                     <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 transition-opacity duration-300" />
                   </div>
                 ))

@@ -54,6 +54,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 // import { Rating } from "@/components/ui/rating";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import axios from "axios";
 
 // Mock data for a single transport agency in Sri Lanka
 const transportAgency = {
@@ -170,16 +172,54 @@ const transportAgency = {
   ],
 };
 
-const TransportDetailPage = () => {
+const TransportDetailPage = async ({ params }) => {
   const { theme, setTheme } = useTheme();
+  const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState("overview");
   const [review, setReview] = useState("");
   const [rating, setRating] = useState(0);
   const [userName, setUserName] = useState("");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [transportData, setTransportData] = useState();
+  const [loading, setLoading] = useState(false);
+
   // const router = useRouter();
 
+  const id = await params.name
+  useEffect(() => {
+    const fetchTransportData = async () => {
+      setLoading(true);
+      console.log("passed1");
+
+      try {
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/customer/list/transport-agencies/${id}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            withCredentials: true,
+          }
+        );
+
+        console.log(response.data.data);
+
+        const transformedData = transformTransportData(response.data.data);
+        setTransportData(transformedData);
+
+
+
+
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTransportData();
+  }, []);
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -368,9 +408,8 @@ const TransportDetailPage = () => {
             <button
               key={index}
               onClick={() => setCurrentImageIndex(index)}
-              className={`h-2 w-2 rounded-full ${
-                currentImageIndex === index ? "bg-white" : "bg-white/50"
-              }`}
+              className={`h-2 w-2 rounded-full ${currentImageIndex === index ? "bg-white" : "bg-white/50"
+                }`}
               aria-label={`Go to image ${index + 1}`}
             />
           ))}
@@ -589,11 +628,10 @@ const TransportDetailPage = () => {
                           className="flex flex-col items-center justify-center text-center p-4 border rounded-lg dark:border-gray-700"
                         >
                           <div
-                            className={`p-3 rounded-full mb-2 ${
-                              amenity.available
-                                ? "bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400"
-                                : "bg-gray-100 text-gray-500 dark:bg-gray-800"
-                            }`}
+                            className={`p-3 rounded-full mb-2 ${amenity.available
+                              ? "bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-400"
+                              : "bg-gray-100 text-gray-500 dark:bg-gray-800"
+                              }`}
                           >
                             {getIconComponent(amenity.icon)}
                           </div>
