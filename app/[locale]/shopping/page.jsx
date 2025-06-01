@@ -151,7 +151,7 @@ const ShoppingPage = () => {
   useEffect(() => {
     const fetchShopsData = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/shops`);
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/shops`);
         setShopsData(response.data);
       } catch (error) {
         console.error("Error fetching shops:", error);

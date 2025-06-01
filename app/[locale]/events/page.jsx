@@ -91,7 +91,7 @@ const EventsPage = () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/customer/list/events`,
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/customer/list/events`,
           {
             headers: {
               "Content-Type": "application/json",
