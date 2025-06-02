@@ -208,8 +208,8 @@ const TransportDetailPage = async ({ params }) => {
                   <div className="flex items-center gap-3">
                     {getTransportIcon()}
                     <div>
-                      <div className="flex gap-3 items-center">
-                        <h1 className="text-2xl font-bold">{transportData.title}</h1> <CheckCircle className="text-green-700 h-8 w-8" />
+                      <div className="flex  items-center">
+                        <h1 className="text-2xl font-bold mr-3">{transportData.title}</h1> <CheckCircle size={24} className="text-green-700 " /> <span className="italic">Vista Verified</span>
 
                       </div>                      <p className="text-gray-600 dark:text-gray-400">
                         Established in {staticData.establishedYear}
