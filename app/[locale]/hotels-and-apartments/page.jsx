@@ -15,11 +15,11 @@ import CustomGuestSelector from "../Components/PassengerPicker";
 import SideBarFilter from "../Components/SideBarFilter";
 import { Button } from "@/components/ui/button";
 import HotelCard from "../Components/HotelCard";
-import CustomizedSectionWithCarousel from "../Components/CarausalSposored";
 import SecNav from "../Components/SecNav";
 import MobileNav from "@/components/ui/MobileNav";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTrigger } from "@/components/ui/drawer";
 import axios from "axios";
+import CustomizedHotelCardSectionWithCarousel from "../Components/HotelsCardsLayout";
 
 export default function HotelsListingPage() {
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -369,9 +369,10 @@ export default function HotelsListingPage() {
 
               {/* Hotel Cards */}
               <div className="">
-                <CustomizedSectionWithCarousel
+                <CustomizedHotelCardSectionWithCarousel
                   gridItemsToShowBreakpoints={{ sm: 1, md: 2, lg: 3, xl: 4 }}
                   type="hotel"
+                  entityName="Hotels"
                   displayMode="grid"
                   destinations={FetchedHotels}
                 />

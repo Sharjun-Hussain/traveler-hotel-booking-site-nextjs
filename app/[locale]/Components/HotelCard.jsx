@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -29,6 +29,7 @@ const HotelCard = ({
   currency = "$",
   priceUnit = "/night",
   imageUrl,
+  images,
   amenities = [],
   description,
   sponsored = false,
@@ -36,6 +37,8 @@ const HotelCard = ({
   onFavoriteToggle = () => { },
   onDetailsClick = () => { },
 }) => {
+
+
 
   const { formatPrice } = useCurrencyStore();
   // Function to render amenity icon based on type
@@ -76,13 +79,30 @@ const HotelCard = ({
 
         {/* Image Container */}
         <div className="relative h-48 overflow-hidden">
-          <Image
-            src={imageUrl}
-            alt={name}
-            width={1000}
-            height={1000}
-            className="w-full h-full object-cover"
-          />
+          {imageUrl &&
+            <Image
+              src={imageUrl}
+              alt={name}
+              width={1000}
+              height={1000}
+              className="w-full h-full object-cover"
+            />
+
+          }
+
+          {images && images.length > 0 &&
+
+
+            <Image
+              src={images[0].imageUrl}
+              alt={name}
+              width={1000}
+              height={1000}
+              className="w-full h-full object-cover"
+            />
+
+          }
+
 
           {/* Location Badge */}
           {type == "hotel" && (
@@ -98,7 +118,7 @@ const HotelCard = ({
           )}
 
           {/* Favorite Button */}
-          {type == "hotel" && (
+          {/* {type == "hotel" && (
             <button
               onClick={() => onFavoriteToggle(id)}
               className="absolute top-2 right-2 bg-white/80 p-1 rounded-full shadow-md"
@@ -108,7 +128,7 @@ const HotelCard = ({
                   }`}
               />
             </button>
-          )}
+          )} */}
 
           {/* Image Pagination Dots */}
           {/* <div className="absolute bottom-2 right-2 flex gap-1">
@@ -169,9 +189,10 @@ const HotelCard = ({
               <div>
                 <span className="font-bold text-xl">
                   {/* {currency} */}
-                  {/* {price} */} {formatPrice(price)}
+                  {/* {price} */}
+                  {/* {formatPrice(price)} */}
                 </span>
-                <span className="text-gray-500 text-sm">{priceUnit}</span>
+                {/* <span className="text-gray-500 text-sm">{priceUnit}</span> */}
               </div>
               <Button
                 onClick={() => onDetailsClick(id)}

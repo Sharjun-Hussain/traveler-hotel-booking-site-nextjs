@@ -108,11 +108,12 @@ const SortDropdown = ({ label, options, currentValue, onChange }) => {
   );
 };
 
-const CustomizedSectionWithCarousel = ({
+const CustomizedHotelCardSectionWithCarousel = ({
   headTitle,
   title,
   description,
   sponsored = false,
+  entityName,
   destinations = [],
   scrollInterval = 3000,
   type,
@@ -191,6 +192,9 @@ const CustomizedSectionWithCarousel = ({
   );
   const [visibleItems, setVisibleItems] = useState(initialItemsLimit);
   const carouselRef = useRef(null);
+
+  // console.log(destinations[0].images[0].imageUrl);
+
 
   // Sorting states
   const [sortedItems, setSortedItems] = useState([...destinations]);
@@ -511,14 +515,14 @@ const CustomizedSectionWithCarousel = ({
           <button
             onClick={handlePrev}
             className={arrowStyle}
-            aria-label="Previous destinations"
+            aria-label="Prev"
           >
             <PrevArrow size={24} />
           </button>
           <button
             onClick={handleNext}
             className={arrowStyle}
-            aria-label="Next destinations"
+            aria-label="Next"
           >
             <NextArrow size={24} />
           </button>
@@ -538,7 +542,7 @@ const CustomizedSectionWithCarousel = ({
           onClick={handlePrev}
           className={`absolute left-4 top-1/2 -translate-y-1/2 z-10 ${arrowStyle} ${arrowPosition === "overlay" ? "pointer-events-auto" : ""
             }`}
-          aria-label="Previous destinations"
+          aria-label="Prev"
         >
           <PrevArrow size={24} />
         </button>
@@ -546,7 +550,7 @@ const CustomizedSectionWithCarousel = ({
           onClick={handleNext}
           className={`absolute right-4 top-1/2 -translate-y-1/2 z-10 ${arrowStyle} ${arrowPosition === "overlay" ? "pointer-events-auto" : ""
             }`}
-          aria-label="Next destinations"
+          aria-label="Next"
         >
           <NextArrow size={24} />
         </button>
@@ -642,30 +646,33 @@ const CustomizedSectionWithCarousel = ({
               }`}
           >
             {itemsToDisplay.map((destination) => (
-              <div key={destination.id} className="w-full">
-                <HotelCard
-                  id={destination.id}
-                  type={type}
-                  url={destination.url}
-                  imageUrl={destination.image}
-                  name={destination.name}
-                  price={destination.price}
-                  rating={destination.rating}
-                  reviewCount={destination.reviewCount}
-                  isFavorite={false}
-                  sponsored={destination.sponsored}
-                  onFavoriteToggle={() => alert()}
-                  description={destination.description}
-                  key={destination.id}
-                  amenities={[
-                    { type: "wifi", label: "Free WiFi" },
-                    { type: "pool", label: "Swimming Pool" },
-                    { type: "ac", label: "Air Conditioning" },
-                    { type: "breakfast", label: "Free Breakfast" },
-                    { type: "parking", label: "Free Parking" },
-                  ]}
-                  location={destination.name}
-                />
+              <div>
+                {/* <div> {destination.images[0].imageUrl}</div> */}
+                <div key={destination.id} className="w-full">
+                  <HotelCard
+                    id={destination.id}
+                    type={type}
+                    url={destination.url}
+                    images={destination.images}
+                    name={destination.title}
+                    price={destination.price}
+                    rating={destination.rating}
+                    reviewCount={destination.reviewCount}
+                    isFavorite={false}
+                    sponsored={destination.sponsored}
+                    onFavoriteToggle={() => alert()}
+                    description={destination.description}
+                    key={destination.id}
+                    amenities={[
+                      { type: "wifi", label: "Free WiFi" },
+                      { type: "pool", label: "Swimming Pool" },
+                      { type: "ac", label: "Air Conditioning" },
+                      { type: "breakfast", label: "Free Breakfast" },
+                      { type: "parking", label: "Free Parking" },
+                    ]}
+                    location={destination.name}
+                  />
+                </div>
               </div>
             ))}
           </div>
@@ -704,7 +711,7 @@ const CustomizedSectionWithCarousel = ({
                   id={destination.id}
                   amenities={destination.amenities}
                   url={destination.url}
-                  imageUrl={destination.image}
+                  images={destination.images}
                   name={destination.name}
                   price={destination.price}
                   rating={destination.rating}
@@ -764,4 +771,4 @@ const CustomizedSectionWithCarousel = ({
   );
 };
 
-export default CustomizedSectionWithCarousel;
+export default CustomizedHotelCardSectionWithCarousel;

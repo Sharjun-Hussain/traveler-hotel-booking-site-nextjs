@@ -44,7 +44,7 @@ import axios from "axios";
 import Link from "next/link";
 
 const TransportDetailPage = async ({ params }) => {
-  const id = params?.name;
+  const id = await params?.name;
 
   // Static data for fields not in API response
   const staticData = {
@@ -112,7 +112,7 @@ const TransportDetailPage = async ({ params }) => {
 
   const fetchTransportData = async () => {
     try {
-      console.log("herllo");
+
 
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/api/v1/customer/list/transport-agency/${id}`,
@@ -123,7 +123,7 @@ const TransportDetailPage = async ({ params }) => {
           withCredentials: true,
         }
       );
-      console.log(response.data.data);
+
 
       return response.data.data;
     } catch (e) {
