@@ -41,6 +41,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import axios from "axios";
+import Link from "next/link";
 
 const TransportDetailPage = async ({ params }) => {
   const id = params?.name;
@@ -274,7 +275,7 @@ const TransportDetailPage = async ({ params }) => {
             <Card className="dark:bg-zinc-800">
               <CardContent className="pt-6">
                 <Tabs defaultValue="reviews" className="w-full">
-                  <TabsList className="mb-4 grid grid-cols-2">
+                  <TabsList className="mb-4 grid grid-cols-1">
                     {/* <TabsTrigger value="overview">Overview</TabsTrigger> */}
                     <TabsTrigger value="reviews">Reviews</TabsTrigger>
                   </TabsList>
@@ -403,9 +404,9 @@ const TransportDetailPage = async ({ params }) => {
                     </div>
                     <div>
                       <h4 className="font-medium">Website</h4>
-                      <p className="text-gray-600 dark:text-gray-400">
+                      <Link href={transportData.website || "#"} className="text-gray-600 dark:text-gray-400">
                         {transportData.website || "Not available"}
-                      </p>
+                      </Link>
                     </div>
                   </div>
 
