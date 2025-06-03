@@ -106,9 +106,8 @@ export default function HotelsListingPage() {
     <div className="min-h-screen bg-gray-50  dark:bg-zinc-900/90">
       {/* Search Bar */}
       <div
-        className={`transition-all duration-300 ease-in-out bg-[#017E7F] dark:bg-blue-950 py-6 ${
-          isfixed ? "fixed top-0 left-0 w-full shadow-md z-50" : "relative"
-        }`}
+        className={`transition-all duration-300 ease-in-out bg-[#017E7F] dark:bg-blue-950 py-6 ${isfixed ? "fixed top-0 left-0 w-full shadow-md z-50" : "relative"
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white dark:bg-zinc-800 rounded-lg shadow p-4">
@@ -164,12 +163,12 @@ export default function HotelsListingPage() {
                       Business Traveler
                     </SelectItem>
                     <SelectItem value="Couple">Couple</SelectItem>
-                    <SelectItem value="2a0c">Digital Nomad</SelectItem>
-                    <SelectItem value="2a0c">Family</SelectItem>
-                    <SelectItem value="2a0c">Group</SelectItem>
-                    <SelectItem value="2a0c">Honeymooners</SelectItem>
-                    <SelectItem value="2a0c">Researcher/Student</SelectItem>
-                    <SelectItem value="2a0c">Solo Female</SelectItem>
+                    <SelectItem value="digital-nomad">Digital Nomad</SelectItem>
+                    <SelectItem value="family">Family</SelectItem>
+                    <SelectItem value="group">Group</SelectItem>
+                    <SelectItem value="honeymoners">Honeymooners</SelectItem>
+                    <SelectItem value="researcher-student">Researcher/Student</SelectItem>
+                    <SelectItem value="solo-female">Solo Female</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

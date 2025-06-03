@@ -646,9 +646,9 @@ const CustomizedHotelCardSectionWithCarousel = ({
               }`}
           >
             {itemsToDisplay.map((destination) => (
-              <div>
+              <div key={destination.id} >
                 {/* <div> {destination.images[0].imageUrl}</div> */}
-                <div key={destination.id} className="w-full">
+                <div className="w-full">
                   <HotelCard
                     id={destination.id}
                     type={type}

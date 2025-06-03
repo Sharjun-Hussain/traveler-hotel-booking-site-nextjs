@@ -231,16 +231,26 @@ export default function HotelsListingPage() {
                     <SelectTrigger className="text-sm">
                       <SelectValue placeholder="Select guests" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="1a0c">Budget Tourer/Backpacker</SelectItem>
-                      <SelectItem value="Business Traveler">Business Traveler</SelectItem>
+                    <SelectContent className="w-[var(--radix-select-trigger-width)] max-w-full">
+                      <SelectItem value="Budget-Tourer-Backpacker">
+                        Budget Tourer/Backpacker
+                      </SelectItem>
+                      <SelectItem value="Business Traveler">
+                        Business Traveler
+                      </SelectItem>
                       <SelectItem value="Couple">Couple</SelectItem>
-                      <SelectItem value="2a0c">Digital Nomad</SelectItem>
-                      <SelectItem value="2a0c">Family</SelectItem>
-                      <SelectItem value="2a0c">Group</SelectItem>
-                      <SelectItem value="2a0c">Honeymooners</SelectItem>
-                      <SelectItem value="2a0c">Researcher/Student</SelectItem>
-                      <SelectItem value="2a0c">Solo Female</SelectItem>
+                      <SelectItem value="Digital-Nomad">
+                        Digital Nomad
+                      </SelectItem>
+                      <SelectItem value="Family">Family</SelectItem>
+                      <SelectItem value="Group">Group</SelectItem>
+                      <SelectItem value="Honeymooners">
+                        Honeymooners
+                      </SelectItem>
+                      <SelectItem value="Researcher-Student">
+                        Researcher/Student
+                      </SelectItem>
+                      <SelectItem value="Solo-Female">Solo Female</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>

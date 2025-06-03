@@ -38,16 +38,7 @@ export default function SearchBar() {
     { value: "dietary-preference", label: "Dietary Preference", icon: Dog },
   ];
 
-  const handleSearchClick = () => {
-    const routes = {
-      hotels: "/hotels-and-apartments",
-      homestay: "/homestays",
-      activities: "/activity",
-      transport: "/transport",
-      food: "/food-beverages",
-    };
-    router.push(routes[searchType]);
-  };
+
 
   const HotelsSchema = z.object({
     travelorType: z.string().min(4, "Travelor type is required!"),
@@ -114,7 +105,31 @@ export default function SearchBar() {
         console.log("Form errors:", methods.formState.errors);
         return;
       }
-      await handleSearchClick();
+
+      const params = new URLSearchParams();
+
+      params.append('traveorType', data.travelorType);
+      params.append("destination", data.DestinationOrHotel);
+
+      // Guests and rooms
+      params.append("adults", data.GuestsAndRooms.adults);
+      params.append("children", data.GuestsAndRooms.children);
+      params.append("rooms", data.GuestsAndRooms.rooms);
+      params.append("infants", data.GuestsAndRooms.Infants);
+
+      // Dates (format as YYYY-MM-DD)
+      params.append("checkIn", data.dates.checkIn.toISOString().split("T")[0]);
+      params.append("checkOut", data.dates.checkOut.toISOString().split("T")[0]);
+
+
+      const routes = {
+        hotels: "/hotels-and-apartments",
+        homestay: "/homestays",
+        activities: "/activity",
+        transport: "/transport",
+        food: "/food-beverages",
+      };
+      router.push(`${routes[searchType]}?${params.toString()}`);
     } catch (error) {
       console.error("Submission error:", error);
     }
@@ -389,7 +404,7 @@ export default function SearchBar() {
 
               <div className="sm:col-span-2 lg:col-span-4 mt-2">
                 <Button
-                  onClick={handleSearchClick}
+                  onClick={onSubmit}
                   className="w-full h-12 text-sm font-medium bg-j-primary hover:bg-primary-600 focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
                   Search Activities
@@ -413,7 +428,7 @@ export default function SearchBar() {
 
               <div className="sm:col-span-2 lg:col-span-4 mt-2">
                 <Button
-                  onClick={handleSearchClick}
+                  onClick={onSubmit}
                   className="w-full h-12 text-sm font-medium bg-j-primary hover:bg-primary-600 focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                 >
                   Search Transport
@@ -453,7 +468,7 @@ export default function SearchBar() {
 
               <div className="sm:col-span-2 lg:col-span-4 mt-2">
                 <Button
-                  onClick={handleSearchClick}
+                  onClick={onSubmit}
                   className="w-full h-12 text-sm font-medium bg-j-primary hover:bg-primary-600 focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-2"
                   s
                 >
