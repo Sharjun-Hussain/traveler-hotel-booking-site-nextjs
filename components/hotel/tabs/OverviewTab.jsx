@@ -1,3 +1,4 @@
+"use client"
 import { useState } from "react";
 import Image from "next/image";
 import {
@@ -31,6 +32,9 @@ export default function OverviewTab({ hotelData, handleRoomClick }) {
   const [expandedAmenities, setExpandedAmenities] = useState(false);
   const [showRoomDetails, setShowRoomDetails] = useState({});
 
+  console.log(hotelData);
+
+
   const toggleRoomDetails = (roomId) => {
     setShowRoomDetails((prev) => ({
       ...prev,
@@ -47,16 +51,16 @@ export default function OverviewTab({ hotelData, handleRoomClick }) {
         <div className="mb-8">
           <h3 className="text-xl font-bold mb-4">Most popular facilities</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {hotelData.amenities
+            {/* {hotelData.amenities
               .slice(0, expandedAmenities ? hotelData.amenities.length : 6)
               .map((amenity, index) => (
                 <div key={index} className="flex items-center">
                   <DynamicIcon name={amenity.icon} />
                   <span className="ml-2">{amenity.name}</span>
                 </div>
-              ))}
+              ))} */}
           </div>
-          {hotelData.amenities.length > 6 && (
+          {/* {hotelData.amenities.length > 6 && (
             <button
               onClick={() => setExpandedAmenities(!expandedAmenities)}
               className="mt-4 text-blue-600 font-medium flex items-center"
@@ -73,7 +77,7 @@ export default function OverviewTab({ hotelData, handleRoomClick }) {
                 </>
               )}
             </button>
-          )}
+          )} */}
         </div>
 
         {/* Sustainability */}
@@ -88,7 +92,7 @@ export default function OverviewTab({ hotelData, handleRoomClick }) {
           </p>
           <div className="flex items-center">
             <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium mr-3">
-              Level {hotelData.sustainability.level}
+              Level {hotelData?.sustainability?.level}
             </div>
             <button className="text-blue-600 text-sm font-medium">
               See what's being done
@@ -98,12 +102,10 @@ export default function OverviewTab({ hotelData, handleRoomClick }) {
 
         {/* Host Info */}
         <div className="border rounded-lg p-4 mb-6">
-          <h3 className="font-bold mb-3">Hosted by {hotelData.host.name}</h3>
+          <h3 className="font-bold mb-3">Hosted by {hotelData?.host?.name}</h3>
           <div className="flex items-start">
             <div className="relative w-16 h-16 mr-4">
-              <Image
-                src={hotelData.host.avatar}
-                alt={hotelData.host.name}
+              <Image src={hotelData?.host?.avatar} alt={hotelData?.host?.name}
                 layout="fill"
                 className="rounded-full"
               />
@@ -112,17 +114,17 @@ export default function OverviewTab({ hotelData, handleRoomClick }) {
               <div className="flex items-center mb-1">
                 <span className="font-medium mr-2">Superhost</span>
                 <span className="text-sm text-gray-600">
-                  Hosting since {hotelData.host.since}
+                  Hosting since {hotelData?.host?.since}
                 </span>
               </div>
               <div className="flex items-center text-sm text-gray-600 mb-2">
                 <MessageCircle className="w-4 h-4 mr-1" />
-                <span>Response rate: {hotelData.host.responseRate}</span>
+                <span>Response rate: {hotelData?.host?.responseRate}</span>
                 <span className="mx-2">•</span>
-                <span>Response time: {hotelData.host.responseTime}</span>
+                <span>Response time: {hotelData?.host?.responseTime}</span>
               </div>
               <div className="text-sm text-gray-600">
-                Speaks: {hotelData.host.languages.join(", ")}
+                Speaks: {hotelData?.host?.languages.join(", ")}
               </div>
             </div>
           </div>
@@ -132,15 +134,13 @@ export default function OverviewTab({ hotelData, handleRoomClick }) {
       <div>
         <h2 className="text-2xl font-bold mb-4">Available rooms</h2>
         <div className="space-y-6">
-          {hotelData.rooms.map((room) => (
+          {hotelData?.rooms?.map((room) => (
             <div key={room.id} className="border rounded-lg overflow-hidden">
               <div className="p-4">
                 <div className="flex flex-col md:flex-row">
                   <div className="md:w-1/3 mb-4 md:mb-0 md:mr-4">
                     <div className="relative h-48 w-full rounded-lg overflow-hidden">
-                      <Image
-                        src={room.image}
-                        alt={room.name}
+                      <Image src={room?.image} alt={room?.name}
                         layout="fill"
                         objectFit="cover"
                       />
@@ -148,18 +148,18 @@ export default function OverviewTab({ hotelData, handleRoomClick }) {
                   </div>
                   <div className="md:w-2/3">
                     <div className="flex justify-between">
-                      <h3 className="text-xl font-bold mb-1">{room.name}</h3>
+                      <h3 className="text-xl font-bold mb-1">{room?.name}</h3>
                       <div className="text-right">
                         <div className="text-lg font-bold text-j-primary">
-                          ${room.discountPrice || room.price}
+                          ${room?.discountPrice || room?.price}
                           <span className="text-sm font-normal text-gray-600">
                             {" "}
                             / night
                           </span>
                         </div>
-                        {room.discountPrice && (
+                        {room?.discountPrice && (
                           <div className="text-sm text-gray-500 line-through">
-                            ${room.price}
+                            ${room?.price}
                           </div>
                         )}
                       </div>

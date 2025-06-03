@@ -15,23 +15,6 @@ import { FetchHotelData } from "./hotelData";
 export default function HotelDetailsPage() {
   const searchParams = useSearchParams()
   const id = searchParams.get('hotel_id')
-
-  useEffect(() => {
-    const fetchHotelData = async () => {
-      const hotelData = await FetchHotelData(id);
-      if (hotelData) {
-        console.log(hotelData);
-
-        sethotelData(hotelData);
-      } else {
-        console.error("Failed to fetch hotel data");
-      }
-    }
-
-    fetchHotelData();
-  }, [])
-
-
   const bookingSectionRef = useRef(null);
   const [selectedDates, setSelectedDates] = useState({
     checkIn: null,
@@ -44,7 +27,48 @@ export default function HotelDetailsPage() {
   const [showAllPhotos, setShowAllPhotos] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [hotelData, sethotelData] = useState([])
+  const [hotelData, sethotelData] = useState({})
+  const [loading, setloading] = useState(false)
+
+
+  useEffect(() => {
+    const fetchHotelData = async () => {
+      try {
+        setloading(true);
+        const hotelData = await FetchHotelData(id);
+
+        if (hotelData) {
+          sethotelData(hotelData);
+        } else {
+          console.error("Received empty or invalid hotel data");
+          // You might want to set some error state here
+          // setError("Failed to load hotel data");
+        }
+      } catch (error) {
+        console.error("Error fetching hotel data:", error);
+        // Set error state if you have one
+        // setError(error.message);
+      } finally {
+        setloading(false);
+      }
+    };
+
+    fetchHotelData();
+  }, [id]);
+
+
+  {
+    loading && (
+      <div className="loading-container">
+        {/* You can use a spinner, progress bar, or skeleton screen */}
+        <div className="spinner"></div>
+        <p>Loading hotel data...</p>
+      </div>
+    )
+  }
+
+  console.log(hotelData);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -122,13 +146,13 @@ export default function HotelDetailsPage() {
           <div className="lg:w-2/3">
             <HotelHighlights />
 
-            {/* <HotelTabs
+            {hotelData && <HotelTabs
               className="mb-14"
               activeTab={activeTab}
               setActiveTab={setActiveTab}
               hotelData={hotelData}
               handleRoomClick={handleRoomClick}
-            /> */}
+            />}
           </div>
 
           <div className="lg:w-1/3" ref={bookingSectionRef}>

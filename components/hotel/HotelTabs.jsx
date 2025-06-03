@@ -1,4 +1,5 @@
-import { useState } from "react";
+"use client"
+import { useEffect, useState } from "react";
 import OverviewTab from "./tabs/OverviewTab";
 import RoomsTab from "./tabs/RoomsTab";
 import FacilitiesTab from "./tabs/FacilitiesTab";
@@ -13,6 +14,14 @@ export default function HotelTabs({
   hotelData,
   handleRoomClick,
 }) {
+
+  useEffect(() => {
+    if (hotelData) {
+      console.log(hotelData);
+
+    }
+  }, [])
+
   return (
     <div className={`${className}`}>
       <div className="border-b mb-6">
@@ -21,11 +30,10 @@ export default function HotelTabs({
             (tab) => (
               <button
                 key={tab}
-                className={`pb-4 px-1 font-medium ${
-                  activeTab === tab.toLowerCase()
-                    ? "text-blue-600 border-b-2 border-blue-600"
-                    : "text-gray-600 hover:text-gray-800"
-                }`}
+                className={`pb-4 px-1 font-medium ${activeTab === tab.toLowerCase()
+                  ? "text-blue-600 border-b-2 border-blue-600"
+                  : "text-gray-600 hover:text-gray-800"
+                  }`}
                 onClick={() => setActiveTab(tab.toLowerCase())}
               >
                 {tab}
@@ -35,12 +43,12 @@ export default function HotelTabs({
         </div>
       </div>
 
-      {activeTab === "overview" && (
+      {hotelData && activeTab === "overview" && (
         <OverviewTab hotelData={hotelData} handleRoomClick={handleRoomClick} />
       )}
-      {activeTab === "rooms" && (
+      {/* {activeTab === "rooms" && (
         <RoomsTab rooms={hotelData.rooms} handleRoomClick={handleRoomClick} />
-      )}
+      )} */}
       {activeTab === "facilities" && (
         <FacilitiesTab amenities={hotelData.amenities} />
       )}
