@@ -281,3 +281,76 @@ export const hotelData = {
     lng: 80.2167,
   },
 };
+
+
+export const fetchHotelData = async (propertyId) => {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/customer/list/property/${propertyId}`);
+    const data = await response.json();
+
+    if (!data.success) {
+      throw new Error('Failed to fetch property data');
+    }
+
+    const property = data.data;
+
+    // Transform the API response to match your existing data structure
+    const transformedData = {
+      id: `${property.id}`,
+      name: property.title,
+      location: `${property.city}, ${property.country}`,
+      rating: 4.7, // Default value since not in API
+      reviewCount: 382, // Default value since not in API
+      price: 175, // Default value since not in API
+      discountPrice: 159, // Default value since not in API
+      discountPercentage: 9, // Default value since not in API
+      description: property.description,
+      images: property.images.map(img => img.imageUrl),
+      amenities: property.amenities.map(amenity => ({
+        name: amenity.name,
+        icon: amenity.name.replace(/\s+/g, ''), // Simple transformation for icon
+        category: amenity.category || 'general'
+      })),
+      // Add default values for other sections to maintain compatibility
+      rooms: [], // You would need another API call for room data
+      reviews: [], // You would need another API call for reviews
+      activities: [], // You would need another API call for activities
+      nearbyPlaces: [], // You would need another API call for nearby places
+      policies: {
+        checkIn: property.checkInTime,
+        checkOut: property.checkOutTime,
+        cancellation: property.cancellationPolicy,
+        children: "Children under 10 stay free with parents. Extra bed charges apply.", // Default
+        pets: "Pets are allowed with prior approval (charges may apply).", // Default
+        extraBed: "$25 per night for extra beds (subject to availability).", // Default
+        payment: "Credit card required to guarantee reservation", // Default
+        taxes: "All taxes included in room rate" // Default
+      },
+      host: {
+        name: property.merchant.businessName,
+        since: "2018", // Default
+        responseRate: "98%", // Default
+        responseTime: "within an hour", // Default
+        avatar: "/host.jpg", // Default
+        languages: ["English"] // Default
+      },
+      sustainability: {
+        level: "Level 3", // Default
+        practices: [
+          "Solar panels for hot water",
+          "Waste reduction program"
+        ] // Default
+      },
+      coordinates: {
+        lat: property.latitude,
+        lng: property.longitude
+      }
+    };
+
+    return transformedData;
+  } catch (error) {
+    console.error('Error fetching property data:', error);
+    // Return default data if API fails
+    return hotelData;
+  }
+};

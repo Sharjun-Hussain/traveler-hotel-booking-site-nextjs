@@ -65,7 +65,7 @@ const HotelCard = ({
         type == "destination"
           ? `/hotels-and-apartments?destination=${id}`
           : type == "hotel"
-            ? `/hotels-and-apartments/hotel/${name}`
+            ? `/hotels-and-apartments/hotel/${name.trim().replace(/\s+/g, "-").toLowerCase()}?hotel_id=${id}`
             : "#"
       }
     >
