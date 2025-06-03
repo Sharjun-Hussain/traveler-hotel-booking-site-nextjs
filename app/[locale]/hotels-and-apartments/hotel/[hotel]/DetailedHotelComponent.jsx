@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Head from "next/head";
 import HotelHeader from "@/components/hotel/HotelHeader";
 import HotelGallery from "@/components/hotel/HotelGallery";
@@ -9,10 +9,29 @@ import HotelTabs from "@/components/hotel/HotelTabs";
 import HotelBookingWidget from "@/components/hotel/HotelBookingWidget";
 import HotelStickyBar from "@/components/hotel/HotelStickyBar";
 import FullScreenGallery from "@/components/hotel/FullScreenGallery";
-import { hotelData } from "./hotelData";
+import { FetchHotelData } from "./hotelData";
+
 
 export default function HotelDetailsPage() {
-  const router = useRouter();
+  const searchParams = useSearchParams()
+  const id = searchParams.get('hotel_id')
+
+  useEffect(() => {
+    const fetchHotelData = async () => {
+      const hotelData = await FetchHotelData(id);
+      if (hotelData) {
+        console.log(hotelData);
+
+        sethotelData(hotelData);
+      } else {
+        console.error("Failed to fetch hotel data");
+      }
+    }
+
+    fetchHotelData();
+  }, [])
+
+
   const bookingSectionRef = useRef(null);
   const [selectedDates, setSelectedDates] = useState({
     checkIn: null,
@@ -25,6 +44,7 @@ export default function HotelDetailsPage() {
   const [showAllPhotos, setShowAllPhotos] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [hotelData, sethotelData] = useState([])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -102,13 +122,13 @@ export default function HotelDetailsPage() {
           <div className="lg:w-2/3">
             <HotelHighlights />
 
-            <HotelTabs
+            {/* <HotelTabs
               className="mb-14"
               activeTab={activeTab}
               setActiveTab={setActiveTab}
               hotelData={hotelData}
               handleRoomClick={handleRoomClick}
-            />
+            /> */}
           </div>
 
           <div className="lg:w-1/3" ref={bookingSectionRef}>

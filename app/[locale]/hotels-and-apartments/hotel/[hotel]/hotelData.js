@@ -1,4 +1,4 @@
-export const hotelData = {
+const demodata = {
   id: "hotel-456",
   name: "Serene Bay Resort & Spa",
   location: "Galle, Sri Lanka",
@@ -282,9 +282,9 @@ export const hotelData = {
   },
 };
 
-
-export const fetchHotelData = async (propertyId) => {
+export const FetchHotelData = async (propertyId) => {
   try {
+    // Try to fetch data from API first
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/customer/list/property/${propertyId}`);
     const data = await response.json();
 
@@ -294,63 +294,78 @@ export const fetchHotelData = async (propertyId) => {
 
     const property = data.data;
 
-    // Transform the API response to match your existing data structure
-    const transformedData = {
-      id: `${property.id}`,
-      name: property.title,
-      location: `${property.city}, ${property.country}`,
-      rating: 4.7, // Default value since not in API
-      reviewCount: 382, // Default value since not in API
-      price: 175, // Default value since not in API
-      discountPrice: 159, // Default value since not in API
-      discountPercentage: 9, // Default value since not in API
-      description: property.description,
-      images: property.images.map(img => img.imageUrl),
-      amenities: property.amenities.map(amenity => ({
-        name: amenity.name,
-        icon: amenity.name.replace(/\s+/g, ''), // Simple transformation for icon
-        category: amenity.category || 'general'
-      })),
-      // Add default values for other sections to maintain compatibility
-      rooms: [], // You would need another API call for room data
-      reviews: [], // You would need another API call for reviews
-      activities: [], // You would need another API call for activities
-      nearbyPlaces: [], // You would need another API call for nearby places
+    // Merge API data with static demodata
+    const hotelData = {
+      // Core hotel info from API or fallback to static
+      id: property.id ? `${property.id}` : demodata.id,
+      name: property.title || demodata.name,
+      location: property.city && property.country
+        ? `${property.city}, ${property.country}`
+        : demodata.location,
+      rating: demodata.rating, // Static fallback
+      reviewCount: demodata.reviewCount, // Static fallback
+      price: demodata.price, // Static fallback
+      discountPrice: demodata.discountPrice, // Static fallback
+      discountPercentage: demodata.discountPercentage, // Static fallback
+      description: property.description || demodata.description,
+
+      // Images from API or static
+      images: property.images?.length
+        ? property.images.map(img => img.imageUrl)
+        : demodata.images,
+
+      // Amenities from API or static
+      amenities: property.amenities?.length
+        ? property.amenities.map(amenity => ({
+          name: amenity.name,
+          icon: amenity.icon || amenity.name.replace(/\s+/g, ''),
+          category: amenity.category || 'general'
+        }))
+        : demodata.amenities,
+
+      // Use static data for these sections
+      rooms: demodata.rooms,
+      reviews: demodata.reviews,
+      activities: demodata.activities,
+      nearbyPlaces: demodata.nearbyPlaces,
+
+      // Policies - merge API data with static defaults
       policies: {
-        checkIn: property.checkInTime,
-        checkOut: property.checkOutTime,
-        cancellation: property.cancellationPolicy,
-        children: "Children under 10 stay free with parents. Extra bed charges apply.", // Default
-        pets: "Pets are allowed with prior approval (charges may apply).", // Default
-        extraBed: "$25 per night for extra beds (subject to availability).", // Default
-        payment: "Credit card required to guarantee reservation", // Default
-        taxes: "All taxes included in room rate" // Default
+        checkIn: property.checkInTime || demodata.policies.checkIn,
+        checkOut: property.checkOutTime || demodata.policies.checkOut,
+        cancellation: property.cancellationPolicy || demodata.policies.cancellation,
+        children: demodata.policies.children,
+        pets: demodata.policies.pets,
+        extraBed: demodata.policies.extraBed,
+        payment: demodata.policies.payment,
+        taxes: demodata.policies.taxes
       },
+
+      // Host info - merge API with static
       host: {
-        name: property.merchant.businessName,
-        since: "2018", // Default
-        responseRate: "98%", // Default
-        responseTime: "within an hour", // Default
-        avatar: "/host.jpg", // Default
-        languages: ["English"] // Default
+        name: property.merchant?.businessName || demodata.host.name,
+        since: demodata.host.since,
+        responseRate: demodata.host.responseRate,
+        responseTime: demodata.host.responseTime,
+        avatar: demodata.host.avatar,
+        languages: demodata.host.languages
       },
-      sustainability: {
-        level: "Level 3", // Default
-        practices: [
-          "Solar panels for hot water",
-          "Waste reduction program"
-        ] // Default
-      },
+
+      // Sustainability - static
+      sustainability: demodata.sustainability,
+
+      // Coordinates from API or static
       coordinates: {
-        lat: property.latitude,
-        lng: property.longitude
+        lat: property.latitude || demodata.coordinates.lat,
+        lng: property.longitude || demodata.coordinates.lng
       }
     };
 
-    return transformedData;
+    return hotelData;
   } catch (error) {
     console.error('Error fetching property data:', error);
-    // Return default data if API fails
-    return hotelData;
+    // Return complete static data if API fails
+    return demodata;
   }
 };
+
