@@ -27,6 +27,7 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import Image from "next/image";
+import Link from "next/link";
 
 // Schema for form validation
 const formSchema = z.object({
@@ -244,7 +245,8 @@ export function LoginForm({ className, ...props }) {
                           <FormItem>
                             <div className="flex items-center justify-between">
                               <FormLabel>Password</FormLabel>
-                              <button
+                              <Link href="/forgot-password" className="text-sm text-muted-foreground hover:text-primary">  Forgot password?</Link>
+                              {/* <button
                                 type="button"
                                 className="text-sm text-muted-foreground hover:text-primary"
                                 onClick={() => {
@@ -261,7 +263,7 @@ export function LoginForm({ className, ...props }) {
                                 }}
                               >
                                 Forgot password?
-                              </button>
+                              </button> */}
                             </div>
                             <FormControl>
                               <Input
