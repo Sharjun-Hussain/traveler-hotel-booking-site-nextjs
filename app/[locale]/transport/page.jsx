@@ -53,6 +53,32 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import axios from "axios";
 import Link from "next/link";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+
+// Skeleton for a transport card
+const TransportCardSkeleton = () => (
+  <div className="group relative w-full inline-block p-0.5 rounded-2xl overflow-hidden border-transparent transition-all duration-300">
+    <Card className="overflow-hidden relative z-10 p-0 m-0 dark:bg-zinc-900">
+      <div className="flex flex-col md:flex-row">
+        <div className="md:w-1/4">
+          <Skeleton height={120} width="100%" />
+        </div>
+        <div className="p-4 md:ps-6 md:py-6 md:w-3/4">
+          <Skeleton width={120} height={24} />
+          <Skeleton count={2} />
+          <div className="mb-4">
+            <Skeleton width={60} />
+          </div>
+          <div className="flex flex-wrap gap-2 mb-4">
+            <Skeleton width={80} height={24} />
+            <Skeleton width={80} height={24} />
+          </div>
+        </div>
+      </div>
+    </Card>
+  </div>
+);
 
 const TransportPage = () => {
   const searchParams = useSearchParams();
@@ -308,9 +334,37 @@ const TransportPage = () => {
     }
   };
 
-  if (!mounted) {
-    return null;
-  }
+  // if (!mounted) {
+  //   // Show loading indicator while page is hydrating
+  //   return (
+  //     <div className="min-h-screen bg-white w-full dark:bg-zinc-950 transition-colors duration-200 flex flex-col items-center justify-center">
+  //       <SecNav classnames="shadow-sm" />
+
+  //       <div className="flex-1 flex flex-col items-center justify-center px-4 text-center">
+  //         {/* Animated spinner */}
+  //         <div className="relative w-16 h-16 mb-6">
+  //           <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-blue-500 dark:border-t-blue-400 border-r-blue-500 dark:border-r-blue-400 animate-spin"></div>
+  //           <div className="absolute inset-1 rounded-full border-4 border-transparent border-b-blue-500 dark:border-b-blue-400 border-l-blue-500 dark:border-l-blue-400 animate-spin animation-delay-200"></div>
+  //         </div>
+
+  //         {/* Loading text */}
+  //         <h2 className="text-2xl font-semibold text-zinc-800 dark:text-zinc-200 mb-2">
+  //           Loading Transport Agents
+  //         </h2>
+  //         <p className="text-zinc-500 dark:text-zinc-400 max-w-md">
+  //           Please wait while we gather the latest transport options for you...
+  //         </p>
+
+  //         {/* Subtle animated dots */}
+  //         <div className="mt-4 flex space-x-1">
+  //           <div className="w-2 h-2 rounded-full bg-blue-500 dark:bg-blue-400 animate-bounce animation-delay-0"></div>
+  //           <div className="w-2 h-2 rounded-full bg-blue-500 dark:bg-blue-400 animate-bounce animation-delay-100"></div>
+  //           <div className="w-2 h-2 rounded-full bg-blue-500 dark:bg-blue-400 animate-bounce animation-delay-200"></div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   const vehicleTypes = [
     ...new Set(transportData.map((item) => item.transportType)),
@@ -765,10 +819,13 @@ const TransportPage = () => {
             )}
 
             <div className="space-y-4">
-              {loading ? (
-                <div className="text-center py-12">
-                  <p>Loading transport options...</p>
-                </div>
+              {loading || !mounted ? (
+                // Show skeletons while loading data
+                <>
+                  {[...Array(4)].map((_, i) => (
+                    <TransportCardSkeleton key={i} />
+                  ))}
+                </>
               ) : filteredData.length > 0 ? (
                 filteredData.map((transport) => (
                   <div
@@ -821,12 +878,12 @@ const TransportPage = () => {
                               </div>
 
                               <div className="flex  flex-col text-right justify-between h-full  ">
-                                <div className="text-xl font-bold">
+                                {/* <div className="text-xl font-bold">
                                   ${transport.pricePerKmUSD}{" "}
                                   <span className="text-sm font-normal">
                                     / km
                                   </span>
-                                </div>
+                                </div> */}
                                 <div className="text-end justify-end items-end">
                                   {transport.contactDetails.phone && (
                                     <div className=" flex items-center font-bold cursor-pointer hover:bg-j-light gap-1 px-4 py-2 bg-j-primary/20  rounded-full">
@@ -894,11 +951,12 @@ const TransportPage = () => {
                     onClick={() => {
                       setActiveFilters([]);
                       setPriceRange([0, 50]);
-                      setSearchParams({
+                      setFilters({
                         from: "",
                         to: "",
                         transportType: "all",
                       });
+                      router.push("/transport");
                     }}
                   >
                     Reset all filters
