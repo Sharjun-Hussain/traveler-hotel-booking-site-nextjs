@@ -339,16 +339,19 @@ const TransportDetailPage = async ({ params }) => {
                                 <div className="bg-gray-200 dark:bg-gray-700 rounded-full p-2">
                                   <User className="h-5 w-5" />
                                 </div>
-                                <div>
-                                  <h4 className="font-medium">{review.user}</h4>
+                                <div className="w-full">
+                                  <div className="flex w-full items-center justify-between">
+                                    <h4 className="font-medium">{review.user}</h4>
+                                    <span className="text-gray-500 dark:text-gray-400 text-sm">
+                                      {review.date}
+                                    </span>
+                                  </div>
                                   <div className="flex items-center gap-1">
                                     <Star className="h-4 w-4 text-yellow-500 fill-current" />
                                     <span className="text-sm">
                                       {review.rating}
                                     </span>
-                                    <span className="text-gray-500 dark:text-gray-400 text-sm">
-                                      • {review.date}
-                                    </span>
+
                                   </div>
                                 </div>
                               </div>

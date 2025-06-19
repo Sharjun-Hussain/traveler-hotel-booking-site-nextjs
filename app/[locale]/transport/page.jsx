@@ -1,7 +1,7 @@
 // pages/transport.js
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useTheme } from "next-themes";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
@@ -86,7 +86,7 @@ const TransportPage = () => {
   const [mounted, setMounted] = useState(false);
   const [date, setDate] = useState(new Date());
   const [activeFilters, setActiveFilters] = useState([]);
-  const [sortOption, setSortOption] = useState("price-low");
+  const [sortOption, setSortOption] = useState("popular");
   const [filters, setFilters] = useState({
     from: "",
     to: "",
@@ -96,7 +96,7 @@ const TransportPage = () => {
   const [lastscrollY, setlastscrollY] = useState(0);
   const [isfixed, setisfixed] = useState(false);
   const [transportData, setTransportData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
@@ -202,9 +202,12 @@ const TransportPage = () => {
     setMounted(true);
   }, []);
 
-  useEffect(() => {
+  const filteredDatas = useMemo(() => {
+    if (loading) return [];
+
     let results = [...transportData];
 
+    // Apply filters
     if (filters.from) {
       results = results.filter((item) =>
         item.location.departureCity
@@ -229,6 +232,7 @@ const TransportPage = () => {
       );
     }
 
+    // Apply active filters
     if (activeFilters.length > 0) {
       results = results.filter((item) => {
         return activeFilters.every((filter) => {
@@ -254,14 +258,16 @@ const TransportPage = () => {
       });
     }
 
+    // Apply price range
     results = results.filter(
       (item) =>
         parseFloat(item.pricePerKmUSD) >= priceRange[0] &&
         parseFloat(item.pricePerKmUSD) <= priceRange[1]
     );
 
+    // Apply sorting
     switch (sortOption) {
-      case "price-low":
+      case "popular":
         results.sort(
           (a, b) => parseFloat(a.pricePerKmUSD) - parseFloat(b.pricePerKmUSD)
         );
@@ -280,8 +286,9 @@ const TransportPage = () => {
         break;
     }
 
-    setFilteredData(results);
-  }, [filters, activeFilters, sortOption, priceRange, transportData]);
+    return results;
+  }, [transportData, filters, activeFilters, sortOption, priceRange, loading]);
+
 
   const addFilter = (type, value) => {
     if (
@@ -366,15 +373,20 @@ const TransportPage = () => {
   //   );
   // }
 
-  const vehicleTypes = [
-    ...new Set(transportData.map((item) => item.transportType)),
-  ];
-  const departureLocations = [
-    ...new Set(transportData.map((item) => item.location.departureCity)),
-  ];
-  const arrivalLocations = [
-    ...new Set(transportData.map((item) => item.location.arrivalCity)),
-  ];
+  const vehicleTypes = useMemo(() =>
+    [...new Set(transportData.map(item => item.transportType))],
+    [transportData]
+  );
+
+  const departureLocations = useMemo(() =>
+    [...new Set(transportData.map(item => item.location.departureCity))],
+    [transportData]
+  );
+
+  const arrivalLocations = useMemo(() =>
+    [...new Set(transportData.map(item => item.location.arrivalCity))],
+    [transportData]
+  );
 
   return (
     <div className="min-h-screen bg-white w-full dark:bg-zinc-950 transition-colors duration-200 pt-14">
@@ -443,7 +455,7 @@ const TransportPage = () => {
                   </div>
                 )}
 
-                <div className="mb-6">
+                {/* <div className="mb-6">
                   <h3 className="font-medium mb-2">Price Range (per km)</h3>
                   <div className="px-2">
                     <Slider
@@ -464,7 +476,7 @@ const TransportPage = () => {
                       <span>${priceRange[1].toFixed(2)}</span>
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="mb-6">
                   <h3 className="font-medium mb-2">Vehicle Type</h3>
@@ -772,7 +784,7 @@ const TransportPage = () => {
             <div className="flex justify-between items-center mb-4">
               <div>
                 <span className=" lg:text-2xl text- font-bold ">
-                  {filteredData.length} transport options found
+                  {filteredDatas.length} transport options found
                 </span>
               </div>
               <Select value={sortOption} onValueChange={setSortOption}>
@@ -780,9 +792,10 @@ const TransportPage = () => {
                   <SelectValue placeholder="Sort by" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="price-low">Price: Low to High</SelectItem>
-                  <SelectItem value="price-high">Price: High to Low</SelectItem>
-                  <SelectItem value="rating">Highest Rating</SelectItem>
+                  <SelectItem value="popular">Most Popular</SelectItem>
+                  <SelectItem value="rating-high">Highest Rating</SelectItem>
+                  <SelectItem value="review-count">Most Reviews</SelectItem>
+
                 </SelectContent>
               </Select>
             </div>
@@ -826,8 +839,8 @@ const TransportPage = () => {
                     <TransportCardSkeleton key={i} />
                   ))}
                 </>
-              ) : filteredData.length > 0 ? (
-                filteredData.map((transport) => (
+              ) : filteredDatas.length > 0 ? (
+                filteredDatas.map((transport) => (
                   <div
                     key={transport.id}
                     className="group relative w-full inline-block p-0.5 rounded-2xl overflow-hidden border-transparent hover:border-transparent transition-all duration-300"
